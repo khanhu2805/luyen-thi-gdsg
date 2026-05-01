@@ -129,7 +129,7 @@ export default function DoiNguPage() {
             const isEven = index % 2 === 0; // Để xếp xen kẽ: Ảnh trái - phải
             
             return (
-              <Grid container spacing={8} key={teacher.id} alignItems="center">
+              <Grid container spacing={8} key={teacher.id} sx={{ alignItems: "center" }}>
                 
                 {/* IMAGE COLUMN */}
                 <Grid 

@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { 
   Box, 
   Container, 
@@ -9,16 +8,10 @@ import {
   Card, 
   CardContent, 
   Button, 
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  IconButton,
   Stack
 } from '@mui/material';
 import { keyframes } from '@mui/system';
-import CloseIcon from '@mui/icons-material/Close';
 import AutoStoriesRoundedIcon from '@mui/icons-material/AutoStoriesRounded';
-import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';
 import Link from 'next/link';
 
 // --- ANIMATIONS ---
@@ -75,15 +68,6 @@ const coreBooks = [
 ];
 
 export default function TaiLieuOnLuyenPage() {
-  const [selectedBook, setSelectedBook] = useState(null);
-
-  const handleOpenViewer = (book) => {
-    setSelectedBook(book);
-  };
-
-  const handleCloseViewer = () => {
-    setSelectedBook(null);
-  };
 
   return (
     <Box sx={{ fontFamily: fontBody, bgcolor: '#f8fafc', minHeight: '100vh', pb: 15 }}>

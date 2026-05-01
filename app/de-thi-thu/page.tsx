@@ -118,8 +118,7 @@ export default function DeThiThuPage() {
 
   const filteredExams = mockExams.filter(exam => {
     const matchSubject = activeSubject === "Tất cả" || exam.subject === activeSubject;
-    const matchSearch = exam.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                        exam.school.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchSearch = exam.title.toLowerCase().includes(searchQuery.toLowerCase());
     return matchSubject && matchSearch;
   });
 

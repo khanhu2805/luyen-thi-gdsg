@@ -4,8 +4,8 @@ import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
-const montserrat = Montserrat({ subsets: ['vietnamese'], variable: '--font-montserrat', weight: ['600', '700', '800'] });
-const nunito = Nunito({ subsets: ['vietnamese'], variable: '--font-nunito', weight: ['400', '500', '600', '700'] });
+const montserrat = Montserrat({ subsets: ['vietnamese'], variable: '--font-montserrat' });
+const nunito = Nunito({ subsets: ['vietnamese'], variable: '--font-nunito' });
 
 export const metadata: Metadata = {
   title: "Luyện thi - Giáo dục Sài Gòn",

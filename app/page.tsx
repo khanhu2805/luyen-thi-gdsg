@@ -10,10 +10,18 @@ import {
   CardContent,
   Stack,
   TextField,
-  Grid
+  Grid,
+  CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Alert,
+  Snackbar
 } from '@mui/material';
 import { keyframes } from '@mui/system';
 import Link from 'next/link';
+import { useState } from 'react';
 
 // ==========================================
 // 1. ĐỊNH NGHĨA ANIMATION PHỨC TẠP
@@ -89,6 +97,113 @@ export default function HomePage() {
     }
   ];
 
+  const [openSuccessPopup, setOpenSuccessPopup] = useState(false);
+
+  const [errors, setErrors] = useState({
+    HoTen: '',
+    SoDienThoai: '',
+    TruongDangHoc: '',
+    MonHocMuonOnLuyen: '',
+  });
+
+  // 2. Hàm kiểm tra tính hợp lệ
+  const validateForm = () => {
+    const tempErrors = {
+      HoTen: '',
+      SoDienThoai: '',
+      TruongDangHoc: '',
+      MonHocMuonOnLuyen: '',
+    };
+    let isValid = true;
+
+    // Kiểm tra Họ tên
+    if (!formData.HoTen.trim()) {
+      tempErrors.HoTen = "Vui lòng nhập họ tên.";
+      isValid = false;
+    }
+
+    // Kiểm tra Số điện thoại (Regex chuẩn nhà mạng VN)
+    const phoneRegex = /^(0[2|3|5|7|8|9])+([0-9]{8})$/;
+    if (!formData.SoDienThoai.trim()) {
+      tempErrors.SoDienThoai = "Vui lòng nhập số điện thoại.";
+      isValid = false;
+    } else if (!phoneRegex.test(formData.SoDienThoai)) {
+      tempErrors.SoDienThoai = "Số điện thoại không hợp lệ (Gồm 10 số, bắt đầu bằng 09, 03...).";
+      isValid = false;
+    }
+
+    // Kiểm tra Trường
+    if (!formData.TruongDangHoc.trim()) {
+      tempErrors.TruongDangHoc = "Vui lòng nhập tên trường.";
+      isValid = false;
+    }
+
+    // Kiểm tra Môn học
+    if (!formData.MonHocMuonOnLuyen.trim()) {
+      tempErrors.MonHocMuonOnLuyen = "Vui lòng nhập môn học quan tâm.";
+      isValid = false;
+    }
+
+    setErrors(tempErrors);
+    return isValid;
+  };
+
+  const [formData, setFormData] = useState({
+    HoTen: '',
+    SoDienThoai: '',
+    TruongDangHoc: '',
+    MonHocMuonOnLuyen: '',
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleClosePopup = () => {
+    setOpenSuccessPopup(false);
+  };
+
+  const [phone, setPhone] = useState(''); // Biến để lưu số điện thoại hiển thị trong popup
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Ngăn form reload lại trang
+
+    if (!validateForm()) return;
+
+    setIsSubmitting(true);
+
+    // Chuyển dữ liệu thành dạng FormData để Google Script dễ đọc
+    const data = new FormData();
+    Object.keys(formData).forEach(key => {
+      data.append(key, formData[key]);
+    });
+
+    try {
+      // Thay URL_CỦA_BẠN bằng link Web App lấy ở bước trước
+      await fetch('https://script.google.com/macros/s/AKfycbxPgs_n6UZ3Pvp3vGHYDtfJPiYdMhy2tZBmJTDC2ZEHSefljcH8F4-36kxSMt1AORxFvw/exec', {
+        method: 'POST',
+        body: data,
+        mode: 'no-cors' // Rất quan trọng: giúp tránh lỗi CORS policy khi gọi từ localhost/domain khác
+      });
+
+      setOpenSuccessPopup(true);
+
+      // Xóa trắng form sau khi gửi
+      setPhone(formData.SoDienThoai); // Lưu số điện thoại để hiển thị trong popup
+      setFormData({ HoTen: '', SoDienThoai: '', TruongDangHoc: '', MonHocMuonOnLuyen: '' });
+      setErrors({ HoTen: '', SoDienThoai: '', TruongDangHoc: '', MonHocMuonOnLuyen: '' });
+    } catch (error) {
+      alert('Có lỗi xảy ra, vui lòng thử lại sau.');
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // ================================================
 
   return (
     <Box sx={{ fontFamily: fontBody, overflowX: 'hidden', bgcolor: '#f4f7fe' }}>
@@ -161,6 +276,7 @@ export default function HomePage() {
               </Typography>
 
               <Button
+                component={Link} href="/#form-dang-ky"
                 variant="contained" size="large"
                 sx={{
                   borderRadius: '50px', px: 5, py: 2, fontFamily: fontHeader, fontWeight: 800, fontSize: '1.1rem',
@@ -470,50 +586,129 @@ export default function HomePage() {
                 </Grid>
 
                 <Grid size={{ xs: 12, md: 7 }} sx={{ p: { xs: 4, md: 8 }, bgcolor: 'white' }}>
-                  <Typography variant="h4" sx={{ fontFamily: fontHeader, fontWeight: 800, color: '#1a237e', mb: 1 }}>
-                    Ghi Danh Nhận Đặc Quyền
+                  <Typography variant="h5" sx={{ fontFamily: fontHeader, fontWeight: 800, color: '#1a237e', mb: 1, textTransform: 'uppercase' }}>
+                    Đăng kí nhận tư vấn miễn phí
                   </Typography>
                   <Typography color="text.secondary" sx={{ mb: 5 }}>
                   </Typography>
 
-                  <Stack spacing={4}>
-                    <Grid container spacing={3}>
-                      <Grid size={{ xs: 12, sm: 6 }}>
-                        <TextField fullWidth label="Họ tên học sinh" variant="standard" sx={{ '& .MuiInput-underline:after': { borderBottomColor: 'primary.main' } }} />
+                  <form onSubmit={handleSubmit} noValidate>
+                    <Stack spacing={4}>
+                      <Grid container spacing={3}>
+                        <Grid size={{ xs: 12, sm: 6 }}>
+                          <TextField fullWidth
+                            error={!!errors.HoTen}
+                            helperText={errors.HoTen}
+                            value={formData.HoTen}
+                            onChange={handleInputChange}
+                            type='text'
+                            required name="HoTen" label="Họ tên học sinh" variant="standard" sx={{ '& .MuiInput-underline:after': { borderBottomColor: 'primary.main' } }} />
+                        </Grid>
+                        <Grid size={{ xs: 12, sm: 6 }}>
+                          <TextField fullWidth value={formData.SoDienThoai}
+                            onChange={handleInputChange}
+                            error={!!errors.SoDienThoai}      // <-- Thêm bắt lỗi
+                            helperText={errors.SoDienThoai}   // <-- Hiện chữ lỗi
+                            type='tel'
+                            required
+                            name="SoDienThoai" label="Số điện thoại / Zalo" variant="standard" />
+                        </Grid>
                       </Grid>
-                      <Grid size={{ xs: 12, sm: 6 }}>
-                        <TextField fullWidth label="Số điện thoại / Zalo" variant="standard" />
-                      </Grid>
-                    </Grid>
 
-                    <TextField fullWidth label="Trường đang theo học" variant="standard" />
+                      <TextField fullWidth value={formData.TruongDangHoc}
+                        onChange={handleInputChange}
+                        type='text'
+                        error={!!errors.TruongDangHoc}        // <-- Thêm bắt lỗi
+                        helperText={errors.TruongDangHoc}     // <-- Hiện chữ lỗi
+                        name="TruongDangHoc" required label="Trường đang theo học" variant="standard" />
 
-                    <TextField
-                      fullWidth label="Môn học muốn trải nghiệm bài tập/thi thử trước tiên?"
-                      variant="standard" multiline rows={2}
-                    />
+                      <TextField
+                        fullWidth value={formData.MonHocMuonOnLuyen}
+                        onChange={handleInputChange}
+                        name="MonHocMuonOnLuyen"
+                        required
+                        type='text'
+                        label="Môn học muốn ôn luyện?"
+                        error={!!errors.MonHocMuonOnLuyen}        // <-- Thêm bắt lỗi
+                        helperText={errors.MonHocMuonOnLuyen}     // <-- Hiện chữ lỗi
+                        variant="standard" multiline rows={2}
+                      />
 
-                    <Box sx={{ pt: 2 }}>
-                      <Button
-                        variant="contained" size="large" fullWidth
-                        sx={{
-                          py: 2.5, borderRadius: 50, fontFamily: fontHeader, fontWeight: 900, fontSize: '1.2rem',
-                          background: 'linear-gradient(90deg, #ff9800, #ff5722)',
-                          boxShadow: '0 10px 20px rgba(255, 87, 34, 0.3)',
-                          animation: `${pulseGlow} 2s infinite`, transition: '0.3s',
-                          '&:hover': { transform: 'scale(1.02)', background: 'linear-gradient(90deg, #f57c00, #e64a19)' }
-                        }}
-                      >
-                        ĐĂNG KÝ TƯ VẤN MIỄN PHÍ
-                      </Button>
-                    </Box>
-                  </Stack>
+                      <Box sx={{ pt: 2 }}>
+                        <Button
+                          type='submit'
+                          disabled={isSubmitting}
+                          variant="contained" size="large" fullWidth
+                          sx={{
+                            py: 2.5, borderRadius: 50, fontFamily: fontHeader, fontWeight: 900, fontSize: '1.2rem',
+                            background: 'linear-gradient(90deg, #ff9800, #ff5722)',
+                            boxShadow: '0 10px 20px rgba(255, 87, 34, 0.3)',
+                            animation: `${pulseGlow} 2s infinite`, transition: '0.3s',
+                            '&:hover': { transform: 'scale(1.02)', background: 'linear-gradient(90deg, #f57c00, #e64a19)' },
+                            '&:disabled': { background: '#ccc', animation: 'none', transform: 'none' }
+                          }}
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <CircularProgress size={24} sx={{ color: 'white', mr: 2 }} />
+                              ĐANG GỬI...
+                            </>
+                          ) : (
+                            'ĐĂNG KÝ TƯ VẤN MIỄN PHÍ'
+                          )}
+                        </Button>
+                      </Box>
+                    </Stack>
+                  </form>
                 </Grid>
               </Grid>
             </Card>
           </Container>
         </Box>
       </Box>
+      {/* ================= POPUP THÔNG BÁO THÀNH CÔNG ================= */}
+      {/* <Dialog
+        open={openSuccessPopup}
+        onClose={handleClosePopup}
+        sx={{ borderRadius: 4, p: 2, maxWidth: '400px', textAlign: 'center' }}
+
+      >
+        <DialogTitle sx={{ pb: 1 }}>
+          <Box sx={{ fontSize: '4rem', mb: 1, animation: `${floatComplex} 3s infinite` }}>🎉</Box>
+          <Typography variant="h5" sx={{ fontFamily: fontHeader, fontWeight: 900, color: '#4caf50', textTransform: 'uppercase' }}>
+            Đăng Ký Thành Công!
+          </Typography>
+        </DialogTitle>
+
+        <DialogContent>
+          <Typography variant="body1" color="text.secondary" sx={{ fontFamily: fontBody, lineHeight: 1.6 }}>
+            Đăng ký thành công! Đội ngũ tư vấn sẽ liên hệ với bạn qua số điện thoại <strong>{formData.SoDienThoai}</strong> trong thời gian sớm nhất để hướng dẫn nhận ưu đãi!
+          </Typography>
+        </DialogContent>
+
+        <DialogActions sx={{ justifyContent: 'center', pb: 2 }}>
+          <Button
+            onClick={handleClosePopup}
+            variant="contained"
+            sx={{
+              borderRadius: 50, px: 5, py: 1.5,
+              fontFamily: fontHeader, fontWeight: 'bold',
+              background: 'linear-gradient(45deg, #1976d2, #42a5f5)',
+              boxShadow: '0 8px 16px rgba(25, 118, 210, 0.2)'
+            }}
+          >
+            Đóng thông báo
+          </Button>
+        </DialogActions>
+      </Dialog> */}
+      <Snackbar open={openSuccessPopup} autoHideDuration={6000} onClose={handleClosePopup}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleClosePopup} severity="success" sx={{ width: '100%', borderRadius: 4, bgcolor: '#e8f5e9', color: '#2e7d32', fontFamily: fontBody, boxShadow: '0 10px 30px rgba(46, 125, 50, 0.3)' }}>
+          Đăng ký thành công! Đội ngũ tư vấn sẽ liên hệ với bạn qua số điện thoại <strong>{phone}</strong> trong thời gian sớm nhất để hướng dẫn nhận ưu đãi!
+        </Alert>
+      </Snackbar>
+      {/* ============================================================= */}
     </Box>
   );
 }

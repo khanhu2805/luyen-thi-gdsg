@@ -70,7 +70,7 @@ export default function Footer() {
               Khám Phá
             </Typography>
             <Stack spacing={2}>
-              {['Trang chủ', 'Đội ngũ', 'Khóa học bứt phá',].map((item, idx) => (
+              {['Trang chủ', 'Đội ngũ',].map((item, idx) => (
                 <Link 
                   key={idx} 
                   href={idx === 0 ? '/' : idx === 1 ? '/doi-ngu' : '/khoa-hoc'} 
@@ -90,7 +90,7 @@ export default function Footer() {
               TÀI NGUYÊN HỌC TẬP
             </Typography>
             <Stack spacing={2}>
-              {['Bộ 3 Sách Bí Kíp', 'Tài liệu ôn tập miễn phí', 'Ngân hàng Đề thi thử'].map((item, idx) => (
+              {['Tài liệu ôn tập miễn phí', 'Ngân hàng Đề thi thử'].map((item, idx) => (
                 <Link 
                   key={idx} 
                   href={idx < 2 ? '/tai-lieu-on-luyen' : '/de-thi-thu'} 

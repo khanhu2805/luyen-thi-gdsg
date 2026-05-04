@@ -112,18 +112,18 @@ export default function DoiNguPage() {
           <Typography variant="h6" sx={{ color: 'primary.main', fontWeight: 800, letterSpacing: 2, textTransform: 'uppercase', mb: 2 }}>
             Luyện Thi Giáo Dục Sài Gòn
           </Typography>
-          <Typography variant="h2" sx={{ fontFamily: fontHeader, fontWeight: 900, mb: 4, color: '#1a237e', fontSize: { xs: '2.5rem', md: '3.8rem' }, lineHeight: 1.2 }}>
+          <Typography variant="h2" sx={{ fontFamily: fontHeader, fontWeight: 900, mb: 4, color: '#1a237e', fontSize: { xs: '2.5rem', md: '3.8rem' }, lineHeight: 1.2, textTransform: 'uppercase' }}>
             Đội Ngũ Chuyên Gia <br />
             <Box component="span" sx={{ color: '#d32f2f' }}>Kiến Tạo Tương Lai</Box>
           </Typography>
-          <Typography variant="h6" color="text.secondary" sx={{ fontWeight: 400, lineHeight: 1.7, maxWidth: '85%', mx: 'auto' }}>
-            Hội tụ những chuyên gia giáo dục hàng đầu, những người thầy đã truyền cảm hứng và dẫn dắt hàng chục ngàn học sinh chinh phục thành công nguyện vọng 1 trên sóng truyền hình HTV3.
+          <Typography variant="h6" color="text.secondary" sx={{ fontFamily: fontBody, fontWeight: 600, lineHeight: 1.7, maxWidth: '85%', mx: 'auto' }}>
+            Hội tụ những chuyên gia giáo dục hàng đầu, những người thầy cô đã truyền cảm hứng và dẫn dắt học sinh chinh phục thành công nguyện vọng 1.
           </Typography>
         </Container>
       </Box>
 
       {/* ================= TEACHER PROFILES ================= */}
-      <Container maxWidth="lg" sx={{ mt: 10 }}>
+      <Container maxWidth="xl" sx={{ mt: 10 }}>
         <Stack spacing={{ xs: 12, md: 15 }}>
           {teachers.map((teacher, index) => {
             const isEven = index % 2 === 0; // Để xếp xen kẽ: Ảnh trái - phải
@@ -199,14 +199,14 @@ export default function DoiNguPage() {
                       {teacher.name}
                     </Typography>
                     
-                    {/* Khối triết lý giảng dạy */}
+                    {/* Khối triết lý giảng dạy 
                     <Box sx={{ borderLeft: `4px solid ${teacher.color}`, pl: 3, mb: 4 }}>
                       <Typography variant="body1" sx={{ fontSize: '1.2rem', fontStyle: 'italic', color: 'text.secondary', lineHeight: 1.8 }}>
                         "{teacher.philosophy}"
                       </Typography>
                     </Box>
 
-                    {/* Chi tiết kinh nghiệm */}
+                    {/* Chi tiết kinh nghiệm 
                     <Typography variant="h6" sx={{ fontFamily: fontHeader, fontWeight: 800, mb: 2 }}>
                       Hành trình cống hiến:
                     </Typography>
@@ -221,7 +221,7 @@ export default function DoiNguPage() {
 
                     <Divider sx={{ mb: 4 }} />
 
-                    {/* Stats */}
+                    {/* Stats 
                     <Grid container spacing={3}>
                       {[
                         { icon: <MenuBookRoundedIcon />, value: teacher.stats.courses, label: "Khóa học" },
@@ -239,10 +239,10 @@ export default function DoiNguPage() {
                           </Box>
                         </Grid>
                       ))}
-                    </Grid>
+                    </Grid>*/}
                     
                   </Box>
-                </Grid>
+                </Grid> 
 
               </Grid>
             );

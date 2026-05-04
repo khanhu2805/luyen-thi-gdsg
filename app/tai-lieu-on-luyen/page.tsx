@@ -146,7 +146,7 @@ export default function TaiLieuOnLuyenPage() {
                       '&:hover': { transform: 'scale(1.02)' }, transition: 'all 0.2s'
                     }}
                   >
-                    Đọc sách
+                    Đọc
                   </Button>
                 </CardContent>
               </Card>

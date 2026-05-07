@@ -18,6 +18,9 @@ import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
 import PlayCircleFilledWhiteRoundedIcon from '@mui/icons-material/PlayCircleFilledWhiteRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import Link from 'next/link';
+import AssignForm from '../components/trang-chu/AssignForm';
+import SnackBar from '../components/SnackBar';
+import { useState } from 'react';
 
 // --- ANIMATIONS ---
 const fadeInUp = keyframes`
@@ -51,12 +54,6 @@ const gradientShift = keyframes`
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
-`;
-
-const pulseGlow = keyframes`
-  0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
-  70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
 `;
 
 // --- FONTS ---
@@ -110,6 +107,8 @@ const teachers = [
 ];
 
 export default function DoiNguPage() {
+  const [openSuccessPopup, setOpenSuccessPopup] = useState(false);
+  const [phone, setPhone] = useState('');
   return (
     <Box sx={{ fontFamily: fontBody, bgcolor: '#ffffff', minHeight: '100vh', pb: 15, overflowX: 'hidden' }}>
 
@@ -142,7 +141,7 @@ export default function DoiNguPage() {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               display: 'inline-block',
-              pt:3,
+              pt: 3,
             }}>
               Kiến Tạo Tương Lai
             </Box>
@@ -259,7 +258,7 @@ export default function DoiNguPage() {
                     </Typography>
                     <Stack spacing={2.5} sx={{ mb: 6 }}>
                       {teacher.experiences.map((exp, i) => (
-                        <Box key={i} sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, transition: 'transform 0.2s', '&:hover': { transform: 'translateX(5px)' } }}>
+                        <Box key={i} sx={{ display: 'flex', alignItems: 'center', gap: 2, transition: 'transform 0.2s', '&:hover': { transform: 'translateX(5px)' } }}>
                           <Box sx={{ mt: 0.5, bgcolor: `${teacher.color}20`, p: 0.5, borderRadius: '50%', display: 'flex' }}>
                             <StarRoundedIcon sx={{ color: teacher.color, fontSize: 20 }} />
                           </Box>
@@ -271,7 +270,7 @@ export default function DoiNguPage() {
                     <Divider sx={{ mb: 5, opacity: 0.6 }} />
 
                     {/* Stats - Đã khôi phục và tinh chỉnh UI */}
-                    <Grid container spacing={3}>
+                    {/* <Grid container spacing={3}>
                       {[
                         { icon: <MenuBookRoundedIcon fontSize="large" />, value: teacher.stats.courses, label: "Khóa học" },
                         { icon: <PlayCircleFilledWhiteRoundedIcon fontSize="large" />, value: teacher.stats.students, label: "Học viên" }
@@ -291,7 +290,7 @@ export default function DoiNguPage() {
                           </Box>
                         </Grid>
                       ))}
-                    </Grid>
+                    </Grid> */}
 
                   </Box>
                 </Grid>
@@ -303,13 +302,13 @@ export default function DoiNguPage() {
       </Container>
 
       {/* ================= CALL TO ACTION ================= */}
-      <Container maxWidth="lg" sx={{ mt: { xs: 15, md: 25 } }}>
+      {/* <Container maxWidth="lg" sx={{ mt: { xs: 15, md: 25 } }}>
         <Box sx={{
           background: 'linear-gradient(135deg, #1976d2 0%, #0d47a1 100%)',
           borderRadius: 8, p: { xs: 5, md: 10 }, textAlign: 'center', color: 'white',
           boxShadow: '0 30px 60px rgba(25, 118, 210, 0.3)', position: 'relative', overflow: 'hidden'
         }}>
-          {/* Decorative shapes */}
+          {/* Decorative shapes 
           <Box sx={{ position: 'absolute', top: -50, right: -50, width: 250, height: 250, bgcolor: 'rgba(255,255,255,0.05)', borderRadius: '50%' }} />
           <Box sx={{ position: 'absolute', bottom: -100, left: -50, width: 300, height: 300, bgcolor: 'rgba(255,255,255,0.05)', borderRadius: '50%' }} />
 
@@ -340,8 +339,11 @@ export default function DoiNguPage() {
             </Button>
           </Box>
         </Box>
-      </Container>
-
+      </Container> */}
+      <Box sx={{ mt: 15 }}>
+        <AssignForm setOpenSuccessPopup={setOpenSuccessPopup} setPhone={setPhone} />
+        <SnackBar openSuccessPopup={openSuccessPopup} setOpenSuccessPopup={setOpenSuccessPopup} phone={phone} />
+      </Box>
     </Box>
   );
 }

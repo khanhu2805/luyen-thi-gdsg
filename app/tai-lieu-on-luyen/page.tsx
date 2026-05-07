@@ -13,6 +13,7 @@ import {
 import { keyframes } from '@mui/system';
 import AutoStoriesRoundedIcon from '@mui/icons-material/AutoStoriesRounded';
 import Link from 'next/link';
+import AssignForm from '../components/trang-chu/AssignForm';
 
 // --- ANIMATIONS ---
 const fadeInUp = keyframes`
@@ -34,7 +35,7 @@ const fontBody = "'Nunito', sans-serif";
 const coreBooks = [
   {
     id: 1,
-    title: "Tuyệt đỉnh Toán 9 - Chinh phục điểm 10",
+    title: "TUYỂN SINH 10 & CÁC ĐỀ TOÁN THỰC TẾ",
     subject: "Toán Học",
     desc: "Tổng hợp các chuyên đề trọng tâm, phân dạng bài tập từ cơ bản đến nâng cao theo cấu trúc đề thi mới nhất.",
     icon: "📘",
@@ -45,23 +46,23 @@ const coreBooks = [
   },
   {
     id: 2,
-    title: "Bí kíp Ngữ Văn 9 - Đột phá tư duy",
+    title: "ĐỀ ÔN THI TUYỂN SINH 10 MÔN NGỮ VĂN",
     subject: "Ngữ Văn",
-    desc: "Hướng dẫn chi tiết phương pháp làm bài nghị luận xã hội và văn học ăn trọn điểm. Hệ thống sơ đồ tư duy siêu tốc.",
+    desc: "Hướng dẫn chi tiết phương pháp làm bài nghị luận xã hội và văn học ăn trọn điểm.",
     icon: "📕",
     gradient: "linear-gradient(135deg, #c62828 0%, #ef5350 100%)",
-    chapters: ["Nghị luận Xã hội", "Nghị luận Văn học", "Sơ đồ tư duy"],
+    chapters: ["Nghị luận Xã hội", "Nghị luận Văn học"],
     // SỬA ĐƯỜNG DẪN NÀY ĐÚNG VỚI TÊN FILE CỦA BẠN TRONG THƯ MỤC public
     fileUrl: "/book/sach_van.pdf"
   },
   {
     id: 3,
-    title: "Cẩm nang Tiếng Anh 9 - Nắm trọn điểm số",
+    title: "HƯỚNG DẪN ÔN THI TUYỂN SINH 10 MÔN TIẾNG ANH",
     subject: "Tiếng Anh",
-    desc: "Hệ thống toàn bộ cấu trúc ngữ pháp bám sát đề thi Sở GD&ĐT. Cung cấp bộ từ vựng Flashcard theo từng chủ đề.",
+    desc: "Hệ thống toàn bộ cấu trúc ngữ pháp bám sát đề thi Sở GD&ĐT.",
     icon: "📗",
     gradient: "linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%)",
-    chapters: ["Ngữ pháp cốt lõi", "Từ vựng theo Topic", "Luyện kỹ năng Đọc"],
+    chapters: ["Ngữ pháp cốt lõi", "Luyện kỹ năng Đọc"],
     // SỬA ĐƯỜNG DẪN NÀY ĐÚNG VỚI TÊN FILE CỦA BẠN TRONG THƯ MỤC public
     fileUrl: "/book/sach_anh.pdf"
   }
@@ -114,7 +115,7 @@ export default function TaiLieuOnLuyenPage() {
                 </Box>
                 
                 <CardContent sx={{ p: 4, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                  <Typography variant="h5" sx={{ fontFamily: fontHeader, fontWeight: 800, color: '#1a237e', mb: 2, lineHeight: 1.3 }}>
+                  <Typography variant="h5" sx={{ fontFamily: fontHeader, fontWeight: 800, color: '#1a237e', mb: 2, lineHeight: 1.3, minHeight: '6rem' }}>
                     {book.title}
                   </Typography>
                   <Typography variant="body1" color="text.secondary" sx={{ mb: 4, lineHeight: 1.6, flexGrow: 1 }}>
@@ -182,8 +183,6 @@ export default function TaiLieuOnLuyenPage() {
           </Button>
         </Box>
       </Container>
-
-      
     </Box>
   );
 }

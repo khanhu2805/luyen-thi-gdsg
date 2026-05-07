@@ -1,15 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { 
-  Box, 
-  Container, 
-  Typography, 
-  Grid, 
-  Card, 
-  CardContent, 
-  Button, 
-  TextField, 
+import {
+  Box,
+  Container,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  Button,
+  TextField,
   InputAdornment,
   Chip,
   Stack
@@ -41,73 +41,244 @@ const fontBody = "'Nunito', sans-serif";
 const mockExams = [
   {
     id: 1,
-    title: "Đề thi thử Tuyển sinh 10 - Môn Toán",
-    subject: "Toán",
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/pdfs/de-toan-hcm-2026.pdf",
-    icon: "📐",
-    color: "#e3f2fd",
-    tagColor: "primary"
-  },
-//   {
-//     id: 2,
-//     title: "Đề thi thử Toán chuyên",
-//     school: "THPT Chuyên Lê Hồng Phong",
-//     subject: "Toán",
-//     time: "150 phút",
-//     year: "2025",
-//     fileUrl: "/pdfs/de-toan-chuyen-lhp.pdf",
-//     icon: "🏆",
-//     color: "#e3f2fd",
-//     tagColor: "primary"
-//   },
-  {
-    id: 2,
-    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn",
+    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 1)",
     subject: "Ngữ Văn",
+    type: 'exam',
     time: "120 phút",
     year: "2026",
-    fileUrl: "/pdfs/de-van-nguyen-du.pdf",
+    fileUrl: "/exam/mon-van/de-thi/de1.pdf",
     icon: "✍️",
     color: "#fbe9e7",
     tagColor: "error"
   },
-//   {
-//     id: 4,
-//     title: "Đề khảo sát chất lượng giữa kì 2 - Văn",
-//     school: "Sở GD&ĐT Hà Nội",
-//     subject: "Ngữ Văn",
-//     time: "90 phút",
-//     year: "2025",
-//     fileUrl: "/pdfs/de-van-hn.pdf",
-//     icon: "📜",
-//     color: "#fbe9e7",
-//     tagColor: "error"
-//   },
+  {
+    id: 2,
+    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 2)",
+    subject: "Ngữ Văn",
+    type: 'exam',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/de-thi/de2.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
   {
     id: 3,
-    title: "Đề thi thử Tuyển sinh 10 - Tiếng Anh",
-    subject: "Tiếng Anh",
-    time: "60 phút",
+    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 3)",
+    subject: "Ngữ Văn",
+    type: 'exam',
+    time: "120 phút",
     year: "2026",
-    fileUrl: "/pdfs/de-anh-tdn.pdf",
-    icon: "🌍",
-    color: "#e8f5e9",
-    tagColor: "success"
+    fileUrl: "/exam/mon-van/de-thi/de3.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
   },
-//   {
-//     id: 6,
-//     title: "Đề bám sát form thi Sở GD&ĐT TP.HCM",
-//     school: "Hệ thống Luyện thi GDSG",
-//     subject: "Tiếng Anh",
-//     time: "90 phút",
-//     year: "2026",
-//     fileUrl: "/pdfs/de-anh-gdsg.pdf",
-//     icon: "⭐",
-//     color: "#e8f5e9",
-//     tagColor: "success"
-//   }
+  {
+    id: 4,
+    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 4)",
+    subject: "Ngữ Văn",
+    type: 'exam',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/de-thi/de4.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 5,
+    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 5)",
+    subject: "Ngữ Văn",
+    type: 'exam',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/de-thi/de5.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 6,
+    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 6)",
+    subject: "Ngữ Văn",
+    type: 'exam',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/de-thi/de6.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 7,
+    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 7)",
+    subject: "Ngữ Văn",
+    type: 'exam',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/de-thi/de7.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 8,
+    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 8)",
+    subject: "Ngữ Văn",
+    type: 'exam',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/de-thi/de8.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 9,
+    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 9)",
+    subject: "Ngữ Văn",
+    type: 'exam',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/de-thi/de9.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 10,
+    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 10)",
+    subject: "Ngữ Văn",
+    type: 'exam',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/de-thi/de10.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 11,
+    title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 1)",
+    subject: "Ngữ Văn",
+    type: 'answer',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/dap-an/de1.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 12,
+    title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 2)",
+    subject: "Ngữ Văn",
+    type: 'answer',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/dap-an/de2.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 13,
+    title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 3)",
+    subject: "Ngữ Văn",
+    type: 'answer',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/dap-an/de3.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 14,
+    title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 4)",
+    subject: "Ngữ Văn",
+    type: 'answer',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/dap-an/de4.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 15,
+    title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 5)",
+    subject: "Ngữ Văn",
+    type: 'answer',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/dap-an/de5.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 16,
+    title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 6)",
+    subject: "Ngữ Văn",
+    type: 'answer',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/dap-an/de6.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 17,
+    title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 7)",
+    subject: "Ngữ Văn",
+    type: 'answer',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/dap-an/de7.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 18,
+    title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 8)",
+    subject: "Ngữ Văn",
+    type: 'answer',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/dap-an/de8.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 19,
+    title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 9)",
+    subject: "Ngữ Văn",
+    type: 'answer',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/dap-an/de9.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 20,
+    title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 10)",
+    subject: "Ngữ Văn",
+    type: 'answer',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/dap-an/de10.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
 ];
 
 const subjects = ["Tất cả", "Toán", "Ngữ Văn", "Tiếng Anh"];
@@ -124,9 +295,9 @@ export default function DeThiThuPage() {
 
   return (
     <Box sx={{ fontFamily: fontBody, bgcolor: '#f8fafc', minHeight: '100vh', pb: 15 }}>
-      
+
       {/* ================= HEADER SECTION ================= */}
-      <Box sx={{ 
+      <Box sx={{
         background: 'linear-gradient(135deg, #311b92 0%, #512da8 100%)', // Tông màu tím đậm tạo cảm giác tập trung thi cử
         pt: { xs: 12, md: 15 }, pb: { xs: 10, md: 12 },
         textAlign: 'center', color: 'white', position: 'relative', overflow: 'hidden'
@@ -146,7 +317,7 @@ export default function DeThiThuPage() {
           <Card sx={{ p: 1, borderRadius: 50, boxShadow: '0 15px 35px rgba(0,0,0,0.2)' }}>
             <TextField
               fullWidth
-              placeholder="Tìm kiếm tên đề, tên trường (VD: Chuyên Lê Hồng Phong...)"
+              placeholder="Tìm kiếm tên đề, ..."
               variant="outlined"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -163,16 +334,16 @@ export default function DeThiThuPage() {
 
       {/* ================= FILTER SECTION ================= */}
       <Container maxWidth="lg" sx={{ mt: -3, position: 'relative', zIndex: 10 }}>
-        <Box sx={{ 
-          display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 2, 
-          bgcolor: 'white', p: 2, borderRadius: 50, boxShadow: '0 10px 30px rgba(0,0,0,0.05)' 
+        <Box sx={{
+          display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 2,
+          bgcolor: 'white', p: 2, borderRadius: 50, boxShadow: '0 10px 30px rgba(0,0,0,0.05)'
         }}>
           {subjects.map((subject) => (
             <Button
               key={subject}
               onClick={() => setActiveSubject(subject)}
               variant={activeSubject === subject ? "contained" : "text"}
-              sx={{ 
+              sx={{
                 borderRadius: 50, px: 4, py: 1, fontFamily: fontHeader, fontWeight: 700,
                 color: activeSubject === subject ? 'white' : 'text.secondary',
                 bgcolor: activeSubject === subject ? '#512da8' : 'transparent',
@@ -201,28 +372,28 @@ export default function DeThiThuPage() {
           <Grid container spacing={4}>
             {filteredExams.map((exam, index) => (
               <Grid size={{ xs: 12, sm: 6, md: 4 }} key={exam.id}>
-                <Card sx={{ 
+                <Card sx={{
                   height: '100%', borderRadius: 4, display: 'flex', flexDirection: 'column',
                   border: '1px solid #e0e0e0', transition: 'all 0.3s ease',
                   animation: `${fadeInUp} 0.6s ease-out ${index * 0.1}s both`,
-                  '&:hover': { 
-                    transform: 'translateY(-8px)', 
+                  '&:hover': {
+                    transform: 'translateY(-8px)',
                     boxShadow: '0 20px 40px rgba(81, 45, 168, 0.12)',
                     borderColor: '#512da8'
                   }
                 }}>
                   {/* Card Header (Icon & Tag Năm) */}
                   <Box sx={{ p: 3, pb: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <Box sx={{ 
-                      width: 60, height: 60, borderRadius: 3, bgcolor: exam.color, 
+                    <Box sx={{
+                      width: 60, height: 60, borderRadius: 3, bgcolor: exam.color,
                       display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem'
                     }}>
                       {exam.icon}
                     </Box>
-                    <Chip 
-                      label={`Năm ${exam.year}`} 
-                      size="small" 
-                      sx={{ fontWeight: 'bold', fontFamily: fontBody, bgcolor: 'grey.100' }} 
+                    <Chip
+                      label={`Năm ${exam.year}`}
+                      size="small"
+                      sx={{ fontWeight: 'bold', fontFamily: fontBody, bgcolor: 'grey.100' }}
                     />
                   </Box>
 
@@ -234,7 +405,7 @@ export default function DeThiThuPage() {
                     <Typography variant="h6" sx={{ fontFamily: fontHeader, fontWeight: 800, color: '#1a237e', mb: 2, lineHeight: 1.4 }}>
                       {exam.title}
                     </Typography>
-                    
+
                     {/* Meta info: Trường & Thời gian */}
                     <Stack spacing={1.5} sx={{ mt: 'auto', pt: 2, borderTop: '1px dashed #eee' }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'text.secondary' }}>
@@ -246,19 +417,19 @@ export default function DeThiThuPage() {
 
                   {/* Card Actions - Mở Tab Mới */}
                   <Box sx={{ p: 3, pt: 0 }}>
-                    <Button 
+                    <Button
                       component="a"
                       href={exam.fileUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      fullWidth variant="contained" 
+                      fullWidth variant="contained"
                       startIcon={<PictureAsPdfRoundedIcon />}
-                      sx={{ 
+                      sx={{
                         borderRadius: 2, fontFamily: fontHeader, fontWeight: 700, py: 1.2,
-                        bgcolor: '#512da8', '&:hover': { bgcolor: '#311b92' }
+                        bgcolor: `${exam.type == 'exam' ? '#512da8' : '#2e7d32'}`, '&:hover': { bgcolor: `${exam.type == 'exam' ? '#311b92' : '#1b5e20'}` }
                       }}
                     >
-                      Mở Đề Thi (PDF)
+                      Mở {exam.type == 'exam' ? 'đề thi' : 'đáp án'}
                     </Button>
                   </Box>
                 </Card>
@@ -295,7 +466,34 @@ export default function DeThiThuPage() {
           </Button>
         </Box>
       </Container> */}
-      
+      {/* ================= CALL TO ACTION ================= */}
+      <Container maxWidth="md" sx={{ mt: 15 }}>
+        <Box sx={{
+          background: 'linear-gradient(135deg, #ff9800 0%, #ff5722 100%)',
+          borderRadius: 6, p: { xs: 4, md: 6 }, textAlign: 'center', color: 'white',
+          boxShadow: '0 20px 40px rgba(255, 87, 34, 0.3)'
+        }}>
+          <Typography variant="h4" sx={{ fontFamily: fontHeader, fontWeight: 900, mb: 2 }}>
+            Muốn tìm hiểu chi tiết về lộ trình?
+          </Typography>
+          <Typography variant="body1" sx={{ mb: 4, fontSize: '1.1rem', opacity: 0.9 }}>
+            Để lại thông tin để được đội ngũ chuyên gia tư vấn chi tiết và định hướng lộ trình học tập cá nhân hóa phù hợp nhất.
+          </Typography>
+          <Button
+            component={Link} href="/#form-dang-ky"
+            variant="contained" size="large"
+            sx={{
+              bgcolor: 'white', color: '#ff5722', borderRadius: 50, px: 5, py: 1.8,
+              fontFamily: fontHeader, fontWeight: 800, fontSize: '1.1rem',
+              '&:hover': { bgcolor: 'grey.100', transform: 'scale(1.05)' },
+              transition: '0.2s'
+            }}
+          >
+            Đăng Ký Tư Vấn Miễn Phí
+          </Button>
+        </Box>
+      </Container>
+
     </Box>
   );
 }

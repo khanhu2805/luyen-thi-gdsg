@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Box, Container, Card, Grid, Typography, Stack, TextField, Button, CircularProgress, keyframes, Divider } from '@mui/material';
 type Props = {
-    openSuccessPopup: boolean;
     setOpenSuccessPopup: (open: boolean) => void;
     setPhone: (phone: string) => void;
 }

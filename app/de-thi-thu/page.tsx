@@ -53,114 +53,6 @@ const mockExams = [
   },
   {
     id: 2,
-    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 2)",
-    subject: "Ngữ Văn",
-    type: 'exam',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/de-thi/de2.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 3,
-    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 3)",
-    subject: "Ngữ Văn",
-    type: 'exam',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/de-thi/de3.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 4,
-    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 4)",
-    subject: "Ngữ Văn",
-    type: 'exam',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/de-thi/de4.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 5,
-    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 5)",
-    subject: "Ngữ Văn",
-    type: 'exam',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/de-thi/de5.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 6,
-    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 6)",
-    subject: "Ngữ Văn",
-    type: 'exam',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/de-thi/de6.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 7,
-    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 7)",
-    subject: "Ngữ Văn",
-    type: 'exam',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/de-thi/de7.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 8,
-    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 8)",
-    subject: "Ngữ Văn",
-    type: 'exam',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/de-thi/de8.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 9,
-    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 9)",
-    subject: "Ngữ Văn",
-    type: 'exam',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/de-thi/de9.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 10,
-    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 10)",
-    subject: "Ngữ Văn",
-    type: 'exam',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/de-thi/de10.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 11,
     title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 1)",
     subject: "Ngữ Văn",
     type: 'answer',
@@ -172,7 +64,19 @@ const mockExams = [
     tagColor: "error"
   },
   {
-    id: 12,
+    id: 3,
+    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 2)",
+    subject: "Ngữ Văn",
+    type: 'exam',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/de-thi/de2.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 4,
     title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 2)",
     subject: "Ngữ Văn",
     type: 'answer',
@@ -184,7 +88,19 @@ const mockExams = [
     tagColor: "error"
   },
   {
-    id: 13,
+    id: 5,
+    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 3)",
+    subject: "Ngữ Văn",
+    type: 'exam',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/de-thi/de3.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 6,
     title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 3)",
     subject: "Ngữ Văn",
     type: 'answer',
@@ -196,7 +112,19 @@ const mockExams = [
     tagColor: "error"
   },
   {
-    id: 14,
+    id: 7,
+    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 4)",
+    subject: "Ngữ Văn",
+    type: 'exam',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/de-thi/de4.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 8,
     title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 4)",
     subject: "Ngữ Văn",
     type: 'answer',
@@ -208,7 +136,19 @@ const mockExams = [
     tagColor: "error"
   },
   {
-    id: 15,
+    id: 9,
+    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 5)",
+    subject: "Ngữ Văn",
+    type: 'exam',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/de-thi/de5.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 10,
     title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 5)",
     subject: "Ngữ Văn",
     type: 'answer',
@@ -220,7 +160,19 @@ const mockExams = [
     tagColor: "error"
   },
   {
-    id: 16,
+    id: 11,
+    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 6)",
+    subject: "Ngữ Văn",
+    type: 'exam',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/de-thi/de6.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 12,
     title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 6)",
     subject: "Ngữ Văn",
     type: 'answer',
@@ -232,7 +184,19 @@ const mockExams = [
     tagColor: "error"
   },
   {
-    id: 17,
+    id: 13,
+    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 7)",
+    subject: "Ngữ Văn",
+    type: 'exam',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/de-thi/de7.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 14,
     title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 7)",
     subject: "Ngữ Văn",
     type: 'answer',
@@ -244,7 +208,19 @@ const mockExams = [
     tagColor: "error"
   },
   {
-    id: 18,
+    id: 15,
+    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 8)",
+    subject: "Ngữ Văn",
+    type: 'exam',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/de-thi/de8.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 16,
     title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 8)",
     subject: "Ngữ Văn",
     type: 'answer',
@@ -256,13 +232,37 @@ const mockExams = [
     tagColor: "error"
   },
   {
-    id: 19,
+    id: 17,
+    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 9)",
+    subject: "Ngữ Văn",
+    type: 'exam',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/de-thi/de9.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 18,
     title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 9)",
     subject: "Ngữ Văn",
     type: 'answer',
     time: "120 phút",
     year: "2026",
     fileUrl: "/exam/mon-van/dap-an/de9.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "error"
+  },
+  {
+    id: 19,
+    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 10)",
+    subject: "Ngữ Văn",
+    type: 'exam',
+    time: "120 phút",
+    year: "2026",
+    fileUrl: "/exam/mon-van/de-thi/de10.pdf",
     icon: "✍️",
     color: "#fbe9e7",
     tagColor: "error"
@@ -278,6 +278,78 @@ const mockExams = [
     icon: "✍️",
     color: "#fbe9e7",
     tagColor: "error"
+  },
+  {
+    id: 21,
+    title: "Đề thi Tuyển sinh 10 (Năm học 2024-2025) - Môn Toán",
+    subject: "Toán",
+    type: 'exam',
+    time: "120 phút",
+    year: "2025",
+    fileUrl: "/exam/Đề thi NH 2024–2025/De-thi-TS10-nam-hoc-2025-2026-Mon-Toan-pdf.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "primary"
+  },
+  {
+    id: 22,
+    title: "Đáp án Đề thi Tuyển sinh 10 (Năm học 2024-2025) - Môn Toán",
+    subject: "Toán",
+    type: 'answer',
+    time: "120 phút",
+    year: "2025",
+    fileUrl: "/exam/Đề thi NH 2024–2025/Dap-an-De-thi-TS10-nam-hoc-2025-2026-Mon-Toan-pdf.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "primary"
+  },
+  {
+    id: 23,
+    title: "Đề thi Tuyển sinh 10 (Năm học 2024-2025) - Môn Tiếng Anh",
+    subject: "Tiếng Anh",
+    type: 'exam',
+    time: "90 phút",
+    year: "2025",
+    fileUrl: "/exam/Đề thi NH 2024–2025/De-thi-TS10-nam-hoc-2025-2026-Mon-Tieng-Anh-pdf.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "success"
+  },
+  {
+    id: 24,
+    title: "Đáp án Đề thi Tuyển sinh 10 (Năm học 2024-2025) - Môn Tiếng Anh",
+    subject: "Tiếng Anh",
+    type: 'answer',
+    time: "90 phút",
+    year: "2025",
+    fileUrl: "/exam/Đề thi NH 2024–2025/Dap-an-De-thi-TS10-nam-hoc-2025-2026-Mon-Tieng-Anh-pdf.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "success"
+  },
+  {
+    id: 25,
+    title: "Đề thi Tuyển sinh 10 (Năm học 2024-2025) - Môn Ngữ Văn",
+    subject: "Ngữ Văn",
+    type: 'exam',
+    time: "120 phút",
+    year: "2025",
+    fileUrl: "/exam/Đề thi NH 2024–2025/De-thi-TS10-nam-hoc-2025-2026-Mon-Ngu-Van-pdf.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "success"
+  },
+  {
+    id: 26,
+    title: "Đáp án Đề thi Tuyển sinh 10 (Năm học 2024-2025) - Môn Ngữ Văn",
+    subject: "Ngữ Văn",
+    type: 'answer',
+    time: "120 phút",
+    year: "2025",
+    fileUrl: "/exam/Đề thi NH 2024–2025/Dap-an-De-thi-TS10-nam-hoc-2025-2026-Mon-Ngu-Van-pdf.pdf",
+    icon: "✍️",
+    color: "#fbe9e7",
+    tagColor: "success"
   },
 ];
 
@@ -358,7 +430,7 @@ export default function DeThiThuPage() {
       </Container>
 
       {/* ================= EXAMS GRID ================= */}
-      <Container maxWidth="lg" sx={{ mt: 8 }}>
+      <Container maxWidth="xl" sx={{ mt: 8 }}>
         {filteredExams.length === 0 ? (
           <Box sx={{ textAlign: 'center', py: 10 }}>
             <Typography variant="h5" sx={{ fontFamily: fontHeader, color: 'text.secondary', mb: 2 }}>
@@ -371,7 +443,7 @@ export default function DeThiThuPage() {
         ) : (
           <Grid container spacing={4}>
             {filteredExams.map((exam, index) => (
-              <Grid size={{ xs: 12, sm: 6, md: 4 }} key={exam.id}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }} key={exam.id}>
                 <Card sx={{
                   height: '100%', borderRadius: 4, display: 'flex', flexDirection: 'column',
                   border: '1px solid #e0e0e0', transition: 'all 0.3s ease',

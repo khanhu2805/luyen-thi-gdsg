@@ -13,7 +13,6 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-  useScrollTrigger
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
@@ -21,7 +20,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 const navItems = [
-  { label: 'Trang chủ', path: '/' },
+  { label: 'Trang chủ', path: '/#' },
   // { label: 'Khóa học', path: '/khoa-hoc' },
   { label: 'Đội ngũ', path: '/doi-ngu' },
   { label: 'Tài liệu ôn luyện', path: '/tai-lieu-on-luyen' },
@@ -91,13 +90,13 @@ export default function Header() {
 
             {/* Logo / Tên thương hiệu */}
             <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: { xs: 1, md: 0 }, mr: 4 }}>
-              <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+              <Link href="/#" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
                 <Image src="/Logo_cty_sach.png" alt="Logo" width={45} height={45} style={{ marginRight: '12px' }} />
                 <Typography
                   variant="h6"
                   noWrap
                   sx={{
-                    fontWeight: 900,
+                    fontWeight: 800,
                     fontFamily: "'Montserrat', sans-serif",
                     color: '#1a237e',
                     fontSize: { xs: '1rem', md: '1.25rem' },

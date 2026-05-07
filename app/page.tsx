@@ -38,7 +38,7 @@ export default function HomePage() {
 
       {/* ================= FULL WIDTH COUNTDOWN ================= */}
       {/* Trả ExamCountdown về lại kích thước full-width như thiết kế gốc của bạn */}
-      <ExamCountdown targetDate='2026-06-01T07:30:00' examName='Tuyển sinh Lớp 10 (2026-2027)' />
+      <ExamCountdown targetDate='2026-06-01T07:30:00' examName='Tuyển sinh Lớp 10 (2025-2026)' />
 
       {/* ================= HERO SECTION ================= */}
 

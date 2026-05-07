@@ -4,16 +4,40 @@
   --font-nunito: var(--font-nunito), sans-serif;
   --font-montserrat: var(--font-montserrat), sans-serif;
   
-  /* Trích xuất từ Logo */
-  --color-brand-primary: #2B3A67; /* Xanh Navy */
-  --color-brand-accent: #E53935;  /* Đỏ/Cam điểm nhấn */
-  --color-brand-surface: #A28F9D; /* Xám nâu nhạt */
+  /* Màu thương hiệu */
+  --color-brand-primary: #2B3A67; 
+  --color-brand-accent: #E53935;  
+  --color-brand-surface: #A28F9D; 
+
+  /* Định nghĩa Animation mới cho v4 */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(1.05); }
+  }
+
+  --animate-float: float 4s ease-in-out infinite;
+  --animate-pulse-soft: pulse-soft 6s ease-in-out infinite;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-montserrat);
+/* Các tùy chỉnh global khác */
+@layer base {
+  html { scroll-behavior: smooth; }
+  
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #f1f1f1; }
+  ::-webkit-scrollbar-thumb { 
+    background: var(--color-brand-primary); 
+    border-radius: 10px; 
+  }
 }
 
-body1, body2 {
-  font-family: var(--font-nunito);
+.bg-grid-pattern {
+  background-image: radial-gradient(var(--color-brand-primary) 0.5px, transparent 0.5px);
+  background-size: 24px 24px;
+  opacity: 0.05;
 }

@@ -119,7 +119,7 @@ const AssignForm = (props: Props) => {
     //===========================================================================
 
     return (
-        <Box sx={{ position: 'relative', pb: 15 }}>
+        <Box sx={{ position: 'relative', pb: 15 }} id="form-dang-ky">
             {/* SVG Wave Divider */}
             <Box sx={{ width: '100%', overflow: 'hidden', lineHeight: 0, transform: 'rotate(180deg)' }}>
                 <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: '100px' }}>
@@ -128,7 +128,7 @@ const AssignForm = (props: Props) => {
             </Box>
 
             <Box sx={{ bgcolor: '#1976d2', pt: 5, pb: 15, px: 2 }}>
-                <Container maxWidth="xl" id="form-dang-ky">
+                <Container maxWidth="xl">
                     <Card sx={{
                         borderRadius: 8, overflow: 'hidden',
                         boxShadow: '0 30px 60px rgba(0,0,0,0.3)'
@@ -136,7 +136,7 @@ const AssignForm = (props: Props) => {
                         <Grid container>
                             <Grid size={{ xs: 12, md: 5 }} sx={{
                                 background: 'url(/banner-bg.jpg) center/cover', position: 'relative',
-                                minHeight: { xs: 300, md: 'auto' }
+                                minHeight: { xs: 700, md: 'auto' }
                             }}>
                                 {/* Overlay */}
                                 <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(10,25,47,0.9), rgba(10,25,47,0.7))', display: 'flex', flexDirection: 'column', justifyContent: 'center', p: 6, color: 'white' }}>

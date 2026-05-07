@@ -109,7 +109,7 @@ export default function TaiLieuOnLuyenPage() {
                     {book.icon}
                   </Typography>
                   <Typography variant="subtitle1" sx={{ fontFamily: fontHeader, fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', position: 'relative', zIndex: 2 }}>
-                    SÁCH {book.subject}
+                    MÔN {book.subject}
                   </Typography>
                 </Box>
                 

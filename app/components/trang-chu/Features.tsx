@@ -1,5 +1,6 @@
 import React from 'react'
-import { Box, Container, Typography, Grid, Card } from '@mui/material';
+import { Box, Container, Typography, Grid, Card, Fade } from '@mui/material';
+import FadeInScroll from '../FadeInScroll';
 
 type Props = {}
 
@@ -9,15 +10,17 @@ const fontBody = "'Nunito', sans-serif";
 const Features = (props: Props) => {
   return (
     <Container maxWidth="xl" sx={{ mt: 15 }}>
+      <FadeInScroll>
         <Box sx={{ textAlign: 'center', mb: 10 }}>
           <Typography variant="h3" gutterBottom sx={{ fontFamily: fontHeader, fontWeight: 900, textTransform: 'uppercase' }}>
             HỆ THỐNG ÔN LUYỆN <span style={{ color: '#1976d2' }}>CHUẨN XÁC</span>
           </Typography>
-           <Typography variant="h6" color="text.secondary">
-            Hệ thống ôn luyện được thiết kế đặc biệt giúp học sinh tiếp cận kiến thức một cách trực quan và hiệu quả nhất.
+          <Typography variant="h6" color="textSecondary" sx={{ fontFamily: fontBody }}>
+            Hệ thống ôn luyện được thiết kế đặc biệt giúp học sinh tiếp cận kiến thức một cách trực quan và hiệu quả nhất
           </Typography>
         </Box>
-
+      </FadeInScroll>
+      <FadeInScroll delay={0.2}>
         <Grid container spacing={4}>
           {[
             { title: 'TÀI LIỆU BIÊN SOẠN CHUẨN CHỈNH', icon: '📺', color: '#e3f2fd', desc: 'Tài liệu được biên soạn chuẩn chỉnh, sát với nội dung cấu trúc đề thi.' },
@@ -33,12 +36,13 @@ const Features = (props: Props) => {
               }}>
                 <Box sx={{ fontSize: '3.5rem', mb: 3 }}>{feature.icon}</Box>
                 <Typography variant="h5" sx={{ fontFamily: fontHeader, fontWeight: 800, mb: 2 }}>{feature.title}</Typography>
-                <Typography color="text.secondary" sx={{ fontSize: '1.1rem', lineHeight: 1.6 }}>{feature.desc}</Typography>
+                <Typography color="textSecondary" sx={{ fontSize: '1.1rem', lineHeight: 1.6 }}>{feature.desc}</Typography>
               </Card>
             </Grid>
           ))}
         </Grid>
-      </Container>
+      </FadeInScroll>
+    </Container>
   )
 }
 

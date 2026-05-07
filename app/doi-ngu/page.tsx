@@ -4,7 +4,7 @@ import {
   Box,
   Container,
   Typography,
-  Grid, // Lưu ý: Nếu bạn dùng MUI v6, Grid này nhận prop `size`. Nếu dùng MUI v5, hãy đổi `size` thành `xs`, `md`.
+  Grid, 
   Card,
   Button,
   Stack,
@@ -72,7 +72,7 @@ const teachers = [
     philosophy: "Toán học không phải là những con số khô khan để học thuộc, mà là công cụ tuyệt vời nhất để rèn luyện tư duy logic và giải quyết vấn đề.",
     experiences: [
       "Phó Viện trưởng Viện Đào tạo - Trường Đại học Bình Dương",
-      "Đồng chủ biên sách giáo khoa Toán bộ \"Chân trời sáng tạo\"",
+      "Đồng chủ biên sách giáo khoa môn Toán bộ \"Chân trời sáng tạo\"",
     ],
     stats: { students: "10.000+", courses: "15+", rating: "4.9" }
   },
@@ -86,7 +86,7 @@ const teachers = [
     philosophy: "Học Văn là học cách cảm nhận cuộc sống. Một bài văn hay bắt nguồn từ những cảm xúc chân thật được sắp xếp bằng một tư duy rành mạch.",
     experiences: [
       "Giảng viên tại Trường Đại học Sư phạm TP.HCM",
-      "Là tác giả, đồng chủ biên của nhiều tài liệu sách ôn thi, ôn luyện vào lớp 10 môn Ngữ văn"
+      "Tác giả, đồng chủ biên của nhiều tài liệu sách ôn thi, ôn luyện vào lớp 10 môn Ngữ văn"
     ],
     stats: { students: "8.500+", courses: "12+", rating: "4.9" }
   },
@@ -99,8 +99,8 @@ const teachers = [
     gradient: "linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%)",
     philosophy: "Ngữ pháp tiếng Anh phức tạp đến đâu cũng có thể được giải quyết bằng những phương pháp trực quan và tư duy hệ thống.",
     experiences: [
-      "Là tác giả sách giáo khoa Tiếng Anh bộ “Tiếng Anh Friends Plus” Lớp 6 và Lớp 7",
-      "Thầy nổi bật với các tài liệu ôn thi vào lớp 10 và bài tập ứng dụng thực tế",
+      "Tác giả sách giáo khoa môn Tiếng Anh bộ “Tiếng Anh Friends Plus” lớp 6 và lớp 7",
+      "Sở hữu các tài liệu ôn thi vào lớp 10 và bài tập ứng dụng thực tế được đánh giá cao",
     ],
     stats: { students: "9.000+", courses: "14+", rating: "4.8" }
   }
@@ -253,7 +253,7 @@ export default function DoiNguPage() {
                     </Box> */}
 
                     {/* Chi tiết kinh nghiệm */}
-                    <Typography variant="h6" sx={{ fontFamily: fontHeader, fontWeight: 800, mb: 3, color: '#263238' }}>
+                    <Typography variant="h5" sx={{ fontFamily: fontHeader, fontWeight: 800, mb: 3, color: '#263238' }}>
                       Hành trình cống hiến:
                     </Typography>
                     <Stack spacing={2.5} sx={{ mb: 6 }}>
@@ -262,7 +262,7 @@ export default function DoiNguPage() {
                           <Box sx={{ mt: 0.5, bgcolor: `${teacher.color}20`, p: 0.5, borderRadius: '50%', display: 'flex' }}>
                             <StarRoundedIcon sx={{ color: teacher.color, fontSize: 20 }} />
                           </Box>
-                          <Typography variant="body1" sx={{ color: '#546e7a', lineHeight: 1.6, fontSize: '1.05rem' }}>{exp}</Typography>
+                          <Typography variant="body1" sx={{ color: '#546e7a', lineHeight: 1.6, fontSize: '1.25rem' }}>{exp}</Typography>
                         </Box>
                       ))}
                     </Stack>

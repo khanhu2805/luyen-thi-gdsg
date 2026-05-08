@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Container, Card, Grid, Typography, Stack, TextField, Button, CircularProgress, keyframes, Divider } from '@mui/material';
+import { Box, Container, Card, Grid, Typography, Stack, TextField, Button, CircularProgress, keyframes, Divider, MenuItem } from '@mui/material';
 type Props = {
     setOpenSuccessPopup: (open: boolean) => void;
     setPhone: (phone: string) => void;
@@ -22,7 +22,9 @@ const AssignForm = (props: Props) => {
         HoTen: '',
         SoDienThoai: '',
         TruongDangHoc: '',
+        KhoiLop: '',
         MonHocMuonOnLuyen: '',
+        CauHoiKhac: '',
     });
 
     // 2. Hàm kiểm tra tính hợp lệ
@@ -31,7 +33,9 @@ const AssignForm = (props: Props) => {
             HoTen: '',
             SoDienThoai: '',
             TruongDangHoc: '',
+            KhoiLop: '',
             MonHocMuonOnLuyen: '',
+            CauHoiKhac: '',
         };
         let isValid = true;
 
@@ -57,6 +61,11 @@ const AssignForm = (props: Props) => {
             isValid = false;
         }
 
+        // Kiểm tra Khối lớp
+        if (!formData.KhoiLop.trim()) {
+            tempErrors.KhoiLop = "Vui lòng chọn khối lớp.";
+            isValid = false;
+        }
         // Kiểm tra Môn học
         if (!formData.MonHocMuonOnLuyen.trim()) {
             tempErrors.MonHocMuonOnLuyen = "Vui lòng nhập môn học quan tâm.";
@@ -71,7 +80,9 @@ const AssignForm = (props: Props) => {
         HoTen: '',
         SoDienThoai: '',
         TruongDangHoc: '',
+        KhoiLop: '',
         MonHocMuonOnLuyen: '',
+        CauHoiKhac: '',
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -105,8 +116,8 @@ const AssignForm = (props: Props) => {
 
             // Xóa trắng form sau khi gửi
             props.setPhone(formData.SoDienThoai); // Lưu số điện thoại để hiển thị trong popup
-            setFormData({ HoTen: '', SoDienThoai: '', TruongDangHoc: '', MonHocMuonOnLuyen: '' });
-            setErrors({ HoTen: '', SoDienThoai: '', TruongDangHoc: '', MonHocMuonOnLuyen: '' });
+            setFormData({ HoTen: '', SoDienThoai: '', TruongDangHoc: '', KhoiLop: '', MonHocMuonOnLuyen: '', CauHoiKhac: '' });
+            setErrors({ HoTen: '', SoDienThoai: '', TruongDangHoc: '', KhoiLop: '', MonHocMuonOnLuyen: '', CauHoiKhac: '' });
         } catch (error) {
             alert('Có lỗi xảy ra, vui lòng thử lại sau.');
             console.error(error);
@@ -188,14 +199,38 @@ const AssignForm = (props: Props) => {
                                                     name="SoDienThoai" label="Số điện thoại / Zalo" variant="standard" />
                                             </Grid>
                                         </Grid>
-
-                                        <TextField fullWidth value={formData.TruongDangHoc}
-                                            onChange={handleInputChange}
-                                            type='text'
-                                            error={!!errors.TruongDangHoc}        // <-- Thêm bắt lỗi
-                                            helperText={errors.TruongDangHoc}     // <-- Hiện chữ lỗi
-                                            name="TruongDangHoc" required label="Trường đang theo học" variant="standard" />
-
+                                        <Grid container spacing={3}>
+                                            <Grid size={{ xs: 12, sm: 6 }}>
+                                                <TextField fullWidth value={formData.TruongDangHoc}
+                                                    onChange={handleInputChange}
+                                                    type='text'
+                                                    error={!!errors.TruongDangHoc}        // <-- Thêm bắt lỗi
+                                                    helperText={errors.TruongDangHoc}     // <-- Hiện chữ lỗi
+                                                    name="TruongDangHoc" required label="Trường đang theo học" variant="standard" />
+                                            </Grid>
+                                            <Grid size={{ xs: 12, sm: 6 }}>
+                                                <TextField fullWidth value={formData.KhoiLop}
+                                                    onChange={handleInputChange}
+                                                    type='text'
+                                                    select
+                                                    error={!!errors.KhoiLop}        // <-- Thêm bắt lỗi
+                                                    helperText={errors.KhoiLop}     // <-- Hiện chữ lỗi
+                                                    name="KhoiLop" required label="Khối lớp" variant="standard">
+                                                    <MenuItem value="1">1</MenuItem>
+                                                    <MenuItem value="2">2</MenuItem>
+                                                    <MenuItem value="3">3</MenuItem>
+                                                    <MenuItem value="4">4</MenuItem>
+                                                    <MenuItem value="5">5</MenuItem>
+                                                    <MenuItem value="6">6</MenuItem>
+                                                    <MenuItem value="7">7</MenuItem>
+                                                    <MenuItem value="8">8</MenuItem>
+                                                    <MenuItem value="9">9</MenuItem>
+                                                    <MenuItem value="10">10</MenuItem>
+                                                    <MenuItem value="11">11</MenuItem>
+                                                    <MenuItem value="12">12</MenuItem>
+                                                </TextField>
+                                            </Grid>
+                                        </Grid>
                                         <TextField
                                             fullWidth value={formData.MonHocMuonOnLuyen}
                                             onChange={handleInputChange}
@@ -205,7 +240,15 @@ const AssignForm = (props: Props) => {
                                             label="Môn học muốn ôn luyện?"
                                             error={!!errors.MonHocMuonOnLuyen}        // <-- Thêm bắt lỗi
                                             helperText={errors.MonHocMuonOnLuyen}     // <-- Hiện chữ lỗi
-                                            variant="standard" multiline rows={2}
+                                            variant="standard" 
+                                        />
+                                        <TextField
+                                            fullWidth value={formData.CauHoiKhac}
+                                            onChange={handleInputChange}
+                                            name="CauHoiKhac"
+                                            type='text'
+                                            label="Bạn còn thắc mắc hay cần hỗ trợ gì thêm không?"
+                                            variant="standard" multiline
                                         />
 
                                         <Box sx={{ pt: 2 }}>

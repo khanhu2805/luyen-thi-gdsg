@@ -86,7 +86,7 @@ const HeroSection = (props: Props) => {
                         </FadeInScroll>
                         <FadeInScroll delay={0.75}>
                             <Button
-                                component={Link} href="/#form-dang-ky"
+                                component={Link} href="/tin-tuc/dong-hanh-cung-lop-9"
                                 variant="contained" size="large"
                                 sx={{
                                     borderRadius: '50px', px: 5, py: 2, fontFamily: fontHeader, fontWeight: 800, fontSize: '1.1rem',
@@ -95,7 +95,7 @@ const HeroSection = (props: Props) => {
                                     '&:hover': { transform: 'translateY(-5px)', boxShadow: '0 15px 40px rgba(25, 118, 210, 0.6)' }
                                 }}
                             >
-                                Khám phá Lộ trình
+                                Tìm hiểu thêm
                             </Button>
                         </FadeInScroll>
                     </Grid>

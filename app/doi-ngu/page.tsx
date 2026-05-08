@@ -4,7 +4,7 @@ import {
   Box,
   Container,
   Typography,
-  Grid, 
+  Grid,
   Card,
   Button,
   Stack,
@@ -18,7 +18,7 @@ import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
 import PlayCircleFilledWhiteRoundedIcon from '@mui/icons-material/PlayCircleFilledWhiteRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import Link from 'next/link';
-import AssignForm from '../components/trang-chu/AssignForm';
+import AssignForm from '../components/AssignForm';
 import SnackBar from '../components/SnackBar';
 import { useState } from 'react';
 

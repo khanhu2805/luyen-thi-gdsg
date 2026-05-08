@@ -1,19 +1,18 @@
 'use client';
 
-import { 
-  Box, 
-  Container, 
-  Typography, 
-  Grid, 
-  Card, 
-  CardContent, 
-  Button, 
+import {
+  Box,
+  Container,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  Button,
   Stack
 } from '@mui/material';
 import { keyframes } from '@mui/system';
 import AutoStoriesRoundedIcon from '@mui/icons-material/AutoStoriesRounded';
 import Link from 'next/link';
-import AssignForm from '../components/trang-chu/AssignForm';
 
 // --- ANIMATIONS ---
 const fadeInUp = keyframes`
@@ -42,7 +41,7 @@ const coreBooks = [
     gradient: "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)",
     chapters: ["Chuyên đề Đại số", "Chuyên đề Hình học", "Toán Thực tế"],
     // SỬA ĐƯỜNG DẪN NÀY ĐÚNG VỚI TÊN FILE CỦA BẠN TRONG THƯ MỤC public
-    fileUrl: "/book/sach_toan.pdf" 
+    fileUrl: "/book/sach_toan.pdf"
   },
   {
     id: 2,
@@ -72,18 +71,18 @@ export default function TaiLieuOnLuyenPage() {
 
   return (
     <Box sx={{ fontFamily: fontBody, bgcolor: '#f8fafc', minHeight: '100vh', pb: 15 }}>
-      
+
       {/* ================= HEADER SECTION ================= */}
-      <Box sx={{ 
+      <Box sx={{
         background: 'linear-gradient(135deg, #1a237e 0%, #0d47a1 100%)',
-        pt: { xs: 12, md: 15 }, pb: { xs: 15, md: 18 }, 
+        pt: { xs: 12, md: 15 }, pb: { xs: 15, md: 18 },
         textAlign: 'center', color: 'white', position: 'relative', overflow: 'hidden'
       }}>
         <Box sx={{ position: 'absolute', top: -50, left: -50, width: 200, height: 200, bgcolor: 'rgba(255,255,255,0.05)', borderRadius: '50%', animation: `${float} 6s infinite` }} />
         <Box sx={{ position: 'absolute', bottom: -50, right: 100, width: 150, height: 150, bgcolor: 'rgba(255,255,255,0.05)', borderRadius: '50%', animation: `${float} 5s infinite reverse` }} />
 
         <Container maxWidth="md" sx={{ position: 'relative', zIndex: 2, animation: `${fadeInUp} 0.8s ease-out` }}>
-          <Typography variant="h2" sx={{ textTransform:'uppercase', fontFamily: fontHeader, fontWeight: 900, mb: 3, fontSize: { xs: '2.5rem', md: '3.5rem' } }}>
+          <Typography variant="h2" sx={{ textTransform: 'uppercase', fontFamily: fontHeader, fontWeight: 900, mb: 3, fontSize: { xs: '2.5rem', md: '3.5rem' } }}>
             KHO TÀI LIỆU <span style={{ color: '#ffb300' }}>Toàn Diện</span>
           </Typography>
           <Typography variant="h6" sx={{ fontWeight: 400, opacity: 0.9, lineHeight: 1.6 }}>
@@ -94,10 +93,10 @@ export default function TaiLieuOnLuyenPage() {
 
       {/* ================= BỘ 3 CUỐN SÁCH CỐT LÕI ================= */}
       <Container maxWidth="lg" sx={{ mt: { xs: -8, md: -10 }, position: 'relative', zIndex: 10 }}>
-        <Grid container spacing={4} sx={{justifyContent:"center"}}>
+        <Grid container spacing={4} sx={{ justifyContent: "center" }}>
           {coreBooks.map((book, index) => (
             <Grid size={{ xs: 12, md: 4 }} key={book.id}>
-              <Card sx={{ 
+              <Card sx={{
                 height: '100%', borderRadius: 4, overflow: 'hidden', display: 'flex', flexDirection: 'column',
                 boxShadow: '0 20px 40px rgba(0,0,0,0.1)', transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
                 animation: `${fadeInUp} 0.8s ease-out ${index * 0.2}s both`,
@@ -113,7 +112,7 @@ export default function TaiLieuOnLuyenPage() {
                     MÔN {book.subject}
                   </Typography>
                 </Box>
-                
+
                 <CardContent sx={{ p: 4, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                   <Typography variant="h5" sx={{ fontFamily: fontHeader, fontWeight: 800, color: '#1a237e', mb: 2, lineHeight: 1.3, minHeight: '6rem' }}>
                     {book.title}
@@ -121,7 +120,7 @@ export default function TaiLieuOnLuyenPage() {
                   <Typography variant="body1" color="text.secondary" sx={{ mb: 4, lineHeight: 1.6, flexGrow: 1 }}>
                     {book.desc}
                   </Typography>
-                  
+
                   <Stack spacing={1} sx={{ mb: 4 }}>
                     {book.chapters.map((chapter, i) => (
                       <Box key={i} sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -131,16 +130,16 @@ export default function TaiLieuOnLuyenPage() {
                     ))}
                   </Stack>
 
-                  <Button 
-                    component="a" 
-                    href={book.fileUrl} 
-                    target="_blank" 
+                  <Button
+                    component="a"
+                    href={book.fileUrl}
+                    target="_blank"
                     rel="noopener noreferrer"
-                    variant="contained" 
-                    fullWidth 
+                    variant="contained"
+                    fullWidth
                     size="large"
                     startIcon={<AutoStoriesRoundedIcon />}
-                    sx={{ 
+                    sx={{
                       borderRadius: 8, fontFamily: fontHeader, fontWeight: 800, py: 1.5,
                       background: book.gradient, boxShadow: '0 8px 20px rgba(0,0,0,0.15)',
                       color: 'white',
@@ -158,7 +157,7 @@ export default function TaiLieuOnLuyenPage() {
 
       {/* ================= CALL TO ACTION ================= */}
       <Container maxWidth="md" sx={{ mt: 15 }}>
-        <Box sx={{ 
+        <Box sx={{
           background: 'linear-gradient(135deg, #ff9800 0%, #ff5722 100%)',
           borderRadius: 6, p: { xs: 4, md: 6 }, textAlign: 'center', color: 'white',
           boxShadow: '0 20px 40px rgba(255, 87, 34, 0.3)'
@@ -169,11 +168,11 @@ export default function TaiLieuOnLuyenPage() {
           <Typography variant="body1" sx={{ mb: 4, fontSize: '1.1rem', opacity: 0.9 }}>
             Để lại thông tin để được đội ngũ chuyên gia tư vấn chi tiết và định hướng lộ trình học tập cá nhân hóa phù hợp nhất.
           </Typography>
-          <Button 
+          <Button
             component={Link} href="/#form-dang-ky"
             variant="contained" size="large"
-            sx={{ 
-              bgcolor: 'white', color: '#ff5722', borderRadius: 50, px: 5, py: 1.8, 
+            sx={{
+              bgcolor: 'white', color: '#ff5722', borderRadius: 50, px: 5, py: 1.8,
               fontFamily: fontHeader, fontWeight: 800, fontSize: '1.1rem',
               '&:hover': { bgcolor: 'grey.100', transform: 'scale(1.05)' },
               transition: '0.2s'

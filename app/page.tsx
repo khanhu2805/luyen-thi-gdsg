@@ -5,7 +5,7 @@ import {
   Box,
 } from '@mui/material';
 import { useState } from 'react';
-import AssignForm from './components/trang-chu/AssignForm';
+import AssignForm from './components/AssignForm';
 import StudentBenefits from './components/trang-chu/StudentBenefits';
 import Teacher from './components/trang-chu/Teacher';
 import Features from './components/trang-chu/Features';

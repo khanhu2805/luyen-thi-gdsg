@@ -21,7 +21,7 @@ import Image from 'next/image';
 
 const navItems = [
   { label: 'Trang chủ', path: '/#' },
-  // { label: 'Khóa học', path: '/khoa-hoc' },
+  { label: 'Khóa học', path: '/khoa-hoc' },
   { label: 'Đội ngũ', path: '/doi-ngu' },
   { label: 'Tin tức', path: '/tin-tuc' },
   { label: 'Tài liệu ôn luyện', path: '/tai-lieu-on-luyen' },

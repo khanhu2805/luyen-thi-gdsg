@@ -126,6 +126,14 @@ export default function Footer() {
                   </Typography>
                 </Stack>
               </Link>
+              <Link href="https://www.facebook.com/profile.php?id=61589419747743" target="_blank" rel="noopener noreferrer">
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <FacebookRoundedIcon sx={{ color: '#64ffda', fontSize: 20 }} />
+                <Typography variant="body2">
+                  Luyện thi Giáo dục Sài Gòn
+                </Typography>
+              </Box>
+              </Link>
               {/* </Box> */}
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <EmailRoundedIcon sx={{ color: '#64ffda', fontSize: 20 }} />

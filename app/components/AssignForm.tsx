@@ -1,5 +1,11 @@
-import React, { useState } from 'react'
-import { Box, Container, Card, Grid, Typography, Stack, TextField, Button, CircularProgress, keyframes, Divider, MenuItem } from '@mui/material';
+'use client';
+
+import React, { useState } from 'react';
+import { 
+    Box, Container, Card, Grid, Typography, Stack, 
+    TextField, Button, CircularProgress, keyframes, Divider, MenuItem 
+} from '@mui/material';
+
 type Props = {
     setOpenSuccessPopup: (open: boolean) => void;
     setPhone: (phone: string) => void;
@@ -9,9 +15,9 @@ const fontHeader = "'Montserrat', sans-serif";
 const fontBody = "'Nunito', sans-serif";
 
 const pulseGlow = keyframes`
-  0% { box-shadow: 0 0 0 0 rgba(25, 118, 210, 0.4); }
-  70% { box-shadow: 0 0 0 25px rgba(25, 118, 210, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(25, 118, 210, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.6); }
+  70% { box-shadow: 0 0 0 25px rgba(255, 152, 0, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0); }
 `;
 
 // ================================================
@@ -27,7 +33,18 @@ const AssignForm = (props: Props) => {
         CauHoiKhac: '',
     });
 
-    // 2. Hàm kiểm tra tính hợp lệ
+    const [formData, setFormData] = useState({
+        HoTen: '',
+        SoDienThoai: '',
+        TruongDangHoc: '',
+        KhoiLop: '',
+        MonHocMuonOnLuyen: '', // Sẽ dùng trường này để lưu Gói khóa học
+        CauHoiKhac: '',
+    });
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // 1. Hàm kiểm tra tính hợp lệ
     const validateForm = () => {
         const tempErrors = {
             HoTen: '',
@@ -51,7 +68,7 @@ const AssignForm = (props: Props) => {
             tempErrors.SoDienThoai = "Vui lòng nhập số điện thoại.";
             isValid = false;
         } else if (!phoneRegex.test(formData.SoDienThoai)) {
-            tempErrors.SoDienThoai = "Số điện thoại không hợp lệ (Gồm 10 số, bắt đầu bằng 09, 03...).";
+            tempErrors.SoDienThoai = "Số điện thoại không hợp lệ (Gồm 10 số, bắt đầu bằng 0).";
             isValid = false;
         }
 
@@ -66,9 +83,9 @@ const AssignForm = (props: Props) => {
             tempErrors.KhoiLop = "Vui lòng chọn khối lớp.";
             isValid = false;
         }
-        // Kiểm tra Môn học
+        // Kiểm tra Gói Môn học
         if (!formData.MonHocMuonOnLuyen.trim()) {
-            tempErrors.MonHocMuonOnLuyen = "Vui lòng nhập môn học quan tâm.";
+            tempErrors.MonHocMuonOnLuyen = "Vui lòng chọn gói học quan tâm.";
             isValid = false;
         }
 
@@ -76,20 +93,14 @@ const AssignForm = (props: Props) => {
         return isValid;
     };
 
-    const [formData, setFormData] = useState({
-        HoTen: '',
-        SoDienThoai: '',
-        TruongDangHoc: '',
-        KhoiLop: '',
-        MonHocMuonOnLuyen: '',
-        CauHoiKhac: '',
-    });
-
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
+        
+        // Xóa lỗi khi user bắt đầu gõ lại
+        if (errors[name as keyof typeof errors]) {
+            setErrors(prev => ({ ...prev, [name]: '' }));
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -109,17 +120,17 @@ const AssignForm = (props: Props) => {
             await fetch('https://script.google.com/macros/s/AKfycbxPgs_n6UZ3Pvp3vGHYDtfJPiYdMhy2tZBmJTDC2ZEHSefljcH8F4-36kxSMt1AORxFvw/exec', {
                 method: 'POST',
                 body: data,
-                mode: 'no-cors' // Rất quan trọng: giúp tránh lỗi CORS policy khi gọi từ localhost/domain khác
+                mode: 'no-cors' // Tránh lỗi CORS policy
             });
 
             props.setOpenSuccessPopup(true);
 
             // Xóa trắng form sau khi gửi
-            props.setPhone(formData.SoDienThoai); // Lưu số điện thoại để hiển thị trong popup
+            props.setPhone(formData.SoDienThoai);
             setFormData({ HoTen: '', SoDienThoai: '', TruongDangHoc: '', KhoiLop: '', MonHocMuonOnLuyen: '', CauHoiKhac: '' });
-            setErrors({ HoTen: '', SoDienThoai: '', TruongDangHoc: '', KhoiLop: '', MonHocMuonOnLuyen: '', CauHoiKhac: '' });
+            
         } catch (error) {
-            alert('Có lỗi xảy ra, vui lòng thử lại sau.');
+            alert('Có lỗi xảy ra trong quá trình gửi. Vui lòng liên hệ trực tiếp qua Zalo.');
             console.error(error);
         } finally {
             setIsSubmitting(false);
@@ -144,35 +155,40 @@ const AssignForm = (props: Props) => {
                         boxShadow: '0 30px 60px rgba(0,0,0,0.3)'
                     }}>
                         <Grid container>
-                            <Grid size={{ xs: 12, md: 5 }} sx={{
+                            {/* CỘT TRÁI - BANNER THÔNG TIN */}
+                            <Grid size={{ xs: 12, md: 6 }} sx={{
                                 background: 'url(/banner-bg.jpg) center/cover', position: 'relative',
-                                minHeight: { xs: 700, md: 'auto' }
+                                minHeight: { xs: 500, md: 'auto' }
                             }}>
                                 {/* Overlay */}
-                                <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(10,25,47,0.9), rgba(10,25,47,0.7))', display: 'flex', flexDirection: 'column', justifyContent: 'center', p: 6, color: 'white' }}>
-                                    <Typography variant="h3" sx={{ fontFamily: fontHeader, fontWeight: 900, mb: 3 }}>
-                                        Nhận Mã Trải Nghiệm Sớm
+                                <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(10,25,47,0.95), rgba(10,25,47,0.75))', display: 'flex', flexDirection: 'column', justifyContent: 'center', p: { xs: 4, md: 6 }, color: 'white' }}>
+                                    <Typography variant="h3" sx={{ fontFamily: fontHeader, fontWeight: 900, mb: 3, lineHeight: 1.3, textTransform: 'uppercase' }}>
+                                        Kiểm Tra Năng Lực <br/><span style={{ color: '#4fc3f7' }}>& Đăng Ký Học Thử</span>
                                     </Typography>
-                                    <Typography variant="h6" sx={{ fontWeight: 400, opacity: 0.9, mb: 4, fontFamily: fontBody }}>
-                                        Đăng ký ngay hôm nay để trở thành những người đầu tiên truy cập hệ thống và nhận ưu đãi hấp dẫn.
+                                    <Typography variant="h6" sx={{ fontWeight: 400, opacity: 0.9, mb: 4, fontFamily: fontBody, lineHeight: 1.6 }}>
+                                        Để lại thông tin ngay hôm nay, đội ngũ Giáo viên sẽ liên hệ đánh giá điểm mạnh - yếu và tư vấn lộ trình học tập cá nhân hóa phù hợp nhất.
                                     </Typography>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 3, bgcolor: 'rgba(255,255,255,0.1)', borderRadius: 4, backdropFilter: 'blur(5px)' }}>
-                                        <Box sx={{ fontSize: '2rem' }}>🎁</Box>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 3, bgcolor: 'rgba(255,152,0,0.15)', borderRadius: 4, border: '1px solid rgba(255,152,0,0.3)', backdropFilter: 'blur(5px)' }}>
+                                        <Box sx={{ fontSize: '2.5rem' }}>🎁</Box>
                                         <Box>
-                                            <Typography variant="subtitle2" sx={{ fontWeight: 700, fontFamily: fontHeader }}>
-                                                ƯU ĐÃI GHI DANH SỚM
+                                            <Typography variant="subtitle1" sx={{ fontWeight: 800, fontFamily: fontHeader, color: '#ffb300' }}>
+                                                QUYỀN LỢI ĐĂNG KÝ
                                             </Typography>
-                                            <Typography variant="body2" sx={{ fontFamily: fontBody }}>
-                                                Tặng ngay bộ tài liệu bí kíp và voucher giảm giá học phí hấp dẫn
+                                            <Typography variant="body1" sx={{ fontFamily: fontBody, opacity: 0.9 }}>
+                                                Tham gia 1 buổi học thử miễn phí và nhận báo cáo đánh giá năng lực<br/>chi tiết.
                                             </Typography>
                                         </Box>
                                     </Box>
                                 </Box>
                             </Grid>
 
-                            <Grid size={{ xs: 12, md: 7 }} sx={{ p: { xs: 4, md: 8 }, bgcolor: 'white' }}>
-                                <Typography variant="h5" sx={{ fontFamily: fontHeader, fontWeight: 800, color: '#1a237e', mb: 1, textTransform: 'uppercase' }}>
-                                    Đăng kí nhận tư vấn miễn phí
+                            {/* CỘT PHẢI - FORM ĐIỀN THÔNG TIN */}
+                            <Grid size={{ xs: 12, md: 6 }} sx={{ p: { xs: 4, md: 8 }, bgcolor: 'white' }}>
+                                <Typography variant="h4" sx={{ fontFamily: fontHeader, fontWeight: 900, color: '#1a237e', mb: 1, textTransform: 'uppercase' }}>
+                                    Điền Thông Tin Đăng Ký
+                                </Typography>
+                                <Typography variant="body1" color="textSecondary" sx={{ mb: 3 }}>
+                                    Trung tâm sẽ liên hệ với Phụ huynh/Học sinh trong thời gian sớm nhất.
                                 </Typography>
 
                                 <Divider sx={{ mb: 4, border: '0px' }} />
@@ -192,63 +208,63 @@ const AssignForm = (props: Props) => {
                                             <Grid size={{ xs: 12, sm: 6 }}>
                                                 <TextField fullWidth value={formData.SoDienThoai}
                                                     onChange={handleInputChange}
-                                                    error={!!errors.SoDienThoai}      // <-- Thêm bắt lỗi
-                                                    helperText={errors.SoDienThoai}   // <-- Hiện chữ lỗi
+                                                    error={!!errors.SoDienThoai}
+                                                    helperText={errors.SoDienThoai}
                                                     type='tel'
                                                     required
-                                                    name="SoDienThoai" label="Số điện thoại / Zalo" variant="standard" />
+                                                    name="SoDienThoai" label="Số điện thoại / Zalo (Phụ huynh)" variant="standard" />
                                             </Grid>
                                         </Grid>
+
                                         <Grid container spacing={3}>
                                             <Grid size={{ xs: 12, sm: 6 }}>
                                                 <TextField fullWidth value={formData.TruongDangHoc}
                                                     onChange={handleInputChange}
                                                     type='text'
-                                                    error={!!errors.TruongDangHoc}        // <-- Thêm bắt lỗi
-                                                    helperText={errors.TruongDangHoc}     // <-- Hiện chữ lỗi
+                                                    error={!!errors.TruongDangHoc}
+                                                    helperText={errors.TruongDangHoc}
                                                     name="TruongDangHoc" required label="Trường đang theo học" variant="standard" />
                                             </Grid>
                                             <Grid size={{ xs: 12, sm: 6 }}>
                                                 <TextField fullWidth value={formData.KhoiLop}
                                                     onChange={handleInputChange}
-                                                    type='text'
-                                                    select
-                                                    error={!!errors.KhoiLop}        // <-- Thêm bắt lỗi
-                                                    helperText={errors.KhoiLop}     // <-- Hiện chữ lỗi
+                                                    type='text' select
+                                                    error={!!errors.KhoiLop}
+                                                    helperText={errors.KhoiLop}
                                                     name="KhoiLop" required label="Khối lớp" variant="standard">
-                                                    <MenuItem value="1">1</MenuItem>
-                                                    <MenuItem value="2">2</MenuItem>
-                                                    <MenuItem value="3">3</MenuItem>
-                                                    <MenuItem value="4">4</MenuItem>
-                                                    <MenuItem value="5">5</MenuItem>
-                                                    <MenuItem value="6">6</MenuItem>
-                                                    <MenuItem value="7">7</MenuItem>
-                                                    <MenuItem value="8">8</MenuItem>
-                                                    <MenuItem value="9">9</MenuItem>
-                                                    <MenuItem value="10">10</MenuItem>
-                                                    <MenuItem value="11">11</MenuItem>
-                                                    <MenuItem value="12">12</MenuItem>
+                                                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(lop => (
+                                                        <MenuItem key={lop} value={lop.toString()}>Lớp {lop}</MenuItem>
+                                                    ))}
                                                 </TextField>
                                             </Grid>
                                         </Grid>
+
+                                        {/* DROPDOWN CHỌN GÓI KHÓA HỌC */}
                                         <TextField
-                                            fullWidth value={formData.MonHocMuonOnLuyen}
+                                            fullWidth select
+                                            value={formData.MonHocMuonOnLuyen}
                                             onChange={handleInputChange}
                                             name="MonHocMuonOnLuyen"
                                             required
-                                            type='text'
-                                            label="Môn học muốn ôn luyện?"
-                                            error={!!errors.MonHocMuonOnLuyen}        // <-- Thêm bắt lỗi
-                                            helperText={errors.MonHocMuonOnLuyen}     // <-- Hiện chữ lỗi
+                                            label="Gói học quan tâm / Môn muốn đăng ký?"
+                                            error={!!errors.MonHocMuonOnLuyen}
+                                            helperText={errors.MonHocMuonOnLuyen}
                                             variant="standard" 
-                                        />
+                                        >
+                                            <MenuItem value="Gói Nền Tảng (250k)">Gói Nền Tảng</MenuItem>
+                                            <MenuItem value="Gói Nền Tảng Plus (650k)">Gói Nền Tảng Plus</MenuItem>
+                                            <MenuItem value="Gói Sĩ Số Thấp (800k)">Gói Sĩ Số Thấp</MenuItem>
+                                            <MenuItem value="Gói Gia Sư 1 Kèm 1">Gói Gia Sư 1 Kèm 1</MenuItem>
+                                            <MenuItem value="Cần tư vấn thêm">Chưa rõ, cần tư vấn thêm định hướng</MenuItem>
+                                        </TextField>
+
                                         <TextField
                                             fullWidth value={formData.CauHoiKhac}
                                             onChange={handleInputChange}
                                             name="CauHoiKhac"
                                             type='text'
                                             label="Bạn còn thắc mắc hay cần hỗ trợ gì thêm không?"
-                                            variant="standard" multiline
+                                            variant="standard" multiline rows={2}
                                         />
 
                                         <Box sx={{ pt: 2 }}>
@@ -260,7 +276,7 @@ const AssignForm = (props: Props) => {
                                                     py: 2.5, borderRadius: 50, fontFamily: fontHeader, fontWeight: 900, fontSize: '1.2rem',
                                                     background: 'linear-gradient(90deg, #ff9800, #ff5722)',
                                                     boxShadow: '0 10px 20px rgba(255, 87, 34, 0.3)',
-                                                    animation: `${pulseGlow} 2s infinite`, transition: '0.3s',
+                                                    animation: isSubmitting ? 'none' : `${pulseGlow} 2s infinite`, transition: '0.3s',
                                                     '&:hover': { transform: 'scale(1.02)', background: 'linear-gradient(90deg, #f57c00, #e64a19)' },
                                                     '&:disabled': { background: '#ccc', animation: 'none', transform: 'none' }
                                                 }}
@@ -268,10 +284,10 @@ const AssignForm = (props: Props) => {
                                                 {isSubmitting ? (
                                                     <>
                                                         <CircularProgress size={24} sx={{ color: 'white', mr: 2 }} />
-                                                        ĐANG GỬI...
+                                                        ĐANG GỬI THÔNG TIN...
                                                     </>
                                                 ) : (
-                                                    'ĐĂNG KÝ TƯ VẤN MIỄN PHÍ'
+                                                    'GỬI ĐĂNG KÝ TƯ VẤN'
                                                 )}
                                             </Button>
                                         </Box>
@@ -286,4 +302,4 @@ const AssignForm = (props: Props) => {
     )
 }
 
-export default AssignForm
+export default AssignForm;

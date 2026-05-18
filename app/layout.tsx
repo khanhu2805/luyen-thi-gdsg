@@ -5,7 +5,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next"
-import ZaloFloatingButton from "./components/ZaloFloatingButton";
+import ZaloFloatingButton from "./components/ContactFloatingButton";
 
 const montserrat = Montserrat({ subsets: ['vietnamese'], variable: '--font-montserrat' });
 const nunito = Nunito({ subsets: ['vietnamese'], variable: '--font-nunito' });

@@ -33,7 +33,7 @@ export default function Footer() {
       fontFamily: fontBody,
       borderTop: '4px solid #1976d2' // Viền nhấn màu xanh blue
     }}>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid container spacing={6}>
 
           {/* CỘT 1: THƯƠNG HIỆU & GIỚI THIỆU */}

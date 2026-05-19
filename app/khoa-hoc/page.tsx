@@ -450,7 +450,7 @@ export default function KhoaHocPage() {
       {/* ================= ĐẶC QUYỀN / GIÁ TRỊ CỐT LÕI ================= */}
       <Container maxWidth="xl" sx={{ mt: 15 }}>
         <Box sx={{ textAlign: 'center', mb: 8 }}>
-          <Typography variant="h3" gutterBottom sx={{ fontFamily: fontHeader, fontWeight: 900 }}>
+          <Typography variant="h3" gutterBottom sx={{ fontFamily: fontHeader, fontWeight: 900, textTransform: 'uppercase' }}>
             Hệ Thống Chăm Sóc & Vận Hành Lớp Học
           </Typography>
           <Typography variant="h6" color="textSecondary" sx={{ fontFamily: fontBody }}>

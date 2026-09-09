@@ -1,36 +1,42 @@
-import React from 'react'
-import { Box, keyframes } from '@mui/material';
+'use client';
 
-type Props = {}
-
-const gradientShimmer = keyframes`
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-`;
+import { Box, Typography } from '@mui/material';
+import { keyframes } from '@mui/system';
+import { ENROLLMENT_OPEN_DATE } from '../../data/enrollment';
 
 const marquee = keyframes`
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 `;
 
-const fontBody = "'Nunito', sans-serif";
+export default function MarqueeNoti() {
+  const message = `KHAI GIẢNG ${ENROLLMENT_OPEN_DATE}  •  TOÁN  •  NGỮ VĂN  •  TIẾNG ANH  •  MỖI KHÓA 8 BUỔI / 8 TUẦN  •  ĐĂNG KÝ TƯ VẤN & CHỌN CA HỌC TRỰC TUYẾN  •  `;
 
-const MarqueeNoti = (props: Props) => {
   return (
-    <Box sx={{
-        background: 'linear-gradient(90deg, #d32f2f, #f44336, #d32f2f)',
-        backgroundSize: '200% 200%', animation: `${gradientShimmer} 3s ease infinite`,
-        color: 'white', py: 1.5, overflow: 'hidden', whiteSpace: 'nowrap',
-        boxShadow: '0 4px 15px rgba(211, 47, 47, 0.4)', position: 'relative', zIndex: 50
-      }}>
-        <Box sx={{
-          display: 'inline-block', animation: `${marquee} 20s linear infinite`,
-          fontWeight: 800, fontFamily: fontBody, fontSize: '1rem', letterSpacing: 1
-        }}>
-          ⚡ ƯU ĐÃI ĐẶC BIỆT: TẶNG NGAY VOUCHER GIẢM HỌC PHÍ CHO CÁC HỌC VIÊN ĐĂNG KÝ SỚM! LIÊN HỆ NHẬN TƯ VẤN NGAY HÔM NAY! ⚡        </Box>
+    <Box sx={{ overflow: 'hidden', bgcolor: '#ff9800', color: '#fff', py: 1.1 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          width: 'max-content',
+          animation: `${marquee} 26s linear infinite`,
+        }}
+      >
+        {[0, 1].map((item) => (
+          <Typography
+            key={item}
+            component="span"
+            sx={{
+              whiteSpace: 'nowrap',
+              fontWeight: 900,
+              fontFamily: "'Montserrat', sans-serif",
+              letterSpacing: 0.4,
+              pr: 2,
+            }}
+          >
+            {message}
+          </Typography>
+        ))}
       </Box>
-  )
+    </Box>
+  );
 }
-
-export default MarqueeNoti

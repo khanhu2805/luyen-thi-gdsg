@@ -1,305 +1,545 @@
 'use client';
 
-import React, { useState } from 'react';
-import { 
-    Box, Container, Card, Grid, Typography, Stack, 
-    TextField, Button, CircularProgress, keyframes, Divider, MenuItem 
+import React, { useEffect, useMemo, useState } from 'react';
+import {
+  Alert,
+  Box,
+  Button,
+  Card,
+  Checkbox,
+  CircularProgress,
+  Container,
+  Divider,
+  FormControlLabel,
+  Grid,
+  MenuItem,
+  Stack,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
 } from '@mui/material';
+import {
+  courses,
+  ENROLLMENT_OPEN_DATE,
+  formatVnd,
+  getTeacherById,
+} from '../data/enrollment';
 
 type Props = {
-    setOpenSuccessPopup: (open: boolean) => void;
-    setPhone: (phone: string) => void;
-}
+  setOpenSuccessPopup: (open: boolean) => void;
+  setPhone: (phone: string) => void;
+};
+
+type Mode = 'consultation' | 'registration';
+
+type FormState = {
+  mode: Mode;
+  studentName: string;
+  grade: string;
+  school: string;
+  parentName: string;
+  parentEmail: string;
+  parentPhone: string;
+  courseId: string;
+  scheduleId: string;
+  desiredSchedule: string;
+  note: string;
+  consent: boolean;
+  website: string;
+};
+
+const emptyForm: FormState = {
+  mode: 'consultation',
+  studentName: '',
+  grade: '9',
+  school: '',
+  parentName: '',
+  parentEmail: '',
+  parentPhone: '',
+  courseId: '',
+  scheduleId: '',
+  desiredSchedule: '',
+  note: '',
+  consent: false,
+  website: '',
+};
 
 const fontHeader = "'Montserrat', sans-serif";
 const fontBody = "'Nunito', sans-serif";
 
-const pulseGlow = keyframes`
-  0% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.6); }
-  70% { box-shadow: 0 0 0 25px rgba(255, 152, 0, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0); }
-`;
+export default function AssignForm(props: Props) {
+  const [formData, setFormData] = useState<FormState>(emptyForm);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [serverError, setServerError] = useState('');
 
-// ================================================
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const course = params.get('course');
+    const mode = params.get('mode');
 
-const AssignForm = (props: Props) => {
+    if (course && courses.some((item) => item.id === course)) {
+      setFormData((prev) => ({
+        ...prev,
+        courseId: course,
+        mode: mode === 'register' ? 'registration' : prev.mode,
+      }));
+    }
+  }, []);
 
-    const [errors, setErrors] = useState({
-        HoTen: '',
-        SoDienThoai: '',
-        TruongDangHoc: '',
-        KhoiLop: '',
-        MonHocMuonOnLuyen: '',
-        CauHoiKhac: '',
-    });
+  const selectedCourse = useMemo(
+    () => courses.find((course) => course.id === formData.courseId),
+    [formData.courseId],
+  );
 
-    const [formData, setFormData] = useState({
-        HoTen: '',
-        SoDienThoai: '',
-        TruongDangHoc: '',
-        KhoiLop: '',
-        MonHocMuonOnLuyen: '', // Sẽ dùng trường này để lưu Gói khóa học
-        CauHoiKhac: '',
-    });
+  const selectedTeacher = selectedCourse
+    ? getTeacherById(selectedCourse.teacherId)
+    : undefined;
 
-    const [isSubmitting, setIsSubmitting] = useState(false);
+  const update = (field: keyof FormState, value: string | boolean) => {
+    setServerError('');
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
-    // 1. Hàm kiểm tra tính hợp lệ
-    const validateForm = () => {
-        const tempErrors = {
-            HoTen: '',
-            SoDienThoai: '',
-            TruongDangHoc: '',
-            KhoiLop: '',
-            MonHocMuonOnLuyen: '',
-            CauHoiKhac: '',
-        };
-        let isValid = true;
+  const handleModeChange = (_: React.MouseEvent<HTMLElement>, value: Mode | null) => {
+    if (!value) return;
+    setFormData((prev) => ({
+      ...prev,
+      mode: value,
+      scheduleId: value === 'consultation' ? prev.scheduleId : prev.scheduleId,
+    }));
+  };
 
-        // Kiểm tra Họ tên
-        if (!formData.HoTen.trim()) {
-            tempErrors.HoTen = "Vui lòng nhập họ tên.";
-            isValid = false;
+  const validate = () => {
+    if (
+      !formData.studentName.trim() ||
+      !formData.school.trim() ||
+      !formData.parentName.trim() ||
+      !formData.parentEmail.trim() ||
+      !formData.parentPhone.trim()
+    ) {
+      return 'Vui lòng điền đầy đủ thông tin bắt buộc của học sinh và phụ huynh.';
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.parentEmail.trim())) {
+      return 'Email phụ huynh chưa đúng định dạng.';
+    }
+
+    if (!/^0\d{9}$/.test(formData.parentPhone.replace(/\s/g, ''))) {
+      return 'Số điện thoại phụ huynh phải gồm 10 số và bắt đầu bằng 0.';
+    }
+
+    if (formData.mode === 'registration') {
+      if (!selectedCourse) return 'Vui lòng chọn môn học muốn đăng ký.';
+
+      if (selectedCourse.schedules.length > 0 && !formData.scheduleId) {
+        return 'Vui lòng chọn một lịch học đã mở.';
+      }
+
+      if (selectedCourse.schedules.length === 0) {
+        return 'Khóa này chưa có ca học chính thức. Vui lòng chọn “Tôi cần tư vấn” để trung tâm xác nhận lịch trước khi thanh toán.';
+      }
+    }
+
+    if (!formData.consent) {
+      return 'Vui lòng xác nhận đồng ý để trung tâm liên hệ và xử lý thông tin đăng ký.';
+    }
+
+    return '';
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const validationError = validate();
+
+    if (validationError) {
+      setServerError(validationError);
+      return;
+    }
+
+    setIsSubmitting(true);
+    setServerError('');
+
+    try {
+      const response = await fetch('/api/enrollment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.ok) {
+        throw new Error(result.message || 'Không thể gửi đăng ký.');
+      }
+
+      if (formData.mode === 'registration') {
+        if (!result.paymentUrl) {
+          throw new Error('Chưa tạo được liên kết thanh toán VNPAY.');
         }
 
-        // Kiểm tra Số điện thoại (Regex chuẩn nhà mạng VN)
-        const phoneRegex = /^(0[2|3|5|7|8|9])+([0-9]{8})$/;
-        if (!formData.SoDienThoai.trim()) {
-            tempErrors.SoDienThoai = "Vui lòng nhập số điện thoại.";
-            isValid = false;
-        } else if (!phoneRegex.test(formData.SoDienThoai)) {
-            tempErrors.SoDienThoai = "Số điện thoại không hợp lệ (Gồm 10 số, bắt đầu bằng 0).";
-            isValid = false;
-        }
+        window.location.assign(result.paymentUrl);
+        return;
+      }
 
-        // Kiểm tra Trường
-        if (!formData.TruongDangHoc.trim()) {
-            tempErrors.TruongDangHoc = "Vui lòng nhập tên trường.";
-            isValid = false;
-        }
+      props.setPhone(formData.parentPhone);
+      props.setOpenSuccessPopup(true);
+      setFormData(emptyForm);
+    } catch (error) {
+      setServerError(
+        error instanceof Error
+          ? error.message
+          : 'Có lỗi xảy ra. Vui lòng thử lại.',
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-        // Kiểm tra Khối lớp
-        if (!formData.KhoiLop.trim()) {
-            tempErrors.KhoiLop = "Vui lòng chọn khối lớp.";
-            isValid = false;
-        }
-        // Kiểm tra Gói Môn học
-        if (!formData.MonHocMuonOnLuyen.trim()) {
-            tempErrors.MonHocMuonOnLuyen = "Vui lòng chọn gói học quan tâm.";
-            isValid = false;
-        }
+  return (
+    <Box id="form-dang-ky" sx={{ py: { xs: 8, md: 12 }, bgcolor: '#f4f7fe' }}>
+      <Container maxWidth="lg">
+        <Card
+          sx={{
+            borderRadius: 6,
+            overflow: 'hidden',
+            boxShadow: '0 24px 60px rgba(31,42,74,.12)',
+          }}
+        >
+          <Grid container>
+            <Grid
+              size={{ xs: 12, md: 5 }}
+              sx={{
+                p: { xs: 4, md: 6 },
+                color: 'white',
+                background: 'linear-gradient(145deg, #0d47a1, #1976d2 55%, #42a5f5)',
+              }}
+            >
+              <Typography
+                variant="overline"
+                sx={{ fontFamily: fontHeader, fontWeight: 900, letterSpacing: 1.5 }}
+              >
+                TUYỂN SINH ĐỢT MỚI
+              </Typography>
+              <Typography
+                variant="h3"
+                sx={{ fontFamily: fontHeader, fontWeight: 900, mt: 1, mb: 2 }}
+              >
+                Khai giảng {ENROLLMENT_OPEN_DATE}
+              </Typography>
+              <Typography sx={{ fontFamily: fontBody, opacity: 0.92, lineHeight: 1.75 }}>
+                Phụ huynh có thể để lại nhu cầu tư vấn hoặc đăng ký trực tiếp lớp
+                đã có lịch. Với đăng ký chính thức, hệ thống sẽ chuyển sang cổng
+                VNPAY để thanh toán bằng mã QR.
+              </Typography>
 
-        setErrors(tempErrors);
-        return isValid;
-    };
+              <Divider sx={{ my: 4, borderColor: 'rgba(255,255,255,.25)' }} />
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-        
-        // Xóa lỗi khi user bắt đầu gõ lại
-        if (errors[name as keyof typeof errors]) {
-            setErrors(prev => ({ ...prev, [name]: '' }));
-        }
-    };
+              <Stack spacing={2}>
+                {courses.map((course) => {
+                  const teacher = getTeacherById(course.teacherId);
+                  return (
+                    <Box
+                      key={course.id}
+                      sx={{
+                        p: 2,
+                        borderRadius: 3,
+                        bgcolor: 'rgba(255,255,255,.10)',
+                        border: '1px solid rgba(255,255,255,.16)',
+                      }}
+                    >
+                      <Typography sx={{ fontWeight: 900 }}>
+                        {course.subject} · {course.sessions} buổi / {course.weeks} tuần
+                      </Typography>
+                      <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                        {teacher?.name}
+                      </Typography>
+                      <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                        {course.schedules.map((item) => item.label).join(' | ')}
+                      </Typography>
+                    </Box>
+                  );
+                })}
+              </Stack>
+            </Grid>
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault(); // Ngăn form reload lại trang
+            <Grid size={{ xs: 12, md: 7 }} sx={{ p: { xs: 3, sm: 5, md: 6 } }}>
+              <Typography
+                variant="h4"
+                sx={{ fontFamily: fontHeader, fontWeight: 900, color: '#1a237e' }}
+              >
+                Thông tin phụ huynh & học sinh
+              </Typography>
+              <Typography color="text.secondary" sx={{ mt: 1, mb: 3 }}>
+                Các trường có dấu * là bắt buộc.
+              </Typography>
 
-        if (!validateForm()) return;
+              <ToggleButtonGroup
+                exclusive
+                fullWidth
+                value={formData.mode}
+                onChange={handleModeChange}
+                sx={{ mb: 4 }}
+              >
+                <ToggleButton value="consultation" sx={{ fontWeight: 800, py: 1.4 }}>
+                  Tôi cần tư vấn
+                </ToggleButton>
+                <ToggleButton value="registration" sx={{ fontWeight: 800, py: 1.4 }}>
+                  Tôi muốn đăng ký
+                </ToggleButton>
+              </ToggleButtonGroup>
 
-        setIsSubmitting(true);
+              {serverError && (
+                <Alert severity="error" sx={{ mb: 3 }}>
+                  {serverError}
+                </Alert>
+              )}
 
-        // Chuyển dữ liệu thành dạng FormData để Google Script dễ đọc
-        const data = new FormData();
-        Object.entries(formData).forEach(([key, value]) => {
-            data.append(key, value);
-        });
+              <form onSubmit={handleSubmit} noValidate>
+                <Stack spacing={3}>
+                  <Grid container spacing={2.5}>
+                    <Grid size={{ xs: 12, sm: 7 }}>
+                      <TextField
+                        fullWidth
+                        required
+                        label="Họ tên học sinh"
+                        value={formData.studentName}
+                        onChange={(e) => update('studentName', e.target.value)}
+                      />
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 5 }}>
+                      <TextField
+                        fullWidth
+                        select
+                        required
+                        label="Lớp hiện tại"
+                        value={formData.grade}
+                        onChange={(e) => update('grade', e.target.value)}
+                      >
+                        {[6, 7, 8, 9, 10, 11, 12].map((grade) => (
+                          <MenuItem key={grade} value={String(grade)}>
+                            Lớp {grade}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                  </Grid>
 
-        try {
-            await fetch('https://script.google.com/macros/s/AKfycbxPgs_n6UZ3Pvp3vGHYDtfJPiYdMhy2tZBmJTDC2ZEHSefljcH8F4-36kxSMt1AORxFvw/exec', {
-                method: 'POST',
-                body: data,
-                mode: 'no-cors' // Tránh lỗi CORS policy
-            });
+                  <TextField
+                    fullWidth
+                    required
+                    label="Trường đang học"
+                    value={formData.school}
+                    onChange={(e) => update('school', e.target.value)}
+                  />
 
-            props.setOpenSuccessPopup(true);
+                  <Divider />
 
-            // Xóa trắng form sau khi gửi
-            props.setPhone(formData.SoDienThoai);
-            setFormData({ HoTen: '', SoDienThoai: '', TruongDangHoc: '', KhoiLop: '', MonHocMuonOnLuyen: '', CauHoiKhac: '' });
-            
-        } catch (error) {
-            alert('Có lỗi xảy ra trong quá trình gửi. Vui lòng liên hệ trực tiếp qua Zalo.');
-            console.error(error);
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+                  <Grid container spacing={2.5}>
+                    <Grid size={{ xs: 12, sm: 6 }}>
+                      <TextField
+                        fullWidth
+                        required
+                        label="Họ tên phụ huynh"
+                        value={formData.parentName}
+                        onChange={(e) => update('parentName', e.target.value)}
+                      />
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 6 }}>
+                      <TextField
+                        fullWidth
+                        required
+                        type="tel"
+                        label="Số điện thoại phụ huynh"
+                        placeholder="09xxxxxxxx"
+                        value={formData.parentPhone}
+                        onChange={(e) => update('parentPhone', e.target.value)}
+                      />
+                    </Grid>
+                  </Grid>
 
-    //===========================================================================
+                  <TextField
+                    fullWidth
+                    required
+                    type="email"
+                    label="Email phụ huynh"
+                    placeholder="phuhuynh@example.com"
+                    value={formData.parentEmail}
+                    onChange={(e) => update('parentEmail', e.target.value)}
+                  />
 
-    return (
-        <Box sx={{ position: 'relative', pb: 15 }} id="form-dang-ky">
-            {/* SVG Wave Divider */}
-            <Box sx={{ width: '100%', overflow: 'hidden', lineHeight: 0, transform: 'rotate(180deg)' }}>
-                <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: '100px' }}>
-                    <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="#1976d2"></path>
-                </svg>
-            </Box>
+                  <TextField
+                    fullWidth
+                    select
+                    required={formData.mode === 'registration'}
+                    label={
+                      formData.mode === 'registration'
+                        ? 'Môn học đăng ký'
+                        : 'Môn học quan tâm (không bắt buộc)'
+                    }
+                    value={formData.courseId}
+                    onChange={(e) => {
+                      setServerError('');
+                      setFormData((prev) => ({
+                        ...prev,
+                        courseId: e.target.value,
+                        scheduleId: '',
+                        desiredSchedule: '',
+                      }));
+                    }}
+                  >
+                    {formData.mode === 'consultation' && (
+                      <MenuItem value="">Chưa xác định – cần tư vấn</MenuItem>
+                    )}
+                    {courses.map((course) => (
+                      <MenuItem key={course.id} value={course.id}>
+                        {course.subject} · {formatVnd(course.price)} / 8 buổi
+                      </MenuItem>
+                    ))}
+                  </TextField>
 
-            <Box sx={{ bgcolor: '#1976d2', pt: 5, pb: 15, px: 2 }}>
-                <Container maxWidth="xl">
-                    <Card sx={{
-                        borderRadius: 8, overflow: 'hidden',
-                        boxShadow: '0 30px 60px rgba(0,0,0,0.3)'
-                    }}>
-                        <Grid container>
-                            {/* CỘT TRÁI - BANNER THÔNG TIN */}
-                            <Grid size={{ xs: 12, md: 6 }} sx={{
-                                background: 'url(/banner-bg.jpg) center/cover', position: 'relative',
-                                minHeight: { xs: 500, md: 'auto' }
-                            }}>
-                                {/* Overlay */}
-                                <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(10,25,47,0.95), rgba(10,25,47,0.75))', display: 'flex', flexDirection: 'column', justifyContent: 'center', p: { xs: 4, md: 6 }, color: 'white' }}>
-                                    <Typography variant="h3" sx={{ fontFamily: fontHeader, fontWeight: 900, mb: 3, lineHeight: 1.3, textTransform: 'uppercase' }}>
-                                        Kiểm Tra Năng Lực <br/><span style={{ color: '#4fc3f7' }}>& Đăng Ký Học Thử</span>
-                                    </Typography>
-                                    <Typography variant="h6" sx={{ fontWeight: 400, opacity: 0.9, mb: 4, fontFamily: fontBody, lineHeight: 1.6 }}>
-                                        Để lại thông tin ngay hôm nay, đội ngũ Giáo viên sẽ liên hệ đánh giá điểm mạnh - yếu và tư vấn lộ trình học tập cá nhân hóa phù hợp nhất.
-                                    </Typography>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 3, bgcolor: 'rgba(255,152,0,0.15)', borderRadius: 4, border: '1px solid rgba(255,152,0,0.3)', backdropFilter: 'blur(5px)' }}>
-                                        <Box sx={{ fontSize: '2.5rem' }}>🎁</Box>
-                                        <Box>
-                                            <Typography variant="subtitle1" sx={{ fontWeight: 800, fontFamily: fontHeader, color: '#ffb300' }}>
-                                                QUYỀN LỢI ĐĂNG KÝ
-                                            </Typography>
-                                            <Typography variant="body1" sx={{ fontFamily: fontBody, opacity: 0.9 }}>
-                                                Tham gia 1 buổi học thử miễn phí và nhận báo cáo đánh giá năng lực<br/>chi tiết.
-                                            </Typography>
-                                        </Box>
-                                    </Box>
-                                </Box>
-                            </Grid>
+                  {selectedCourse && (
+                    <Box
+                      sx={{
+                        p: 2.5,
+                        borderRadius: 3,
+                        bgcolor: '#f8fafc',
+                        border: '1px solid #e3e8ef',
+                      }}
+                    >
+                      <Typography sx={{ fontWeight: 900, color: '#1a237e' }}>
+                        {selectedCourse.subject} · {selectedTeacher?.name}
+                      </Typography>
+                      <Typography color="text.secondary" variant="body2">
+                        {selectedCourse.sessions} buổi trong {selectedCourse.weeks} tuần ·{' '}
+                        {formatVnd(selectedCourse.price)}
+                      </Typography>
+                    </Box>
+                  )}
 
-                            {/* CỘT PHẢI - FORM ĐIỀN THÔNG TIN */}
-                            <Grid size={{ xs: 12, md: 6 }} sx={{ p: { xs: 4, md: 8 }, bgcolor: 'white' }}>
-                                <Typography variant="h4" sx={{ fontFamily: fontHeader, fontWeight: 900, color: '#1a237e', mb: 1, textTransform: 'uppercase' }}>
-                                    Điền Thông Tin Đăng Ký
-                                </Typography>
-                                <Typography variant="body1" color="textSecondary" sx={{ mb: 3 }}>
-                                    Trung tâm sẽ liên hệ với Phụ huynh/Học sinh trong thời gian sớm nhất.
-                                </Typography>
+                  {selectedCourse && selectedCourse.schedules.length > 0 && (
+                    <TextField
+                      fullWidth
+                      select
+                      required={formData.mode === 'registration'}
+                      label={
+                        formData.mode === 'registration'
+                          ? 'Chọn lịch học'
+                          : 'Lịch học quan tâm'
+                      }
+                      value={formData.scheduleId}
+                      onChange={(e) => update('scheduleId', e.target.value)}
+                    >
+                      {formData.mode === 'consultation' && (
+                        <MenuItem value="">Chưa chọn lịch</MenuItem>
+                      )}
+                      {selectedCourse.schedules.map((schedule) => (
+                        <MenuItem key={schedule.id} value={schedule.id}>
+                          {schedule.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  )}
 
-                                <Divider sx={{ mb: 4, border: '0px' }} />
+                  {selectedCourse && selectedCourse.schedules.length === 0 && (
+                    <>
+                      <TextField
+                        fullWidth
+                        label="Lịch học mong muốn"
+                        placeholder="Ví dụ: tối Thứ 5, 19:00 – 21:00"
+                        value={formData.desiredSchedule}
+                        onChange={(e) => update('desiredSchedule', e.target.value)}
+                      />
+                      {formData.mode === 'registration' && (
+                        <Alert severity="warning">
+                          Môn này chưa có ca học chính thức nên chưa mở thanh toán. Hãy
+                          chuyển sang “Tôi cần tư vấn” và ghi lịch mong muốn để trung tâm
+                          xác nhận trước.
+                        </Alert>
+                      )}
+                    </>
+                  )}
 
-                                <form onSubmit={handleSubmit} noValidate>
-                                    <Stack spacing={4}>
-                                        <Grid container spacing={3}>
-                                            <Grid size={{ xs: 12, sm: 6 }}>
-                                                <TextField fullWidth
-                                                    error={!!errors.HoTen}
-                                                    helperText={errors.HoTen}
-                                                    value={formData.HoTen}
-                                                    onChange={handleInputChange}
-                                                    type='text'
-                                                    required name="HoTen" label="Họ tên học sinh" variant="standard" sx={{ '& .MuiInput-underline:after': { borderBottomColor: 'primary.main' } }} />
-                                            </Grid>
-                                            <Grid size={{ xs: 12, sm: 6 }}>
-                                                <TextField fullWidth value={formData.SoDienThoai}
-                                                    onChange={handleInputChange}
-                                                    error={!!errors.SoDienThoai}
-                                                    helperText={errors.SoDienThoai}
-                                                    type='tel'
-                                                    required
-                                                    name="SoDienThoai" label="Số điện thoại / Zalo (Phụ huynh)" variant="standard" />
-                                            </Grid>
-                                        </Grid>
+                  <TextField
+                    fullWidth
+                    multiline
+                    rows={3}
+                    label="Ghi chú / nhu cầu cần tư vấn thêm"
+                    value={formData.note}
+                    onChange={(e) => update('note', e.target.value)}
+                  />
 
-                                        <Grid container spacing={3}>
-                                            <Grid size={{ xs: 12, sm: 6 }}>
-                                                <TextField fullWidth value={formData.TruongDangHoc}
-                                                    onChange={handleInputChange}
-                                                    type='text'
-                                                    error={!!errors.TruongDangHoc}
-                                                    helperText={errors.TruongDangHoc}
-                                                    name="TruongDangHoc" required label="Trường đang theo học" variant="standard" />
-                                            </Grid>
-                                            <Grid size={{ xs: 12, sm: 6 }}>
-                                                <TextField fullWidth value={formData.KhoiLop}
-                                                    onChange={handleInputChange}
-                                                    type='text' select
-                                                    error={!!errors.KhoiLop}
-                                                    helperText={errors.KhoiLop}
-                                                    name="KhoiLop" required label="Khối lớp" variant="standard">
-                                                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(lop => (
-                                                        <MenuItem key={lop} value={lop.toString()}>Lớp {lop}</MenuItem>
-                                                    ))}
-                                                </TextField>
-                                            </Grid>
-                                        </Grid>
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      left: '-9999px',
+                      width: 1,
+                      height: 1,
+                      overflow: 'hidden',
+                    }}
+                    aria-hidden="true"
+                  >
+                    <TextField
+                      tabIndex={-1}
+                      autoComplete="off"
+                      label="Website"
+                      value={formData.website}
+                      onChange={(e) => update('website', e.target.value)}
+                    />
+                  </Box>
 
-                                        {/* DROPDOWN CHỌN GÓI KHÓA HỌC */}
-                                        <TextField
-                                            fullWidth select
-                                            value={formData.MonHocMuonOnLuyen}
-                                            onChange={handleInputChange}
-                                            name="MonHocMuonOnLuyen"
-                                            required
-                                            label="Gói học quan tâm / Môn muốn đăng ký?"
-                                            error={!!errors.MonHocMuonOnLuyen}
-                                            helperText={errors.MonHocMuonOnLuyen}
-                                            variant="standard" 
-                                        >
-                                            <MenuItem value="Gói Nền Tảng (250k)">Gói Nền Tảng</MenuItem>
-                                            <MenuItem value="Gói Nền Tảng Plus (650k)">Gói Nền Tảng Plus</MenuItem>
-                                            <MenuItem value="Gói Sĩ Số Thấp (800k)">Gói Sĩ Số Thấp</MenuItem>
-                                            <MenuItem value="Gói Gia Sư 1 Kèm 1">Gói Gia Sư 1 Kèm 1</MenuItem>
-                                            <MenuItem value="Cần tư vấn thêm">Chưa rõ, cần tư vấn thêm định hướng</MenuItem>
-                                        </TextField>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={formData.consent}
+                        onChange={(e) => update('consent', e.target.checked)}
+                      />
+                    }
+                    label="Tôi đồng ý để trung tâm sử dụng thông tin trên nhằm liên hệ tư vấn, xác nhận lớp học và xử lý đăng ký."
+                  />
 
-                                        <TextField
-                                            fullWidth value={formData.CauHoiKhac}
-                                            onChange={handleInputChange}
-                                            name="CauHoiKhac"
-                                            type='text'
-                                            label="Bạn còn thắc mắc hay cần hỗ trợ gì thêm không?"
-                                            variant="standard" multiline rows={2}
-                                        />
+                  {formData.mode === 'registration' && selectedCourse && (
+                    <Alert severity="info">
+                      Số tiền thanh toán: <b>{formatVnd(selectedCourse.price)}</b>. Sau
+                      khi gửi đăng ký, phụ huynh sẽ được chuyển sang VNPAY QR. Hệ thống
+                      chỉ ghi nhận thanh toán thành công sau khi kiểm tra chữ ký trả về
+                      từ VNPAY.
+                    </Alert>
+                  )}
 
-                                        <Box sx={{ pt: 2 }}>
-                                            <Button
-                                                type='submit'
-                                                disabled={isSubmitting}
-                                                variant="contained" size="large" fullWidth
-                                                sx={{
-                                                    py: 2.5, borderRadius: 50, fontFamily: fontHeader, fontWeight: 900, fontSize: '1.2rem',
-                                                    background: 'linear-gradient(90deg, #ff9800, #ff5722)',
-                                                    boxShadow: '0 10px 20px rgba(255, 87, 34, 0.3)',
-                                                    animation: isSubmitting ? 'none' : `${pulseGlow} 2s infinite`, transition: '0.3s',
-                                                    '&:hover': { transform: 'scale(1.02)', background: 'linear-gradient(90deg, #f57c00, #e64a19)' },
-                                                    '&:disabled': { background: '#ccc', animation: 'none', transform: 'none' }
-                                                }}
-                                            >
-                                                {isSubmitting ? (
-                                                    <>
-                                                        <CircularProgress size={24} sx={{ color: 'white', mr: 2 }} />
-                                                        ĐANG GỬI THÔNG TIN...
-                                                    </>
-                                                ) : (
-                                                    'GỬI ĐĂNG KÝ TƯ VẤN'
-                                                )}
-                                            </Button>
-                                        </Box>
-                                    </Stack>
-                                </form>
-                            </Grid>
-                        </Grid>
-                    </Card>
-                </Container>
-            </Box>
-        </Box>
-    )
+                  <Button
+                    type="submit"
+                    disabled={
+                      isSubmitting ||
+                      (formData.mode === 'registration' &&
+                        !!selectedCourse &&
+                        selectedCourse.schedules.length === 0)
+                    }
+                    variant="contained"
+                    size="large"
+                    sx={{
+                      py: 1.8,
+                      borderRadius: 999,
+                      fontFamily: fontHeader,
+                      fontWeight: 900,
+                      fontSize: '1.05rem',
+                      background: 'linear-gradient(90deg, #ff9800, #ff5722)',
+                    }}
+                  >
+                    {isSubmitting ? (
+                      <CircularProgress size={25} sx={{ color: 'white' }} />
+                    ) : formData.mode === 'registration' ? (
+                      'Đăng ký & thanh toán VNPAY QR'
+                    ) : (
+                      'Gửi yêu cầu tư vấn'
+                    )}
+                  </Button>
+                </Stack>
+              </form>
+            </Grid>
+          </Grid>
+        </Card>
+      </Container>
+    </Box>
+  );
 }
-
-export default AssignForm;

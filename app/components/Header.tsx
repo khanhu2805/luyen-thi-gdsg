@@ -1,27 +1,28 @@
 'use client';
-import { useState, useEffect } from 'react';
+
+import { useEffect, useState } from 'react';
 import {
   AppBar,
-  Toolbar,
-  Typography,
-  Button,
   Box,
+  Button,
   Container,
-  IconButton,
   Drawer,
+  IconButton,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
+  Toolbar,
+  Typography,
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-import Link from 'next/link';
+import MenuIcon from '@mui/icons-material/Menu';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const navItems = [
-  { label: 'Trang chủ', path: '/#' },
-  // { label: 'Khóa học', path: '/khoa-hoc' },
+  { label: 'Trang chủ', path: '/' },
+  { label: 'Khóa học & lịch học', path: '/khoa-hoc' },
   { label: 'Đội ngũ', path: '/doi-ngu' },
   { label: 'Tin tức', path: '/tin-tuc' },
   { label: 'Tài liệu ôn luyện', path: '/tai-lieu-on-luyen' },
@@ -32,45 +33,21 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Bắt sự kiện cuộn chuột để tạo viền mờ ảo cho Header
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
-  // CSS tùy chỉnh cho các nút điều hướng Desktop
   const navLinkStyle = {
-    fontWeight: 700,
+    fontWeight: 800,
     fontFamily: "'Montserrat', sans-serif",
     color: '#1f2a4a',
-    textTransform: 'uppercase',
-    fontSize: '0.95rem',
-    position: 'relative',
-    px: 2,
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      width: '0%',
-      height: '3px',
-      bottom: '6px',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      backgroundColor: '#1976d2',
-      transition: 'width 0.3s ease-in-out',
-      borderRadius: '2px',
-    },
-    '&:hover': {
-      backgroundColor: 'transparent',
-      color: '#1976d2',
-      '&::after': { width: '60%' },
-    },
+    textTransform: 'none',
+    fontSize: '0.9rem',
+    px: 1.5,
+    whiteSpace: 'nowrap',
+    '&:hover': { color: '#1976d2', bgcolor: 'transparent' },
   };
 
   return (
@@ -79,29 +56,25 @@ export default function Header() {
         position="sticky"
         elevation={isScrolled ? 4 : 0}
         sx={{
-          bgcolor: isScrolled ? 'rgba(255, 255, 255, 0.9)' : 'white',
+          bgcolor: isScrolled ? 'rgba(255,255,255,.93)' : 'white',
           color: '#1f2a4a',
           backdropFilter: isScrolled ? 'blur(10px)' : 'none',
-          transition: 'all 0.3s ease-in-out',
-          borderBottom: isScrolled ? 'none' : '1px solid #f0f0f0'
+          borderBottom: isScrolled ? 'none' : '1px solid #edf0f4',
         }}
       >
         <Container maxWidth="xl">
           <Toolbar disableGutters sx={{ minHeight: { xs: 70, md: 80 } }}>
-
-            {/* Logo / Tên thương hiệu */}
-            <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: { xs: 1, md: 0 }, mr: 4 }}>
-              <Link href="/#" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-                <Image src="/Logo_cty_sach.png" alt="Logo" width={45} height={45} style={{ marginRight: '12px' }} />
+            <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: { xs: 1, md: 0 }, mr: 2.5 }}>
+              <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+                <Image src="/Logo_cty_sach.png" alt="Logo Giáo dục Sài Gòn" width={44} height={44} />
                 <Typography
-                  variant="h6"
-                  noWrap
                   sx={{
-                    fontWeight: 800,
+                    ml: 1.2,
+                    fontWeight: 900,
                     fontFamily: "'Montserrat', sans-serif",
                     color: '#1a237e',
-                    fontSize: { xs: '1rem', md: '1.25rem' },
-                    letterSpacing: '-0.5px'
+                    fontSize: { xs: '.9rem', lg: '1.08rem' },
+                    display: { xs: 'none', sm: 'block' },
                   }}
                 >
                   LUYỆN THI - GIÁO DỤC SÀI GÒN
@@ -109,8 +82,13 @@ export default function Header() {
               </Link>
             </Box>
 
-            {/* Menu Desktop */}
-            <Box sx={{ display: { xs: 'none', md: 'flex' }, flexGrow: 1, gap: 1, justifyContent: 'center' }}>
+            <Box
+              sx={{
+                display: { xs: 'none', md: 'flex' },
+                flexGrow: 1,
+                justifyContent: 'center',
+              }}
+            >
               {navItems.map((item) => (
                 <Button key={item.label} component={Link} href={item.path} sx={navLinkStyle}>
                   {item.label}
@@ -118,93 +96,77 @@ export default function Header() {
               ))}
             </Box>
 
-            {/* CTA Button Desktop */}
-            <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
-              <Button
-                variant="contained"
-                component={Link}
-                href="/#form-dang-ky"
-                sx={{
-                  borderRadius: '50px',
-                  px: 4,
-                  py: 1.2,
-                  fontFamily: "'Montserrat', sans-serif",
-                  fontWeight: 800,
-                  background: 'linear-gradient(45deg, #1976d2 30%, #2196f3 90%)',
-                  boxShadow: '0 4px 15px rgba(25, 118, 210, 0.3)',
-                  textTransform: 'uppercase',
-                  fontSize: '0.95rem',
-                  transition: 'transform 0.2s',
-                  '&:hover': { transform: 'translateY(-2px)', boxShadow: '0 6px 20px rgba(25, 118, 210, 0.4)' }
-                }}
-              >
-                Đăng ký ngay
-              </Button>
-            </Box>
-
-            {/* Nút Hamburger cho Mobile */}
-            <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-              <IconButton
-                size="large"
-                aria-label="menu"
-                onClick={handleDrawerToggle}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton>
-            </Box>
-
-          </Toolbar>
-        </Container>
-      </AppBar>
-
-      {/* Menu Mobile Trượt (Drawer) */}
-      <Drawer
-        anchor="right"
-        open={mobileOpen}
-        onClose={handleDrawerToggle}
-        sx={{
-          display: { xs: 'block', md: 'none' },
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 280, p: 2 },
-        }}
-      >
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-          <Image src="/Logo_cty_sach.png" alt="Logo" width={40} height={40} />
-          <IconButton onClick={handleDrawerToggle}>
-            <CloseIcon />
-          </IconButton>
-        </Box>
-        <List>
-          {navItems.map((item) => (
-            <ListItem key={item.label} disablePadding>
-              <ListItemButton
-                component={Link}
-                href={item.path}
-                onClick={handleDrawerToggle}
-                sx={{ borderRadius: 2, mb: 1 }}
-              >
-                <ListItemText
-                  primary={item.label}
-                  sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700, color: '#1f2a4a' }}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
-          <ListItem disablePadding sx={{ mt: 3 }}>
             <Button
-              fullWidth
               component={Link}
               href="/#form-dang-ky"
               variant="contained"
               sx={{
-                borderRadius: '50px', py: 1.5, fontFamily: "'Montserrat', sans-serif", fontWeight: 800,
-                background: 'linear-gradient(45deg, #1976d2 30%, #2196f3 90%)',
+                display: { xs: 'none', md: 'inline-flex' },
+                borderRadius: 999,
+                px: 2.7,
+                fontWeight: 900,
+                whiteSpace: 'nowrap',
               }}
             >
-              Đăng ký ngay
+              Đăng ký
             </Button>
-          </ListItem>
-        </List>
+
+            <IconButton
+              onClick={() => setMobileOpen(true)}
+              sx={{ display: { xs: 'inline-flex', md: 'none' } }}
+              aria-label="Mở menu"
+            >
+              <MenuIcon />
+            </IconButton>
+          </Toolbar>
+        </Container>
+      </AppBar>
+
+      <Drawer anchor="right" open={mobileOpen} onClose={() => setMobileOpen(false)}>
+        <Box sx={{ width: 300, p: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+            <Image src="/Logo_cty_sach.png" alt="Logo" width={42} height={42} />
+            <IconButton onClick={() => setMobileOpen(false)} aria-label="Đóng menu">
+              <CloseIcon />
+            </IconButton>
+          </Box>
+
+          <List>
+            {navItems.map((item) => (
+              <ListItem key={item.label} disablePadding>
+                <ListItemButton
+                  component={Link}
+                  href={item.path}
+                  onClick={() => setMobileOpen(false)}
+                  sx={{ borderRadius: 2 }}
+                >
+                  <ListItemText
+                    primary={item.label}
+                    slotProps={{
+                      primary: {
+                        sx: {
+                          fontFamily: "'Montserrat', sans-serif",
+                          fontWeight: 800,
+                        },
+                      },
+                    }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+
+          <Button
+            component={Link}
+            href="/#form-dang-ky"
+            onClick={() => setMobileOpen(false)}
+            fullWidth
+            variant="contained"
+            sx={{ mt: 2, borderRadius: 999, py: 1.3, fontWeight: 900 }}
+          >
+            Đăng ký ngay
+          </Button>
+        </Box>
       </Drawer>
     </>
   );

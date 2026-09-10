@@ -36,11 +36,12 @@ export const COURSE_WEEKS = 8;
 export const teachers: TeacherInfo[] = [
   {
     id: 'lo-duc-khai',
-    name: 'Thầy Lô Đức Khải',
+    name: 'Thầy Lô Quốc Khải',
     subject: 'Toán',
     degree: 'Thạc sĩ',
     organization: 'Chuyên viên Phòng GD&ĐT P. Tân Phú',
     note: 'Trên 15 năm kinh nghiệm dạy học.',
+    image: '/teachers/lo_quoc_khai.png',
     accent: '#1976d2',
   },
   {
@@ -58,6 +59,7 @@ export const teachers: TeacherInfo[] = [
     subject: 'Tiếng Anh',
     degree: 'Cử nhân',
     organization: 'THCS Chánh Hưng',
+    image: '/teachers/dinh_hoang_tuan_anh.jpg',
     note: '12 năm kinh nghiệm giảng dạy, TOEIC 955/990; tác giả sách bài kiểm tra Tiếng Anh 8, 9.',
     accent: '#2e7d32',
   },

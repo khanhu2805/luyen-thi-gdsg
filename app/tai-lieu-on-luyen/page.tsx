@@ -342,7 +342,7 @@ export default function TaiLieuOnLuyenPage() {
         <Grid
           container
           spacing={3}
-          justifyContent="center"
+          sx={{ justifyContent: "center" }}  
         >
           {coreBooks.map((book, index) => (
             <Grid
@@ -416,8 +416,8 @@ export default function TaiLieuOnLuyenPage() {
 
                   <Stack
                     spacing={1}
-                    alignItems="center"
                     sx={{
+                      alignItems: "center",
                       position: 'relative',
                       zIndex: 1,
                       color: '#fff',
@@ -648,8 +648,8 @@ export default function TaiLieuOnLuyenPage() {
 
                     <Stack
                       spacing={0.5}
-                      alignItems="center"
                       sx={{
+                        alignItems: "center",
                         color: '#fff',
                         position: 'relative',
                         zIndex: 1,
@@ -875,8 +875,8 @@ export default function TaiLieuOnLuyenPage() {
         <Container maxWidth="md">
           <Stack
             spacing={3}
-            alignItems="center"
             sx={{
+              alignItems: "center",
               textAlign: 'center',
             }}
           >

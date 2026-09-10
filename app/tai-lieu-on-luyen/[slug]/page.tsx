@@ -33,7 +33,7 @@ export default function DapAnPage() {
   if (!book) {
     return (
       <Container maxWidth="sm" sx={{ py: 15, textAlign: 'center' }}>
-        <Typography variant="h4" fontWeight={900}>
+        <Typography variant="h4" sx={{ fontWeight: 900 }}>
           Không tìm thấy tài liệu
         </Typography>
 

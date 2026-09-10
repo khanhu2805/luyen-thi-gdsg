@@ -88,7 +88,7 @@ export const courses: CourseInfo[] = [
     id: 'test',
     subject: 'test',
     teacherId: 'test',
-    price: 1_499,
+    price: 1_499_500,
     sessions: COURSE_SESSIONS,
     weeks: COURSE_WEEKS,
     description: 'Luyện thi theo lộ trình 8 tuần, củng cố kiến thức trọng tâm và rèn kỹ năng làm bài.',

@@ -36,6 +36,7 @@ type Mode = 'consultation' | 'registration';
 type FormState = {
   mode: Mode;
   studentName: string;
+  studentEmail: string;
   grade: string;
   school: string;
   parentName: string;
@@ -52,6 +53,7 @@ type FormState = {
 const emptyForm: FormState = {
   mode: 'consultation',
   studentName: '',
+  studentEmail: '',
   grade: '9',
   school: '',
   parentName: '',
@@ -72,6 +74,7 @@ export default function AssignForm(props: Props) {
   const [formData, setFormData] = useState<FormState>(emptyForm);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [serverError, setServerError] = useState('');
+
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -113,6 +116,7 @@ export default function AssignForm(props: Props) {
   const validate = () => {
     if (
       !formData.studentName.trim() ||
+      !formData.studentEmail.trim() ||
       !formData.school.trim() ||
       !formData.parentName.trim() ||
       !formData.parentEmail.trim() ||
@@ -123,6 +127,10 @@ export default function AssignForm(props: Props) {
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.parentEmail.trim())) {
       return 'Email phụ huynh chưa đúng định dạng.';
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.studentEmail.trim())) {
+      return 'Email học sinh chưa đúng định dạng.';
     }
 
     if (!/^0\d{9}$/.test(formData.parentPhone.replace(/\s/g, ''))) {
@@ -227,15 +235,15 @@ export default function AssignForm(props: Props) {
               >
                 Khai giảng {ENROLLMENT_OPEN_DATE}
               </Typography>
-              <Typography sx={{ fontFamily: fontBody, opacity: 0.92, lineHeight: 1.75 }}>
+              {/* <Typography sx={{ fontFamily: fontBody, opacity: 0.92, lineHeight: 1.75 }}>
                 Phụ huynh có thể để lại nhu cầu tư vấn hoặc đăng ký trực tiếp lớp
                 đã có lịch. Với đăng ký chính thức, hệ thống sẽ chuyển sang cổng
                 VNPAY để thanh toán bằng mã QR.
-              </Typography>
+              </Typography> */}
 
               <Divider sx={{ my: 4, borderColor: 'rgba(255,255,255,.25)' }} />
 
-              <Stack spacing={2}>
+              {/* <Stack spacing={2}>
                 {courses.map((course) => {
                   const teacher = getTeacherById(course.teacherId);
                   return (
@@ -260,7 +268,7 @@ export default function AssignForm(props: Props) {
                     </Box>
                   );
                 })}
-              </Stack>
+              </Stack> */}
             </Grid>
 
             <Grid size={{ xs: 12, md: 7 }} sx={{ p: { xs: 3, sm: 5, md: 6 } }}>
@@ -274,7 +282,7 @@ export default function AssignForm(props: Props) {
                 Các trường có dấu * là bắt buộc.
               </Typography>
 
-              <ToggleButtonGroup
+              {/* <ToggleButtonGroup
                 exclusive
                 fullWidth
                 value={formData.mode}
@@ -287,7 +295,7 @@ export default function AssignForm(props: Props) {
                 <ToggleButton value="registration" sx={{ fontWeight: 800, py: 1.4 }}>
                   Tôi muốn đăng ký
                 </ToggleButton>
-              </ToggleButtonGroup>
+              </ToggleButtonGroup> */}
 
               {serverError && (
                 <Alert severity="error" sx={{ mb: 3 }}>
@@ -309,22 +317,28 @@ export default function AssignForm(props: Props) {
                     </Grid>
                     <Grid size={{ xs: 12, sm: 5 }}>
                       <TextField
-                        fullWidth
                         select
+                        fullWidth
                         required
-                        label="Lớp hiện tại"
+                        label="Khối lớp"
                         value={formData.grade}
                         onChange={(e) => update('grade', e.target.value)}
                       >
-                        {[6, 7, 8, 9, 10, 11, 12].map((grade) => (
-                          <MenuItem key={grade} value={String(grade)}>
-                            Lớp {grade}
-                          </MenuItem>
-                        ))}
+                        <MenuItem value="9">Lớp 9</MenuItem>
+                        <MenuItem value="12">Lớp 12</MenuItem>
                       </TextField>
                     </Grid>
                   </Grid>
-
+                  <TextField
+                    fullWidth
+                    required
+                    type="email"
+                    label="Email học sinh"
+                    placeholder="hocsinh@example.com"
+                    name="studentEmail"
+                    value={formData.studentEmail}
+                    onChange={(e) => update('studentEmail', e.target.value)}
+                  />
                   <TextField
                     fullWidth
                     required
@@ -363,7 +377,7 @@ export default function AssignForm(props: Props) {
                     required
                     type="email"
                     label="Email phụ huynh"
-                    placeholder="phuhuynh@example.com"
+                      
                     value={formData.parentEmail}
                     onChange={(e) => update('parentEmail', e.target.value)}
                   />
@@ -375,7 +389,7 @@ export default function AssignForm(props: Props) {
                     label={
                       formData.mode === 'registration'
                         ? 'Môn học đăng ký'
-                        : 'Môn học quan tâm (không bắt buộc)'
+                        : 'Môn học quan tâm'
                     }
                     value={formData.courseId}
                     onChange={(e) => {
@@ -389,7 +403,7 @@ export default function AssignForm(props: Props) {
                     }}
                   >
                     {formData.mode === 'consultation' && (
-                      <MenuItem value="">Chưa xác định – cần tư vấn</MenuItem>
+                      <MenuItem value="0">Chưa xác định – cần tư vấn</MenuItem>
                     )}
                     {courses.map((course) => (
                       <MenuItem key={course.id} value={course.id}>
@@ -431,7 +445,7 @@ export default function AssignForm(props: Props) {
                       onChange={(e) => update('scheduleId', e.target.value)}
                     >
                       {formData.mode === 'consultation' && (
-                        <MenuItem value="">Chưa chọn lịch</MenuItem>
+                        <MenuItem value="0">Chưa chọn lịch</MenuItem>
                       )}
                       {selectedCourse.schedules.map((schedule) => (
                         <MenuItem key={schedule.id} value={schedule.id}>
@@ -529,7 +543,7 @@ export default function AssignForm(props: Props) {
                     {isSubmitting ? (
                       <CircularProgress size={25} sx={{ color: 'white' }} />
                     ) : formData.mode === 'registration' ? (
-                      'Đăng ký & thanh toán VNPAY QR'
+                      'Đăng ký tham gia khóa học'
                     ) : (
                       'Gửi yêu cầu tư vấn'
                     )}

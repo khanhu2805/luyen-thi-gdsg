@@ -60,6 +60,7 @@ export type StoredRegistration = {
   orderId: string;
   type: 'consultation' | 'registration';
   studentName: string;
+  studentEmail: string;
   grade: string;
   school: string;
   parentName: string;

@@ -35,7 +35,7 @@ export const COURSE_WEEKS = 8;
 
 export const teachers: TeacherInfo[] = [
   {
-    id: 'lo-duc-khai',
+    id: 'lo-quoc-khai',
     name: 'Thầy Lô Quốc Khải',
     subject: 'Toán',
     degree: 'Thạc sĩ',
@@ -69,8 +69,26 @@ export const courses: CourseInfo[] = [
   {
     id: 'toan',
     subject: 'Toán',
-    teacherId: 'lo-duc-khai',
+    teacherId: 'lo-quoc-khai',
     price: COURSE_PRICE,
+    sessions: COURSE_SESSIONS,
+    weeks: COURSE_WEEKS,
+    description: 'Luyện thi theo lộ trình 8 tuần, củng cố kiến thức trọng tâm và rèn kỹ năng làm bài.',
+    schedules: [
+      {
+        id: 'toan-t3-1745',
+        day: 'Thứ 3',
+        time: '17:45 – 19:15',
+        label: 'Thứ 3 • 17:45 – 19:15',
+        startNote: 'Bắt đầu theo tuần khai giảng 20/09/2026',
+      },
+    ],
+  },
+  {
+    id: 'test',
+    subject: 'test',
+    teacherId: 'test',
+    price: 1_499,
     sessions: COURSE_SESSIONS,
     weeks: COURSE_WEEKS,
     description: 'Luyện thi theo lộ trình 8 tuần, củng cố kiến thức trọng tâm và rèn kỹ năng làm bài.',

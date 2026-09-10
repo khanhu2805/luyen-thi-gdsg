@@ -85,24 +85,6 @@ export const courses: CourseInfo[] = [
     ],
   },
   {
-    id: 'test',
-    subject: 'test',
-    teacherId: 'test',
-    price: 1_499_500,
-    sessions: COURSE_SESSIONS,
-    weeks: COURSE_WEEKS,
-    description: 'Luyện thi theo lộ trình 8 tuần, củng cố kiến thức trọng tâm và rèn kỹ năng làm bài.',
-    schedules: [
-      {
-        id: 'toan-t3-1745',
-        day: 'Thứ 3',
-        time: '17:45 – 19:15',
-        label: 'Thứ 3 • 17:45 – 19:15',
-        startNote: 'Bắt đầu theo tuần khai giảng 20/09/2026',
-      },
-    ],
-  },
-  {
     id: 'ngu-van',
     subject: 'Ngữ văn',
     teacherId: 'nguyen-phuoc-bao-khoi',

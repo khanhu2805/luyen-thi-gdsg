@@ -19,6 +19,28 @@ export default function HomePage() {
 
   const [phone, setPhone] = useState(''); // Biến để lưu số điện thoại hiển thị trong popup
 
+  type SnackbarSeverity = 'success' | 'error' | 'warning' | 'info';
+
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: SnackbarSeverity;
+  }>({
+    open: false,
+    message: '',
+    severity: 'success',
+  });
+
+  const showSnackbar = (
+    message: string,
+    severity: SnackbarSeverity = 'success',
+  ) => {
+    setSnackbar({
+      open: true,
+      message,
+      severity,
+    });
+  };
   // ================================================
 
   return (
@@ -49,11 +71,22 @@ export default function HomePage() {
 
       {/* ================= FORM ĐĂNG KÝ ================= */}
 
-      <AssignForm setOpenSuccessPopup={setOpenSuccessPopup} setPhone={setPhone} />
+      <AssignForm showSnackbar={showSnackbar} setPhone={setPhone} />
 
       {/* ================= POPUP THÔNG BÁO THÀNH CÔNG ================= */}
 
-      <SnackBar openSuccessPopup={openSuccessPopup} setOpenSuccessPopup={setOpenSuccessPopup} phone={phone} />
+      <SnackBar
+        open={snackbar.open}
+        setOpen={(open) =>
+          setSnackbar((prev) => ({
+            ...prev,
+            open,
+          }))
+        }
+        phone={phone}
+        message={snackbar.message}
+        severity={snackbar.severity}
+      />
       {/* ============================================================= */}
     </Box>
   );

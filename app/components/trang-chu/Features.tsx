@@ -25,7 +25,7 @@ const Features = (props: Props) => {
           {[
             { title: 'TÀI LIỆU BIÊN SOẠN CHUẨN CHỈNH', icon: '📺', color: '#e3f2fd', desc: 'Tài liệu được biên soạn chuẩn chỉnh, sát với nội dung cấu trúc đề thi.' },
             { title: 'NGÂN HÀNG ĐỀ THI THỬ', icon: '📝', color: '#fff3e0', desc: 'Tổng hợp đề thi thử bám sát cấu trúc của Sở GD&ĐT.' },
-            { title: 'ZALO REPORT CHO PHỤ HUYNH', icon: '📱', color: '#e8f5e9', desc: 'Chấm điểm tự động và gửi báo cáo tiến độ làm bài chi tiết qua Zalo OA của phụ huynh hàng tuần.' },
+            // { title: 'ZALO REPORT CHO PHỤ HUYNH', icon: '📱', color: '#e8f5e9', desc: 'Chấm điểm tự động và gửi báo cáo tiến độ làm bài chi tiết qua Zalo OA của phụ huynh hàng tuần.' },
             { title: 'HỎI ĐÁP CÙNG THẦY CÔ', icon: '💡', color: '#f3e5f5', desc: 'Gửi câu hỏi lên hệ thống để đội ngũ thầy cô giải đáp ngay trong tíc tắc.' }
           ].map((feature, i) => (
             <Grid size={{ xs: 12, md: 6 }} key={i}>

@@ -40,7 +40,7 @@ export const teachers: TeacherInfo[] = [
     subject: 'Toán',
     degree: 'Thạc sĩ',
     organization: 'Chuyên viên Phòng GD&ĐT P. Tân Phú',
-    note: 'Trên 15 năm kinh nghiệm dạy học.',
+    note: 'Trực tiếp giảng dạy các lớp toán chuyên/ nâng cao.',
     image: '/teachers/lo_quoc_khai.png',
     accent: '#1976d2',
   },
@@ -51,6 +51,7 @@ export const teachers: TeacherInfo[] = [
     degree: 'Thạc sĩ',
     organization: 'Đại học Sư phạm TP.HCM',
     image: '/teachers/nguyen_phuoc_bao_khoi.png',
+    note: 'Trên 20 năm kinh nghiệm giảng dạy. Tác giả, đồng chủ biên của nhiều sách ôn thi, ôn luyện vào lớp 10 môn Ngữ văn',
     accent: '#d32f2f',
   },
   {

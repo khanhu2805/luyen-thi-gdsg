@@ -33,6 +33,27 @@ function initials(name: string) {
 export default function DoiNguPage() {
   const [openSuccessPopup, setOpenSuccessPopup] = useState(false);
   const [phone, setPhone] = useState('');
+  type SnackbarSeverity = 'success' | 'error' | 'warning' | 'info';
+
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: SnackbarSeverity;
+  }>({
+    open: false,
+    message: '',
+    severity: 'success',
+  });
+  const showSnackbar = (
+    message: string,
+    severity: SnackbarSeverity = 'success',
+  ) => {
+    setSnackbar({
+      open: true,
+      message,
+      severity,
+    });
+  };
 
   return (
     <Box sx={{ bgcolor: '#f7f9fc', minHeight: '100vh', fontFamily: fontBody }}>
@@ -182,11 +203,21 @@ export default function DoiNguPage() {
         </Stack>
       </Container>
 
-      <AssignForm setOpenSuccessPopup={setOpenSuccessPopup} setPhone={setPhone} />
+      <AssignForm
+        setPhone={setPhone}
+        showSnackbar={showSnackbar}
+      />
       <SnackBar
-        openSuccessPopup={openSuccessPopup}
-        setOpenSuccessPopup={setOpenSuccessPopup}
+        open={snackbar.open}
+        setOpen={(open) =>
+          setSnackbar((prev) => ({
+            ...prev,
+            open,
+          }))
+        }
         phone={phone}
+        message={snackbar.message}
+        severity={snackbar.severity}
       />
     </Box>
   );

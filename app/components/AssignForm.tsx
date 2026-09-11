@@ -26,8 +26,13 @@ import {
   getTeacherById,
 } from '../data/enrollment';
 
+type SnackbarSeverity = 'success' | 'error' | 'warning' | 'info';
+
 type Props = {
-  setOpenSuccessPopup: (open: boolean) => void;
+  showSnackbar: (
+    message: string,
+    severity?: SnackbarSeverity,
+  ) => void;
   setPhone: (phone: string) => void;
 };
 
@@ -162,6 +167,10 @@ export default function AssignForm(props: Props) {
 
     if (validationError) {
       setServerError(validationError);
+      props.showSnackbar(
+        validationError,
+        'error',
+      );
       return;
     }
 
@@ -181,23 +190,32 @@ export default function AssignForm(props: Props) {
         throw new Error(result.message || 'Không thể gửi đăng ký.');
       }
 
-      if (formData.mode === 'registration') {
-        if (!result.paymentUrl) {
-          throw new Error('Chưa tạo được liên kết thanh toán VNPAY.');
-        }
+      // if (formData.mode === 'registration') {
+      //   if (!result.paymentUrl) {
+      //     throw new Error('Chưa tạo được liên kết thanh toán VNPAY.');
+      //   }
 
-        window.location.assign(result.paymentUrl);
-        return;
-      }
+      //   window.location.assign(result.paymentUrl);
+      //   return;
+      // }
 
       props.setPhone(formData.parentPhone);
-      props.setOpenSuccessPopup(true);
+      props.showSnackbar(
+        `Đăng ký thành công! Đội ngũ tư vấn sẽ liên hệ với bạn qua số điện thoại ${formData.parentPhone} trong thời gian sớm nhất.`,
+        'success',
+      );
       setFormData(emptyForm);
     } catch (error) {
-      setServerError(
+      const errorMessage =
         error instanceof Error
           ? error.message
-          : 'Có lỗi xảy ra. Vui lòng thử lại.',
+          : 'Có lỗi xảy ra. Vui lòng thử lại.';
+
+      setServerError(errorMessage);
+
+      props.showSnackbar(
+        errorMessage,
+        'error',
       );
     } finally {
       setIsSubmitting(false);
@@ -377,7 +395,7 @@ export default function AssignForm(props: Props) {
                     required
                     type="email"
                     label="Email phụ huynh"
-                      
+
                     value={formData.parentEmail}
                     onChange={(e) => update('parentEmail', e.target.value)}
                   />
@@ -512,14 +530,14 @@ export default function AssignForm(props: Props) {
                     label="Tôi đồng ý để trung tâm sử dụng thông tin trên nhằm liên hệ tư vấn, xác nhận lớp học và xử lý đăng ký."
                   />
 
-                  {formData.mode === 'registration' && selectedCourse && (
+                  {/* {formData.mode === 'registration' && selectedCourse && (
                     <Alert severity="info">
                       Số tiền thanh toán: <b>{formatVnd(selectedCourse.price)}</b>. Sau
                       khi gửi đăng ký, phụ huynh sẽ được chuyển sang VNPAY QR. Hệ thống
                       chỉ ghi nhận thanh toán thành công sau khi kiểm tra chữ ký trả về
                       từ VNPAY.
                     </Alert>
-                  )}
+                  )} */}
 
                   <Button
                     type="submit"

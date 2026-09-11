@@ -39,7 +39,7 @@ export default function HeroSection() {
         }}
       />
       <Container maxWidth="xl" sx={{ py: { xs: 8, md: 11 }, position: 'relative', zIndex: 1 }}>
-        <Grid container spacing={5} sx={{alignItems:"center"}}>
+        <Grid container spacing={5} sx={{ alignItems: "center" }}>
           <Grid size={{ xs: 12, md: 8 }}>
             <Chip
               icon={<CalendarMonthRoundedIcon />}
@@ -135,8 +135,7 @@ export default function HeroSection() {
               {[
                 ['03 môn', 'Toán · Ngữ văn · Tiếng Anh'],
                 ['08 tuần', 'Mỗi khóa 8 buổi'],
-                ['Nhiều ca', 'Học sinh lựa chọn lịch phù hợp'],
-                ['VNPAY QR', 'Thanh toán đăng ký chính thức'],
+                ['Nhiều ca', 'Học sinh lựa chọn lịch phù hợp và linh hoạt'],
               ].map(([value, label]) => (
                 <Box key={value} sx={{ py: 1.5 }}>
                   <Typography variant="h5" sx={{ fontFamily: fontHeader, fontWeight: 900 }}>

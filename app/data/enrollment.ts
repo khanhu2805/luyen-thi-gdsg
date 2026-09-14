@@ -51,7 +51,7 @@ export const teachers: TeacherInfo[] = [
     degree: 'Thạc sĩ',
     organization: 'Đại học Sư phạm TP.HCM',
     image: '/teachers/nguyen_phuoc_bao_khoi.png',
-    note: 'Trên 20 năm kinh nghiệm giảng dạy. Tác giả, đồng chủ biên của nhiều sách ôn thi, ôn luyện vào lớp 10 môn Ngữ văn',
+    note: 'Cựu giáo viên THPT chuyên Lê Hồng Phong, TP.HCM (2004 – 2009); Chủ biên, đồng chủ biên của nhiều bộ sách tham khảo phục vụ cho kì thi tốt nghiệp THPT, kì thi tuyển sinh vào lớp 10.',
     accent: '#d32f2f',
   },
   {

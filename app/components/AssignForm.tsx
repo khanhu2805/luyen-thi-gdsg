@@ -343,6 +343,8 @@ export default function AssignForm(props: Props) {
                         onChange={(e) => update('grade', e.target.value)}
                       >
                         <MenuItem value="9">Lớp 9</MenuItem>
+                        <MenuItem value="10">Lớp 10</MenuItem>
+                        <MenuItem value="11">Lớp 11</MenuItem>
                         <MenuItem value="12">Lớp 12</MenuItem>
                       </TextField>
                     </Grid>

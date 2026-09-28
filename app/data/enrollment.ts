@@ -2,6 +2,8 @@ export type ScheduleOption = {
   id: string;
   day: string;
   time: string;
+  start: string;
+  end: string;
   label: string;
   startNote: string;
 };
@@ -17,15 +19,25 @@ export type TeacherInfo = {
   accent: string;
 };
 
+export type CourseTeacherInfo = {
+  teacherId: string;
+  schedules: ScheduleOption[];
+};
+
 export type CourseInfo = {
   id: string;
   subject: string;
-  teacherId: string;
   price: number;
   sessions: number;
   weeks: number;
   description: string;
-  schedules: ScheduleOption[];
+  teachers: CourseTeacherInfo[];
+};
+
+export type CourseSelection = {
+  courseId: string;
+  teacherId: string;
+  scheduleId: string;
 };
 
 export const ENROLLMENT_OPEN_DATE = '20/09/2026';
@@ -70,68 +82,90 @@ export const courses: CourseInfo[] = [
   {
     id: 'toan',
     subject: 'Toán',
-    teacherId: 'lo-quoc-khai',
     price: COURSE_PRICE,
     sessions: COURSE_SESSIONS,
     weeks: COURSE_WEEKS,
     description: 'Luyện thi theo lộ trình 8 tuần, củng cố kiến thức trọng tâm và rèn kỹ năng làm bài.',
-    schedules: [
+    teachers: [
       {
-        id: 'toan-t3-1745',
-        day: 'Thứ 3',
-        time: '17:45 – 19:15',
-        label: 'Thứ 3 • 17:45 – 19:15',
-        startNote: 'Bắt đầu theo tuần khai giảng 20/09/2026',
+        teacherId: 'lo-quoc-khai',
+        schedules: [
+          {
+            id: 'toan-khai-t3-1745',
+            day: 'Thứ 3',
+            time: '17:45 – 19:15',
+            start: '17:45',
+            end: '19:15',
+            label: 'Thứ 3 • 17:45 – 19:15',
+            startNote: 'Bắt đầu theo tuần khai giảng 20/09/2026',
+          },
+        ],
       },
     ],
   },
   {
     id: 'ngu-van',
     subject: 'Ngữ văn',
-    teacherId: 'nguyen-phuoc-bao-khoi',
     price: COURSE_PRICE,
     sessions: COURSE_SESSIONS,
     weeks: COURSE_WEEKS,
     description: 'Ôn tập kiến thức, kỹ năng đọc hiểu và làm văn theo định hướng tuyển sinh lớp 10.',
-    schedules: [
+    teachers: [
       {
-        id: 'van-t4-1900',
-        day: 'Thứ 4',
-        time: '19:00 – 21:00',
-        label: 'Thứ 4 • 19:00 – 21:00',
-        startNote: 'Bắt đầu theo tuần khai giảng 20/09/2026',
-      },
-      {
-        id: 'van-t7-1900',
-        day: 'Thứ 7',
-        time: '19:00 – 21:00',
-        label: 'Thứ 7 • 19:00 – 21:00',
-        startNote: 'Bắt đầu theo tuần khai giảng 20/09/2026',
+        teacherId: 'nguyen-phuoc-bao-khoi',
+        schedules: [
+          {
+            id: 'van-khoi-t4-1900',
+            day: 'Thứ 4',
+            time: '19:00 – 21:00',
+            start: '19:00',
+            end: '21:00',
+            label: 'Thứ 4 • 19:00 – 21:00',
+            startNote: 'Bắt đầu theo tuần khai giảng 20/09/2026',
+          },
+          {
+            id: 'van-khoi-t7-1900',
+            day: 'Thứ 7',
+            time: '19:00 – 21:00',
+            start: '19:00',
+            end: '21:00',
+            label: 'Thứ 7 • 19:00 – 21:00',
+            startNote: 'Bắt đầu theo tuần khai giảng 20/09/2026',
+          },
+        ],
       },
     ],
   },
   {
     id: 'tieng-anh',
     subject: 'Tiếng Anh',
-    teacherId: 'dinh-hoang-tuan-anh',
     price: COURSE_PRICE,
     sessions: COURSE_SESSIONS,
     weeks: COURSE_WEEKS,
     description: 'Hệ thống ngữ pháp, từ vựng và chiến lược làm bài theo cấu trúc ôn thi vào lớp 10.',
-    schedules: [
+    teachers: [
       {
-        id: 'anh-t2-1945',
-        day: 'Thứ 2',
-        time: '19:45 – 21:15',
-        label: 'Thứ 2 • 19:45 – 21:15',
-        startNote: 'Bắt đầu theo tuần khai giảng 20/09/2026',
-      },
-      {
-        id: 'anh-t4-1945',
-        day: 'Thứ 4',
-        time: '19:45 – 21:15',
-        label: 'Thứ 4 • 19:45 – 21:15',
-        startNote: 'Bắt đầu theo tuần khai giảng 20/09/2026',
+        teacherId: 'dinh-hoang-tuan-anh',
+        schedules: [
+          {
+            id: 'anh-tuan-anh-t2-1945',
+            day: 'Thứ 2',
+            time: '19:45 – 21:15',
+            start: '19:45',
+            end: '21:15',
+            label: 'Thứ 2 • 19:45 – 21:15',
+            startNote: 'Bắt đầu theo tuần khai giảng 20/09/2026',
+          },
+          {
+            id: 'anh-tuan-anh-t4-1945',
+            day: 'Thứ 4',
+            time: '19:45 – 21:15',
+            start: '19:45',
+            end: '21:15',
+            label: 'Thứ 4 • 19:45 – 21:15',
+            startNote: 'Bắt đầu theo tuần khai giảng 20/09/2026',
+          },
+        ],
       },
     ],
   },
@@ -142,6 +176,26 @@ export const getTeacherById = (id: string) =>
 
 export const getCourseById = (id: string) =>
   courses.find((course) => course.id === id);
+
+export const getCourseTeacherById = (courseId: string, teacherId: string) =>
+  getCourseById(courseId)?.teachers.find((item) => item.teacherId === teacherId);
+
+export const makeDefaultCourseSelection = (
+  courseId: string,
+): CourseSelection | undefined => {
+  const course = getCourseById(courseId);
+  if (!course) return undefined;
+
+  const onlyTeacher = course.teachers.length === 1 ? course.teachers[0] : undefined;
+  const onlySchedule =
+    onlyTeacher?.schedules.length === 1 ? onlyTeacher.schedules[0] : undefined;
+
+  return {
+    courseId,
+    teacherId: onlyTeacher?.teacherId || '',
+    scheduleId: onlySchedule?.id || '',
+  };
+};
 
 export const formatVnd = (amount: number) =>
   new Intl.NumberFormat('vi-VN', {

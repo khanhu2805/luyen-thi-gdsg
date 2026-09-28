@@ -15,15 +15,15 @@ import {
   MenuItem,
   Stack,
   TextField,
-  ToggleButton,
-  ToggleButtonGroup,
   Typography,
 } from '@mui/material';
+import CourseSelectionField from './CourseSelectionField';
 import {
+  CourseSelection,
   courses,
   ENROLLMENT_OPEN_DATE,
   formatVnd,
-  getTeacherById,
+  makeDefaultCourseSelection,
 } from '../data/enrollment';
 
 type SnackbarSeverity = 'success' | 'error' | 'warning' | 'info';
@@ -47,8 +47,6 @@ type FormState = {
   parentName: string;
   parentEmail: string;
   parentPhone: string;
-  courseId: string;
-  scheduleId: string;
   desiredSchedule: string;
   note: string;
   consent: boolean;
@@ -64,8 +62,6 @@ const emptyForm: FormState = {
   parentName: '',
   parentEmail: '',
   parentPhone: '',
-  courseId: '',
-  scheduleId: '',
   desiredSchedule: '',
   note: '',
   consent: false,
@@ -75,47 +71,55 @@ const emptyForm: FormState = {
 const fontHeader = "'Montserrat', sans-serif";
 const fontBody = "'Nunito', sans-serif";
 
+const toMinutes = (value: string) => {
+  const [hour, minute] = value.split(':').map(Number);
+  return hour * 60 + minute;
+};
+
 export default function AssignForm(props: Props) {
   const [formData, setFormData] = useState<FormState>(emptyForm);
+  const [selectedCourses, setSelectedCourses] = useState<CourseSelection[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [serverError, setServerError] = useState('');
 
-
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const course = params.get('course');
+    const courseId = params.get('course');
     const mode = params.get('mode');
 
-    if (course && courses.some((item) => item.id === course)) {
-      setFormData((prev) => ({
-        ...prev,
-        courseId: course,
-        mode: mode === 'register' ? 'registration' : prev.mode,
-      }));
+    if (courseId && courses.some((item) => item.id === courseId)) {
+      const selection = makeDefaultCourseSelection(courseId);
+
+      if (selection) {
+        setSelectedCourses([selection]);
+      }
+
+      if (mode === 'register') {
+        setFormData((prev) => ({
+          ...prev,
+          mode: 'registration',
+        }));
+      }
     }
   }, []);
 
-  const selectedCourse = useMemo(
-    () => courses.find((course) => course.id === formData.courseId),
-    [formData.courseId],
+  const totalAmount = useMemo(
+    () =>
+      selectedCourses.reduce((sum, selection) => {
+        const course = courses.find((item) => item.id === selection.courseId);
+        return sum + (course?.price || 0);
+      }, 0),
+    [selectedCourses],
   );
-
-  const selectedTeacher = selectedCourse
-    ? getTeacherById(selectedCourse.teacherId)
-    : undefined;
 
   const update = (field: keyof FormState, value: string | boolean) => {
     setServerError('');
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleModeChange = (_: React.MouseEvent<HTMLElement>, value: Mode | null) => {
-    if (!value) return;
-    setFormData((prev) => ({
-      ...prev,
-      mode: value,
-      scheduleId: value === 'consultation' ? prev.scheduleId : prev.scheduleId,
-    }));
+  const handleCourseSelectionChange = (value: CourseSelection[]) => {
+    setServerError('');
+    setSelectedCourses(value);
   };
 
   const validate = () => {
@@ -143,14 +147,58 @@ export default function AssignForm(props: Props) {
     }
 
     if (formData.mode === 'registration') {
-      if (!selectedCourse) return 'Vui lòng chọn môn học muốn đăng ký.';
-
-      if (selectedCourse.schedules.length > 0 && !formData.scheduleId) {
-        return 'Vui lòng chọn một lịch học đã mở.';
+      if (selectedCourses.length === 0) {
+        return 'Vui lòng chọn ít nhất một môn học muốn đăng ký.';
       }
 
-      if (selectedCourse.schedules.length === 0) {
-        return 'Khóa này chưa có ca học chính thức. Vui lòng chọn “Tôi cần tư vấn” để trung tâm xác nhận lịch trước khi thanh toán.';
+      const resolved = [];
+
+      for (const selection of selectedCourses) {
+        const course = courses.find((item) => item.id === selection.courseId);
+
+        if (!course) {
+          return 'Có môn học không còn tồn tại. Vui lòng chọn lại.';
+        }
+
+        const teacherOption = course.teachers.find(
+          (item) => item.teacherId === selection.teacherId,
+        );
+
+        if (!teacherOption) {
+          return `Vui lòng chọn giáo viên cho môn ${course.subject}.`;
+        }
+
+        if (teacherOption.schedules.length === 0) {
+          return `Giáo viên đã chọn của môn ${course.subject} chưa có ca học chính thức.`;
+        }
+
+        const schedule = teacherOption.schedules.find(
+          (item) => item.id === selection.scheduleId,
+        );
+
+        if (!schedule) {
+          return `Vui lòng chọn lịch học cho môn ${course.subject}.`;
+        }
+
+        resolved.push({ course, schedule });
+      }
+
+      for (let i = 0; i < resolved.length; i += 1) {
+        for (let j = i + 1; j < resolved.length; j += 1) {
+          const first = resolved[i];
+          const second = resolved[j];
+
+          if (first.schedule.day !== second.schedule.day) continue;
+
+          const firstStart = toMinutes(first.schedule.start);
+          const firstEnd = toMinutes(first.schedule.end);
+          const secondStart = toMinutes(second.schedule.start);
+          const secondEnd = toMinutes(second.schedule.end);
+
+          if (firstStart < secondEnd && secondStart < firstEnd) {
+            return `Lịch ${first.course.subject} (${first.schedule.label}) bị trùng với ${second.course.subject} (${second.schedule.label}). Vui lòng chọn ca khác.`;
+          }
+        }
       }
     }
 
@@ -167,10 +215,7 @@ export default function AssignForm(props: Props) {
 
     if (validationError) {
       setServerError(validationError);
-      props.showSnackbar(
-        validationError,
-        'error',
-      );
+      props.showSnackbar(validationError, 'error');
       return;
     }
 
@@ -181,7 +226,10 @@ export default function AssignForm(props: Props) {
       const response = await fetch('/api/enrollment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          selections: selectedCourses,
+        }),
       });
 
       const result = await response.json();
@@ -190,11 +238,9 @@ export default function AssignForm(props: Props) {
         throw new Error(result.message || 'Không thể gửi đăng ký.');
       }
 
-      // if (formData.mode === 'registration') {
-      //   if (!result.paymentUrl) {
-      //     throw new Error('Chưa tạo được liên kết thanh toán VNPAY.');
-      //   }
-
+      // Luồng chuyển sang VNPAY đang được giữ nguyên trạng thái hiện tại của dự án.
+      // Khi mở lại thanh toán trực tiếp, có thể dùng:
+      // if (formData.mode === 'registration' && result.paymentUrl) {
       //   window.location.assign(result.paymentUrl);
       //   return;
       // }
@@ -205,6 +251,7 @@ export default function AssignForm(props: Props) {
         'success',
       );
       setFormData(emptyForm);
+      setSelectedCourses([]);
     } catch (error) {
       const errorMessage =
         error instanceof Error
@@ -212,11 +259,7 @@ export default function AssignForm(props: Props) {
           : 'Có lỗi xảy ra. Vui lòng thử lại.';
 
       setServerError(errorMessage);
-
-      props.showSnackbar(
-        errorMessage,
-        'error',
-      );
+      props.showSnackbar(errorMessage, 'error');
     } finally {
       setIsSubmitting(false);
     }
@@ -253,40 +296,33 @@ export default function AssignForm(props: Props) {
               >
                 Khai giảng {ENROLLMENT_OPEN_DATE}
               </Typography>
-              {/* <Typography sx={{ fontFamily: fontBody, opacity: 0.92, lineHeight: 1.75 }}>
-                Phụ huynh có thể để lại nhu cầu tư vấn hoặc đăng ký trực tiếp lớp
-                đã có lịch. Với đăng ký chính thức, hệ thống sẽ chuyển sang cổng
-                VNPAY để thanh toán bằng mã QR.
-              </Typography> */}
+              <Typography sx={{ fontFamily: fontBody, opacity: 0.92, lineHeight: 1.75 }}>
+                Phụ huynh có thể chọn nhiều môn trong cùng một lần đăng ký. Mỗi môn
+                chọn giáo viên và ca học riêng.
+              </Typography>
 
               <Divider sx={{ my: 4, borderColor: 'rgba(255,255,255,.25)' }} />
 
-              {/* <Stack spacing={2}>
-                {courses.map((course) => {
-                  const teacher = getTeacherById(course.teacherId);
-                  return (
-                    <Box
-                      key={course.id}
-                      sx={{
-                        p: 2,
-                        borderRadius: 3,
-                        bgcolor: 'rgba(255,255,255,.10)',
-                        border: '1px solid rgba(255,255,255,.16)',
-                      }}
-                    >
-                      <Typography sx={{ fontWeight: 900 }}>
-                        {course.subject} · {course.sessions} buổi / {course.weeks} tuần
-                      </Typography>
-                      <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                        {teacher?.name}
-                      </Typography>
-                      <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                        {course.schedules.map((item) => item.label).join(' | ')}
-                      </Typography>
-                    </Box>
-                  );
-                })}
-              </Stack> */}
+              <Stack spacing={1.5}>
+                {courses.map((course) => (
+                  <Box
+                    key={course.id}
+                    sx={{
+                      p: 2,
+                      borderRadius: 3,
+                      bgcolor: 'rgba(255,255,255,.10)',
+                      border: '1px solid rgba(255,255,255,.16)',
+                    }}
+                  >
+                    <Typography sx={{ fontWeight: 900 }}>
+                      {course.subject} · {course.sessions} buổi / {course.weeks} tuần
+                    </Typography>
+                    <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                      {course.teachers.length} giáo viên · {formatVnd(course.price)}
+                    </Typography>
+                  </Box>
+                ))}
+              </Stack>
             </Grid>
 
             <Grid size={{ xs: 12, md: 7 }} sx={{ p: { xs: 3, sm: 5, md: 6 } }}>
@@ -299,21 +335,6 @@ export default function AssignForm(props: Props) {
               <Typography color="text.secondary" sx={{ mt: 1, mb: 3 }}>
                 Các trường có dấu * là bắt buộc.
               </Typography>
-
-              {/* <ToggleButtonGroup
-                exclusive
-                fullWidth
-                value={formData.mode}
-                onChange={handleModeChange}
-                sx={{ mb: 4 }}
-              >
-                <ToggleButton value="consultation" sx={{ fontWeight: 800, py: 1.4 }}>
-                  Tôi cần tư vấn
-                </ToggleButton>
-                <ToggleButton value="registration" sx={{ fontWeight: 800, py: 1.4 }}>
-                  Tôi muốn đăng ký
-                </ToggleButton>
-              </ToggleButtonGroup> */}
 
               {serverError && (
                 <Alert severity="error" sx={{ mb: 3 }}>
@@ -330,7 +351,7 @@ export default function AssignForm(props: Props) {
                         required
                         label="Họ tên học sinh"
                         value={formData.studentName}
-                        onChange={(e) => update('studentName', e.target.value)}
+                        onChange={(event) => update('studentName', event.target.value)}
                       />
                     </Grid>
                     <Grid size={{ xs: 12, sm: 5 }}>
@@ -340,7 +361,7 @@ export default function AssignForm(props: Props) {
                         required
                         label="Khối lớp"
                         value={formData.grade}
-                        onChange={(e) => update('grade', e.target.value)}
+                        onChange={(event) => update('grade', event.target.value)}
                       >
                         <MenuItem value="9">Lớp 9</MenuItem>
                         <MenuItem value="10">Lớp 10</MenuItem>
@@ -349,6 +370,7 @@ export default function AssignForm(props: Props) {
                       </TextField>
                     </Grid>
                   </Grid>
+
                   <TextField
                     fullWidth
                     required
@@ -357,14 +379,15 @@ export default function AssignForm(props: Props) {
                     placeholder="hocsinh@example.com"
                     name="studentEmail"
                     value={formData.studentEmail}
-                    onChange={(e) => update('studentEmail', e.target.value)}
+                    onChange={(event) => update('studentEmail', event.target.value)}
                   />
+
                   <TextField
                     fullWidth
                     required
                     label="Trường đang học"
                     value={formData.school}
-                    onChange={(e) => update('school', e.target.value)}
+                    onChange={(event) => update('school', event.target.value)}
                   />
 
                   <Divider />
@@ -376,7 +399,7 @@ export default function AssignForm(props: Props) {
                         required
                         label="Họ tên phụ huynh"
                         value={formData.parentName}
-                        onChange={(e) => update('parentName', e.target.value)}
+                        onChange={(event) => update('parentName', event.target.value)}
                       />
                     </Grid>
                     <Grid size={{ xs: 12, sm: 6 }}>
@@ -387,7 +410,7 @@ export default function AssignForm(props: Props) {
                         label="Số điện thoại phụ huynh"
                         placeholder="09xxxxxxxx"
                         value={formData.parentPhone}
-                        onChange={(e) => update('parentPhone', e.target.value)}
+                        onChange={(event) => update('parentPhone', event.target.value)}
                       />
                     </Grid>
                   </Grid>
@@ -397,101 +420,33 @@ export default function AssignForm(props: Props) {
                     required
                     type="email"
                     label="Email phụ huynh"
-
                     value={formData.parentEmail}
-                    onChange={(e) => update('parentEmail', e.target.value)}
+                    onChange={(event) => update('parentEmail', event.target.value)}
                   />
 
-                  <TextField
-                    fullWidth
-                    select
-                    required={formData.mode === 'registration'}
-                    label={
-                      formData.mode === 'registration'
-                        ? 'Môn học đăng ký'
-                        : 'Môn học quan tâm'
-                    }
-                    value={formData.courseId}
-                    onChange={(e) => {
-                      setServerError('');
-                      setFormData((prev) => ({
-                        ...prev,
-                        courseId: e.target.value,
-                        scheduleId: '',
-                        desiredSchedule: '',
-                      }));
-                    }}
-                  >
-                    {formData.mode === 'consultation' && (
-                      <MenuItem value="0">Chưa xác định – cần tư vấn</MenuItem>
-                    )}
-                    {courses.map((course) => (
-                      <MenuItem key={course.id} value={course.id}>
-                        {course.subject} · {formatVnd(course.price)} / 8 buổi
-                      </MenuItem>
-                    ))}
-                  </TextField>
+                  <Divider />
 
-                  {selectedCourse && (
-                    <Box
-                      sx={{
-                        p: 2.5,
-                        borderRadius: 3,
-                        bgcolor: '#f8fafc',
-                        border: '1px solid #e3e8ef',
-                      }}
-                    >
-                      <Typography sx={{ fontWeight: 900, color: '#1a237e' }}>
-                        {selectedCourse.subject} · {selectedTeacher?.name}
-                      </Typography>
-                      <Typography color="text.secondary" variant="body2">
-                        {selectedCourse.sessions} buổi trong {selectedCourse.weeks} tuần ·{' '}
-                        {formatVnd(selectedCourse.price)}
-                      </Typography>
-                    </Box>
-                  )}
+                  <CourseSelectionField
+                    mode={formData.mode}
+                    value={selectedCourses}
+                    onChange={handleCourseSelectionChange}
+                  />
 
-                  {selectedCourse && selectedCourse.schedules.length > 0 && (
+                  {formData.mode === 'consultation' && (
                     <TextField
                       fullWidth
-                      select
-                      required={formData.mode === 'registration'}
-                      label={
-                        formData.mode === 'registration'
-                          ? 'Chọn lịch học'
-                          : 'Lịch học quan tâm'
-                      }
-                      value={formData.scheduleId}
-                      onChange={(e) => update('scheduleId', e.target.value)}
-                    >
-                      {formData.mode === 'consultation' && (
-                        <MenuItem value="0">Chưa chọn lịch</MenuItem>
-                      )}
-                      {selectedCourse.schedules.map((schedule) => (
-                        <MenuItem key={schedule.id} value={schedule.id}>
-                          {schedule.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
+                      label="Lịch học mong muốn"
+                      placeholder="Ví dụ: tối Thứ 5, 19:00 – 21:00"
+                      value={formData.desiredSchedule}
+                      onChange={(event) => update('desiredSchedule', event.target.value)}
+                    />
                   )}
 
-                  {selectedCourse && selectedCourse.schedules.length === 0 && (
-                    <>
-                      <TextField
-                        fullWidth
-                        label="Lịch học mong muốn"
-                        placeholder="Ví dụ: tối Thứ 5, 19:00 – 21:00"
-                        value={formData.desiredSchedule}
-                        onChange={(e) => update('desiredSchedule', e.target.value)}
-                      />
-                      {formData.mode === 'registration' && (
-                        <Alert severity="warning">
-                          Môn này chưa có ca học chính thức nên chưa mở thanh toán. Hãy
-                          chuyển sang “Tôi cần tư vấn” và ghi lịch mong muốn để trung tâm
-                          xác nhận trước.
-                        </Alert>
-                      )}
-                    </>
+                  {formData.mode === 'registration' && selectedCourses.length > 0 && (
+                    <Alert severity="info">
+                      Đã chọn <b>{selectedCourses.length} môn</b>. Tổng học phí:{' '}
+                      <b>{formatVnd(totalAmount)}</b>.
+                    </Alert>
                   )}
 
                   <TextField
@@ -500,7 +455,7 @@ export default function AssignForm(props: Props) {
                     rows={3}
                     label="Ghi chú / nhu cầu cần tư vấn thêm"
                     value={formData.note}
-                    onChange={(e) => update('note', e.target.value)}
+                    onChange={(event) => update('note', event.target.value)}
                   />
 
                   <Box
@@ -518,7 +473,7 @@ export default function AssignForm(props: Props) {
                       autoComplete="off"
                       label="Website"
                       value={formData.website}
-                      onChange={(e) => update('website', e.target.value)}
+                      onChange={(event) => update('website', event.target.value)}
                     />
                   </Box>
 
@@ -526,29 +481,15 @@ export default function AssignForm(props: Props) {
                     control={
                       <Checkbox
                         checked={formData.consent}
-                        onChange={(e) => update('consent', e.target.checked)}
+                        onChange={(event) => update('consent', event.target.checked)}
                       />
                     }
                     label="Tôi đồng ý để trung tâm sử dụng thông tin trên nhằm liên hệ tư vấn, xác nhận lớp học và xử lý đăng ký."
                   />
 
-                  {/* {formData.mode === 'registration' && selectedCourse && (
-                    <Alert severity="info">
-                      Số tiền thanh toán: <b>{formatVnd(selectedCourse.price)}</b>. Sau
-                      khi gửi đăng ký, phụ huynh sẽ được chuyển sang VNPAY QR. Hệ thống
-                      chỉ ghi nhận thanh toán thành công sau khi kiểm tra chữ ký trả về
-                      từ VNPAY.
-                    </Alert>
-                  )} */}
-
                   <Button
                     type="submit"
-                    disabled={
-                      isSubmitting ||
-                      (formData.mode === 'registration' &&
-                        !!selectedCourse &&
-                        selectedCourse.schedules.length === 0)
-                    }
+                    disabled={isSubmitting}
                     variant="contained"
                     size="large"
                     sx={{

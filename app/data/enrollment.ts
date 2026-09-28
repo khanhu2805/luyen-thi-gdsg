@@ -91,7 +91,7 @@ export const courses: CourseInfo[] = [
         teacherId: 'lo-quoc-khai',
         schedules: [
           {
-            id: 'toan-khai-t3-1745',
+            id: 'toan-t3-1745',
             day: 'Thứ 3',
             time: '17:45 – 19:15',
             start: '17:45',
@@ -115,7 +115,7 @@ export const courses: CourseInfo[] = [
         teacherId: 'nguyen-phuoc-bao-khoi',
         schedules: [
           {
-            id: 'van-khoi-t4-1900',
+            id: 'van-t4-1900',
             day: 'Thứ 4',
             time: '19:00 – 21:00',
             start: '19:00',
@@ -124,7 +124,7 @@ export const courses: CourseInfo[] = [
             startNote: 'Bắt đầu theo tuần khai giảng 20/09/2026',
           },
           {
-            id: 'van-khoi-t7-1900',
+            id: 'van-t7-1900',
             day: 'Thứ 7',
             time: '19:00 – 21:00',
             start: '19:00',
@@ -148,7 +148,7 @@ export const courses: CourseInfo[] = [
         teacherId: 'dinh-hoang-tuan-anh',
         schedules: [
           {
-            id: 'anh-tuan-anh-t2-1945',
+            id: 'anh-t2-1945',
             day: 'Thứ 2',
             time: '19:45 – 21:15',
             start: '19:45',
@@ -157,7 +157,7 @@ export const courses: CourseInfo[] = [
             startNote: 'Bắt đầu theo tuần khai giảng 20/09/2026',
           },
           {
-            id: 'anh-tuan-anh-t4-1945',
+            id: 'anh-t4-1945',
             day: 'Thứ 4',
             time: '19:45 – 21:15',
             start: '19:45',

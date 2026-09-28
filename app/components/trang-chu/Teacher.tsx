@@ -39,7 +39,7 @@ export default function Teacher() {
             Đội ngũ giảng dạy
           </Typography>
           <Typography color="text.secondary" sx={{ mt: 1.5 }}>
-            Giáo viên phụ trách các lớp mở trong đợt tuyển sinh 20/09/2026.
+            Giáo viên phụ trách các lớp mở trong đợt tuyển sinh.
           </Typography>
         </Box>
 

@@ -81,7 +81,7 @@ export default function DoiNguPage() {
           </Typography>
           <Typography color="text.secondary" sx={{ mt: 2, fontSize: '1.1rem', lineHeight: 1.75 }}>
             Thông tin dưới đây được cập nhật theo danh sách giáo viên của đợt tuyển sinh
-            khai giảng 20/09/2026.
+            khai giảng.
           </Typography>
         </Container>
       </Box>

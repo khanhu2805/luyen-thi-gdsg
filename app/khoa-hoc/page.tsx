@@ -41,10 +41,10 @@ export default function KhoaHocPage() {
         }}
       >
         <Container maxWidth="lg">
-          <Chip
+          {/* <Chip
             label={`KHAI GIẢNG ${ENROLLMENT_OPEN_DATE}`}
             sx={{ bgcolor: 'rgba(255,255,255,.15)', color: 'white', fontWeight: 900, mb: 2 }}
-          />
+          /> */}
           <Typography
             variant="h2"
             sx={{
@@ -67,10 +67,10 @@ export default function KhoaHocPage() {
       </Box>
 
       <Container maxWidth="xl" sx={{ mt: { xs: 5, md: 7 } }}>
-        <Alert severity="info" sx={{ mb: 5, borderRadius: 3 }}>
+        {/* <Alert severity="info" sx={{ mb: 5, borderRadius: 3 }}>
           Ngày 20/09/2026 là mốc khai giảng của đợt tuyển sinh. Buổi học thực tế diễn ra
           theo thứ và khung giờ của giáo viên/ca học mà học sinh lựa chọn.
-        </Alert>
+        </Alert> */}
 
         <Grid container spacing={3.5}>
           {courses.map((course) => {

@@ -290,12 +290,12 @@ export default function AssignForm(props: Props) {
               >
                 TUYỂN SINH ĐỢT MỚI
               </Typography>
-              <Typography
+              {/* <Typography
                 variant="h3"
                 sx={{ fontFamily: fontHeader, fontWeight: 900, mt: 1, mb: 2 }}
               >
                 Khai giảng {ENROLLMENT_OPEN_DATE}
-              </Typography>
+              </Typography> */}
               <Typography sx={{ fontFamily: fontBody, opacity: 0.92, lineHeight: 1.75 }}>
                 Phụ huynh có thể chọn nhiều môn trong cùng một lần đăng ký. Mỗi môn
                 chọn giáo viên và ca học riêng.

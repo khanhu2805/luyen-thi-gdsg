@@ -41,7 +41,7 @@ export default function HeroSection() {
       <Container maxWidth="xl" sx={{ py: { xs: 8, md: 11 }, position: 'relative', zIndex: 1 }}>
         <Grid container spacing={5} sx={{ alignItems: "center" }}>
           <Grid size={{ xs: 12, md: 8 }}>
-            <Chip
+            {/* <Chip
               icon={<CalendarMonthRoundedIcon />}
               label={`KHAI GIẢNG ${ENROLLMENT_OPEN_DATE}`}
               sx={{
@@ -51,7 +51,7 @@ export default function HeroSection() {
                 fontWeight: 900,
                 mb: 2.5,
               }}
-            />
+            /> */}
             <Typography
               variant="h1"
               sx={{

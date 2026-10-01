@@ -4,21 +4,43 @@ import {
   Box,
   Checkbox,
   FormControlLabel,
-  MenuItem,
+  Grid,
   Paper,
-  Stack,
-  TextField,
   Typography,
 } from '@mui/material';
+import CalculateRoundedIcon from '@mui/icons-material/CalculateRounded';
+import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
+import TranslateRoundedIcon from '@mui/icons-material/TranslateRounded';
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import {
   PublicCourseSelection as CourseSelection,
   publicCourses as courses,
-  getPublicTeacherById as getTeacherById,
 } from '../data/public-enrollment';
 
 type Props = {
   value: CourseSelection[];
   onChange: (value: CourseSelection[]) => void;
+};
+
+const subjectMeta: Record<
+  string,
+  { icon: React.ReactNode; accent: string; soft: string }
+> = {
+  toan: {
+    icon: <CalculateRoundedIcon />,
+    accent: '#2f6fed',
+    soft: '#eaf2ff',
+  },
+  'ngu-van': {
+    icon: <MenuBookRoundedIcon />,
+    accent: '#e14d4d',
+    soft: '#fff0f0',
+  },
+  'tieng-anh': {
+    icon: <TranslateRoundedIcon />,
+    accent: '#22a06b',
+    soft: '#e9f8f1',
+  },
 };
 
 export default function CourseSelectionField({ value, onChange }: Props) {
@@ -30,130 +52,119 @@ export default function CourseSelectionField({ value, onChange }: Props) {
       return;
     }
 
-    const course = courses.find((item) => item.id === courseId);
-    if (!course) return;
-
-    const onlyTeacher = course.teachers.length === 1 ? course.teachers[0] : undefined;
-
     onChange([
       ...value,
       {
         courseId,
-        teacherId: onlyTeacher?.teacherId || '',
+        teacherId: '',
         scheduleId: '',
       },
     ]);
   };
 
-  const changeTeacher = (courseId: string, teacherId: string) => {
-    onChange(
-      value.map((item) =>
-        item.courseId === courseId
-          ? { ...item, teacherId, scheduleId: '' }
-          : item,
-      ),
-    );
-  };
-
   return (
-    <Stack spacing={2}>
-      <Box>
-        <Typography sx={{ fontWeight: 900, color: '#1a237e' }}>
-          Môn học quan tâm *
-        </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-          Có thể chọn nhiều môn. Học phí và lịch học sẽ được tư vấn trực tiếp sau khi
-          trung tâm tiếp nhận thông tin.
-        </Typography>
-      </Box>
+    <Box>
+      <Typography
+        sx={{
+          fontFamily: "'Montserrat', sans-serif",
+          fontWeight: 900,
+          color: '#102044',
+          mb: 0.6,
+        }}
+      >
+        Môn học quan tâm *
+      </Typography>
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+        Chọn một hoặc nhiều môn để được tư vấn.
+      </Typography>
 
-      {courses.map((course) => {
-        const selected = value.find((item) => item.courseId === course.id);
-        const selectedTeacher = selected?.teacherId
-          ? getTeacherById(selected.teacherId)
-          : undefined;
+      <Grid container spacing={1.5}>
+        {courses.map((course) => {
+          const selected = value.some((item) => item.courseId === course.id);
+          const meta = subjectMeta[course.id] || subjectMeta.toan;
 
-        return (
-          <Paper
-            key={course.id}
-            variant="outlined"
-            sx={{
-              borderRadius: 3,
-              overflow: 'hidden',
-              borderColor: selected ? 'primary.main' : 'divider',
-              borderWidth: selected ? 2 : 1,
-            }}
-          >
-            <Box sx={{ p: 2 }}>
-              <FormControlLabel
-                sx={{ m: 0, width: '100%', alignItems: 'flex-start' }}
-                control={
-                  <Checkbox
-                    checked={Boolean(selected)}
-                    onChange={() => toggleCourse(course.id)}
-                  />
-                }
-                label={
-                  <Box sx={{ pt: 0.35 }}>
-                    <Typography sx={{ fontWeight: 900 }}>
-                      {course.subject}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {course.sessions} buổi / {course.weeks} tuần
-                    </Typography>
-                  </Box>
-                }
-              />
-            </Box>
-
-            {selected && (
-              <Box
+          return (
+            <Grid key={course.id} size={{ xs: 12, sm: 4 }}>
+              <Paper
+                variant="outlined"
+                className="card-lift"
                 sx={{
-                  px: 2,
-                  pb: 2,
-                  pt: 1.5,
-                  bgcolor: '#f8fafc',
-                  borderTop: '1px solid #e5eaf0',
+                  height: '100%',
+                  borderRadius: 3.5,
+                  overflow: 'hidden',
+                  borderWidth: selected ? 2 : 1,
+                  borderColor: selected ? meta.accent : '#e3eaf5',
+                  bgcolor: selected ? meta.soft : 'white',
+                  boxShadow: selected
+                    ? '0 12px 28px rgba(15,48,105,.10)'
+                    : '0 6px 18px rgba(15,48,105,.035)',
+                  position: 'relative',
                 }}
               >
-                {course.teachers.length > 1 ? (
-                  <TextField
-                    select
-                    fullWidth
-                    label="Giáo viên quan tâm"
-                    value={selected.teacherId}
-                    onChange={(event) =>
-                      changeTeacher(course.id, event.target.value)
-                    }
-                  >
-                    <MenuItem value="">Chưa chọn giáo viên</MenuItem>
-                    {course.teachers.map((teacherOption) => {
-                      const teacher = getTeacherById(teacherOption.teacherId);
-                      return (
-                        <MenuItem
-                          key={teacherOption.teacherId}
-                          value={teacherOption.teacherId}
-                        >
-                          {teacher?.name || teacherOption.teacherId}
-                        </MenuItem>
-                      );
-                    })}
-                  </TextField>
-                ) : (
-                  <Box>
-                    <Typography variant="caption" color="text.secondary">
-                      Giáo viên phụ trách
-                    </Typography>
-                    <Typography sx={{ fontWeight: 800 }}>
-                      {selectedTeacher?.name || 'Đang cập nhật'}
-                    </Typography>
-                  </Box>
+                {selected && (
+                  <CheckCircleRoundedIcon
+                    sx={{
+                      position: 'absolute',
+                      right: 12,
+                      top: 12,
+                      color: meta.accent,
+                      fontSize: 22,
+                    }}
+                  />
                 )}
-              </Box>
-            )}
-          </Paper>
-        );
-      })}
-    </Stack>
+
+                <FormControlLabel
+                  sx={{
+                    m: 0,
+                    p: 2.2,
+                    width: '100%',
+                    minHeight: 110,
+                    cursor: 'pointer',
+                    alignItems: 'center',
+                    '& .MuiFormControlLabel-label': { width: '100%' },
+                  }}
+                  control={
+                    <Checkbox
+                      checked={selected}
+                      onChange={() => toggleCourse(course.id)}
+                      sx={{ display: 'none' }}
+                    />
+                  }
+                  label={
+                    <Box sx={{ textAlign: 'center' }}>
+                      <Box
+                        sx={{
+                          width: 48,
+                          height: 48,
+                          mx: 'auto',
+                          mb: 1.2,
+                          borderRadius: 2.7,
+                          display: 'grid',
+                          placeItems: 'center',
+                          bgcolor: meta.soft,
+                          color: meta.accent,
+                        }}
+                      >
+                        {meta.icon}
+                      </Box>
+                      <Typography
+                        sx={{
+                          fontFamily: "'Montserrat', sans-serif",
+                          fontWeight: 900,
+                          color: selected ? meta.accent : '#102044',
+                          fontSize: '1rem',
+                        }}
+                      >
+                        {course.subject}
+                      </Typography>
+                    </Box>
+                  }
+                />
+              </Paper>
+            </Grid>
+          );
+        })}
+      </Grid>
+    </Box>
   );
 }

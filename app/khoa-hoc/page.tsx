@@ -4,40 +4,79 @@ import {
   Box,
   Button,
   Card,
-  CardContent,
   Chip,
   Container,
-  Divider,
   Grid,
   Stack,
   Typography,
 } from '@mui/material';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
+import AutoStoriesRoundedIcon from '@mui/icons-material/AutoStoriesRounded';
+import CalculateRoundedIcon from '@mui/icons-material/CalculateRounded';
 import CardGiftcardRoundedIcon from '@mui/icons-material/CardGiftcardRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
-import PolicyRoundedIcon from '@mui/icons-material/PolicyRounded';
-import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
+import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
+import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
+import PlayCircleRoundedIcon from '@mui/icons-material/PlayCircleRounded';
+import RouteRoundedIcon from '@mui/icons-material/RouteRounded';
+import TranslateRoundedIcon from '@mui/icons-material/TranslateRounded';
 import Link from 'next/link';
-import { publicCourses as courses, getPublicTeacherById as getTeacherById } from '../data/public-enrollment';
+import FadeInScroll from '../components/FadeInScroll';
+import { publicCourses as courses } from '../data/public-enrollment';
 
 const fontHeader = "'Montserrat', sans-serif";
 const fontBody = "'Nunito', sans-serif";
 
+const courseMeta: Record<
+  string,
+  {
+    icon: React.ReactNode;
+    accent: string;
+    soft: string;
+    gradient: string;
+    label: string;
+  }
+> = {
+  toan: {
+    icon: <CalculateRoundedIcon sx={{ fontSize: 32 }} />,
+    accent: '#2f6fed',
+    soft: '#eaf2ff',
+    gradient: 'linear-gradient(135deg, #1e57c7, #2f6fed)',
+    label: 'TƯ DUY & KỸ NĂNG GIẢI BÀI',
+  },
+  'ngu-van': {
+    icon: <MenuBookRoundedIcon sx={{ fontSize: 32 }} />,
+    accent: '#e14d4d',
+    soft: '#fff0f0',
+    gradient: 'linear-gradient(135deg, #c43d50, #e86464)',
+    label: 'ĐỌC HIỂU & LẬP LUẬN',
+  },
+  'tieng-anh': {
+    icon: <TranslateRoundedIcon sx={{ fontSize: 32 }} />,
+    accent: '#22a06b',
+    soft: '#e9f8f1',
+    gradient: 'linear-gradient(135deg, #16855a, #22a06b)',
+    label: 'NGỮ PHÁP & CHIẾN LƯỢC',
+  },
+};
+
 export default function KhoaHocPage() {
   return (
-    <Box sx={{ bgcolor: '#f4f7fe', minHeight: '100vh', pb: 12, fontFamily: fontBody }}>
+    <Box sx={{ bgcolor: '#f6f9ff', minHeight: '100vh', pb: 12, fontFamily: fontBody }}>
       <Box
+        className="animated-mesh noise-overlay"
         sx={{
           py: { xs: 8, md: 10 },
           color: 'white',
           textAlign: 'center',
           position: 'relative',
           overflow: 'hidden',
-          background: 'linear-gradient(135deg, #081f49 0%, #0d47a1 50%, #1976d2 100%)',
         }}
       >
         <Box
+          className="floating-orb"
           sx={{
             position: 'absolute',
             width: 380,
@@ -49,344 +88,432 @@ export default function KhoaHocPage() {
           }}
         />
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-          <Chip
-            label="LỘ TRÌNH ÔN THI VÀO LỚP 10"
-            sx={{
-              mb: 2,
-              bgcolor: 'rgba(255,255,255,.14)',
-              color: 'white',
-              border: '1px solid rgba(255,255,255,.18)',
-              fontWeight: 900,
-            }}
-          />
-          <Typography
-            variant="h2"
-            sx={{
-              fontFamily: fontHeader,
-              fontWeight: 900,
-              fontSize: { xs: '2.2rem', md: '3.65rem' },
-            }}
-          >
-            Chọn môn học phù hợp với mục tiêu
-          </Typography>
-          <Typography
-            variant="h6"
-            sx={{ mt: 2, opacity: 0.93, maxWidth: 840, mx: 'auto', lineHeight: 1.75 }}
-          >
-            Toán · Ngữ văn · Tiếng Anh. Mỗi khóa gồm 8 buổi trong 8 tuần,
-            tập trung kiến thức trọng tâm và kỹ năng làm bài cho kỳ thi tuyển sinh lớp 10.
-          </Typography>
+          <FadeInScroll>
+            <Chip
+              icon={<RouteRoundedIcon />}
+              label="LỘ TRÌNH ÔN THI VÀO LỚP 10"
+              sx={{
+                mb: 2,
+                bgcolor: 'rgba(255,255,255,.13)',
+                color: 'white',
+                border: '1px solid rgba(255,255,255,.18)',
+                fontFamily: fontHeader,
+                fontWeight: 900,
+                '& .MuiChip-icon': { color: '#ffd166' },
+              }}
+            />
+            <Typography
+              variant="h2"
+              sx={{
+                fontFamily: fontHeader,
+                fontWeight: 900,
+                fontSize: { xs: '2.25rem', md: '3.8rem' },
+                letterSpacing: '-0.04em',
+                lineHeight: 1.08,
+              }}
+            >
+              Chọn đúng môn cần tập trung.
+              <Box component="span" sx={{ display: 'block', color: '#ffd166' }}>
+                Học theo lộ trình rõ ràng.
+              </Box>
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{ mt: 2.2, opacity: 0.9, maxWidth: 860, mx: 'auto', lineHeight: 1.75, fontWeight: 500 }}
+            >
+              Toán · Ngữ văn · Tiếng Anh. Mỗi khóa gồm 8 buổi trong 8 tuần,
+              kết hợp nội dung trọng tâm, tài liệu luyện tập và hệ thống hỗ trợ học tập.
+            </Typography>
 
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            spacing={1.2}
-            sx={{ mt: 3, justifyContent: 'center' }}
-          >
-            <Chip
-              icon={<CardGiftcardRoundedIcon />}
-              label="Đăng ký khóa học – tặng sách Toán 9"
-              sx={{
-                bgcolor: '#fff3e0',
-                color: '#e65100',
-                fontWeight: 900,
-                '& .MuiChip-icon': { color: '#e65100' },
-              }}
-            />
-            <Chip
-              icon={<GroupsRoundedIcon />}
-              label="Mời bạn cùng học – ưu đãi 100.000đ"
-              sx={{
-                bgcolor: '#e8eaf6',
-                color: '#283593',
-                fontWeight: 900,
-                '& .MuiChip-icon': { color: '#283593' },
-              }}
-            />
-          </Stack>
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              spacing={1.2}
+              sx={{ mt: 3.2, justifyContent: 'center' }}
+            >
+              <Chip
+                icon={<CardGiftcardRoundedIcon />}
+                label="Đăng ký khóa học – tặng sách Toán 9"
+                sx={{
+                  bgcolor: '#fff3e0',
+                  color: '#e66f00',
+                  fontWeight: 900,
+                  '& .MuiChip-icon': { color: '#e66f00' },
+                }}
+              />
+              <Chip
+                icon={<GroupsRoundedIcon />}
+                label="Mời bạn cùng học – ưu đãi 100.000đ"
+                sx={{
+                  bgcolor: '#eef1ff',
+                  color: '#3e4fb9',
+                  fontWeight: 900,
+                  '& .MuiChip-icon': { color: '#3e4fb9' },
+                }}
+              />
+            </Stack>
+          </FadeInScroll>
         </Container>
       </Box>
 
-      <Container maxWidth="xl" sx={{ mt: { xs: 5, md: 7 } }}>
-        <Box
-          sx={{
-            mb: 5,
-            p: { xs: 3, md: 4 },
-            borderRadius: 5,
-            bgcolor: 'white',
-            border: '1px solid #e5eaf0',
-            boxShadow: '0 12px 30px rgba(31,42,74,.05)',
-            display: { md: 'flex' },
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 3,
-          }}
-        >
-          <Box>
-            <Typography variant="h5" sx={{ fontFamily: fontHeader, fontWeight: 900, color: '#1a237e' }}>
-              Chưa biết nên chọn lớp nào?
-            </Typography>
-            <Typography color="text.secondary" sx={{ mt: 0.8, lineHeight: 1.7, maxWidth: 760 }}>
-              Để lại thông tin, đội ngũ tư vấn sẽ hỗ trợ phụ huynh chọn môn, giáo viên
-              và lớp học phù hợp với nhu cầu của học sinh.
-            </Typography>
-          </Box>
-          <Button
-            component={Link}
-            href="/#form-dang-ky"
-            variant="contained"
-            size="large"
-            endIcon={<ArrowForwardRoundedIcon />}
+      <Container maxWidth="xl" sx={{ mt: { xs: -3, md: -4 }, position: 'relative', zIndex: 2 }}>
+        <FadeInScroll>
+          <Box
+            className="glass-panel"
             sx={{
-              mt: { xs: 2, md: 0 },
-              borderRadius: 999,
-              px: 3.5,
-              fontWeight: 900,
-              whiteSpace: 'nowrap',
+              p: { xs: 2.6, md: 3.4 },
+              borderRadius: 5,
+              display: { md: 'flex' },
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 3,
             }}
           >
-            Nhận tư vấn
-          </Button>
+            <Box>
+              <Typography variant="h5" sx={{ fontFamily: fontHeader, fontWeight: 900, color: '#102044' }}>
+                Chưa biết nên bắt đầu từ môn nào?
+              </Typography>
+              <Typography color="text.secondary" sx={{ mt: 0.7, lineHeight: 1.7, maxWidth: 760 }}>
+                Chọn môn đang cần củng cố, đội ngũ tư vấn sẽ hỗ trợ phụ huynh
+                xác định lớp phù hợp với nhu cầu học tập của học sinh.
+              </Typography>
+            </Box>
+            <Button
+              component={Link}
+              href="/#form-dang-ky"
+              variant="contained"
+              endIcon={<ArrowForwardRoundedIcon />}
+              className="shine-button"
+              sx={{
+                mt: { xs: 2, md: 0 },
+                borderRadius: 999,
+                px: 3.4,
+                py: 1.25,
+                textTransform: 'none',
+                fontFamily: fontHeader,
+                fontWeight: 900,
+                whiteSpace: 'nowrap',
+                bgcolor: '#ff8a1f',
+                '&:hover': { bgcolor: '#f57c00' },
+              }}
+            >
+              Nhận tư vấn
+            </Button>
+          </Box>
+        </FadeInScroll>
+
+        <Box sx={{ textAlign: 'center', mt: { xs: 7, md: 9 }, mb: 4.5 }}>
+          <FadeInScroll>
+            <Typography
+              variant="overline"
+              sx={{ fontFamily: fontHeader, fontWeight: 900, color: '#2f6fed', letterSpacing: 1.4 }}
+            >
+              03 MÔN TRỌNG TÂM
+            </Typography>
+            <Typography
+              variant="h3"
+              sx={{
+                mt: 0.5,
+                fontFamily: fontHeader,
+                fontWeight: 900,
+                color: '#102044',
+                fontSize: { xs: '2rem', md: '2.9rem' },
+                letterSpacing: '-0.03em',
+              }}
+            >
+              Mỗi môn một trọng tâm,
+              <Box component="span" className="gradient-text" sx={{ display: 'block' }}>
+                cùng hướng đến mục tiêu tuyển sinh 10
+              </Box>
+            </Typography>
+          </FadeInScroll>
         </Box>
 
-        <Grid container spacing={3.5}>
-          {courses.map((course) => {
-            const primaryTeacher = getTeacherById(course.teachers[0]?.teacherId || '');
-            const teacherNames = course.teachers
-              .map((item) => getTeacherById(item.teacherId)?.name)
-              .filter(Boolean)
-              .join(' · ');
+        <Grid container spacing={3}>
+          {courses.map((course, index) => {
+            const meta = courseMeta[course.id] || courseMeta.toan;
 
             return (
               <Grid key={course.id} size={{ xs: 12, md: 4 }}>
-                <Card
-                  sx={{
-                    height: '100%',
-                    borderRadius: 5,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    overflow: 'hidden',
-                    boxShadow: '0 16px 40px rgba(31,42,74,.09)',
-                    border: '1px solid #e8edf4',
-                    transition: 'transform .25s ease, box-shadow .25s ease',
-                    '&:hover': {
-                      transform: 'translateY(-6px)',
-                      boxShadow: '0 22px 50px rgba(31,42,74,.14)',
-                    },
-                  }}
-                >
-                  <Box
+                <FadeInScroll delay={index * 0.08}>
+                  <Card
+                    className="card-lift"
                     sx={{
-                      p: 3.2,
-                      color: 'white',
-                      position: 'relative',
+                      height: '100%',
+                      borderRadius: 5,
                       overflow: 'hidden',
-                      background: 'linear-gradient(135deg, ' + (primaryTeacher?.accent || '#1976d2') + ', #1a237e)',
+                      border: '1px solid #e4ecf7',
+                      boxShadow: '0 16px 42px rgba(15,48,105,.075)',
+                      bgcolor: 'white',
                     }}
                   >
                     <Box
                       sx={{
-                        position: 'absolute',
-                        width: 130,
-                        height: 130,
-                        borderRadius: '50%',
-                        right: -40,
-                        top: -45,
-                        bgcolor: 'rgba(255,255,255,.10)',
+                        p: 3.2,
+                        color: 'white',
+                        position: 'relative',
+                        overflow: 'hidden',
+                        background: meta.gradient,
                       }}
-                    />
-                    <Typography variant="overline" sx={{ fontWeight: 900, opacity: 0.9 }}>
-                      LUYỆN THI TRỰC TUYẾN
-                    </Typography>
-                    <Typography variant="h3" sx={{ fontFamily: fontHeader, fontWeight: 900, position: 'relative' }}>
-                      {course.subject}
-                    </Typography>
-                    <Typography sx={{ mt: 1, opacity: 0.9, position: 'relative' }}>
-                      {teacherNames || 'Đang cập nhật giáo viên'}
-                    </Typography>
-                  </Box>
-
-                  <CardContent sx={{ p: 3.5, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                    <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
+                    >
+                      <Box
+                        className="floating-card-delay"
+                        sx={{
+                          position: 'absolute',
+                          width: 160,
+                          height: 160,
+                          borderRadius: '50%',
+                          right: -60,
+                          top: -60,
+                          bgcolor: 'rgba(255,255,255,.12)',
+                        }}
+                      />
                       <Box
                         sx={{
-                          width: 42,
-                          height: 42,
-                          borderRadius: 2.5,
-                          bgcolor: '#e8f1ff',
-                          color: '#1976d2',
+                          width: 58,
+                          height: 58,
+                          borderRadius: 3.2,
                           display: 'grid',
                           placeItems: 'center',
+                          bgcolor: 'rgba(255,255,255,.14)',
+                          border: '1px solid rgba(255,255,255,.15)',
+                          position: 'relative',
                         }}
                       >
-                        <SchoolRoundedIcon />
+                        {meta.icon}
                       </Box>
-                      <Box>
-                        <Typography sx={{ fontWeight: 900 }}>
-                          {course.sessions} buổi / {course.weeks} tuần
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          Lộ trình ôn tập tập trung
-                        </Typography>
-                      </Box>
+                      <Typography
+                        variant="overline"
+                        sx={{ mt: 2.4, display: 'block', fontWeight: 900, opacity: 0.82, letterSpacing: 1 }}
+                      >
+                        {meta.label}
+                      </Typography>
+                      <Typography
+                        variant="h3"
+                        sx={{ fontFamily: fontHeader, fontWeight: 900, position: 'relative', lineHeight: 1.08 }}
+                      >
+                        {course.subject}
+                      </Typography>
+                      <Typography sx={{ mt: 1.1, opacity: 0.88 }}>
+                        {course.sessions} buổi · {course.weeks} tuần
+                      </Typography>
                     </Box>
 
-                    <Typography color="text.secondary" sx={{ lineHeight: 1.75, my: 3 }}>
-                      {course.description}
-                    </Typography>
+                    <Box sx={{ p: 3.2 }}>
+                      <Typography color="text.secondary" sx={{ lineHeight: 1.75 }}>
+                        {course.description}
+                      </Typography>
 
-                    <Divider sx={{ mb: 2.5 }} />
+                      <Typography
+                        sx={{
+                          mt: 2.7,
+                          mb: 1.4,
+                          fontFamily: fontHeader,
+                          fontWeight: 900,
+                          color: '#102044',
+                          fontSize: '.9rem',
+                        }}
+                      >
+                        NỘI DUNG TẬP TRUNG
+                      </Typography>
 
-                    <Typography sx={{ fontFamily: fontHeader, fontWeight: 900, mb: 1.5 }}>
-                      Giáo viên phụ trách
-                    </Typography>
-
-                    <Stack spacing={1.5} sx={{ flexGrow: 1 }}>
-                      {course.teachers.map((teacherOption) => {
-                        const teacher = getTeacherById(teacherOption.teacherId);
-
-                        return (
-                          <Box
-                            key={teacherOption.teacherId}
-                            sx={{
-                              p: 2,
-                              borderRadius: 3,
-                              bgcolor: '#f8fafc',
-                              border: '1px solid #e5eaf0',
-                            }}
-                          >
-                            <Typography sx={{ fontWeight: 900, color: '#1a237e' }}>
-                              {teacher?.name || 'Đang cập nhật giáo viên'}
+                      <Stack spacing={1.15}>
+                        {course.focus.map((item) => (
+                          <Stack key={item} direction="row" spacing={1} sx={{ alignItems: 'flex-start' }}>
+                            <CheckCircleRoundedIcon sx={{ color: meta.accent, fontSize: 20, mt: 0.15 }} />
+                            <Typography variant="body2" sx={{ color: '#52627d', lineHeight: 1.6, fontWeight: 700 }}>
+                              {item}
                             </Typography>
-                            {teacher && (
-                              <Typography variant="body2" color="text.secondary" sx={{ mt: 0.6 }}>
-                                {teacher.degree} · {teacher.organization}
-                              </Typography>
-                            )}
-                          </Box>
-                        );
-                      })}
-                    </Stack>
+                          </Stack>
+                        ))}
+                      </Stack>
 
-                    <Stack spacing={1.15} sx={{ mt: 3 }}>
-                      {[
-                        'Tập trung kiến thức trọng tâm tuyển sinh lớp 10',
-                        'Có video và tài liệu hỗ trợ ôn tập',
-                        'LMS đồng hành trong quá trình học',
-                      ].map((item) => (
-                        <Box key={item} sx={{ display: 'flex', gap: 1, alignItems: 'flex-start' }}>
-                          <CheckCircleRoundedIcon sx={{ color: 'success.main', fontSize: 20, mt: 0.2 }} />
-                          <Typography variant="body2">{item}</Typography>
-                        </Box>
-                      ))}
-                    </Stack>
-
-                    <Button
-                      component={Link}
-                      href={'/?course=' + course.id + '#form-dang-ky'}
-                      variant="contained"
-                      size="large"
-                      fullWidth
-                      sx={{ mt: 3.5, borderRadius: 999, fontWeight: 900 }}
-                    >
-                      Tư vấn môn {course.subject}
-                    </Button>
-                  </CardContent>
-                </Card>
+                      <Button
+                        component={Link}
+                        href={'/?course=' + course.id + '#form-dang-ky'}
+                        variant="contained"
+                        fullWidth
+                        endIcon={<ArrowForwardRoundedIcon />}
+                        sx={{
+                          mt: 3.2,
+                          borderRadius: 999,
+                          py: 1.2,
+                          textTransform: 'none',
+                          fontFamily: fontHeader,
+                          fontWeight: 900,
+                          bgcolor: meta.accent,
+                          '&:hover': { bgcolor: meta.accent, filter: 'brightness(.92)' },
+                        }}
+                      >
+                        Tư vấn môn {course.subject}
+                      </Button>
+                    </Box>
+                  </Card>
+                </FadeInScroll>
               </Grid>
             );
           })}
         </Grid>
 
-        <Grid container spacing={3} sx={{ mt: 5 }}>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <Box
-              sx={{
-                height: '100%',
-                p: 3.5,
-                borderRadius: 4,
-                bgcolor: '#fff8e1',
-                border: '1px solid #ffe082',
-              }}
-            >
-              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
-                <CardGiftcardRoundedIcon sx={{ color: '#ef6c00' }} />
-                <Typography variant="h5" sx={{ fontFamily: fontHeader, fontWeight: 900, color: '#e65100' }}>
-                  Tặng sách Toán 9 khi đăng ký khóa học
-                </Typography>
-              </Stack>
-              <Typography sx={{ mt: 1.5, lineHeight: 1.75 }}>
-                Học viên đăng ký và hoàn tất học phí một khóa ôn thi tuyển sinh lớp 10
-                được tặng 01 cuốn “36 Đề kiểm tra định kỳ Toán 9”.
-              </Typography>
-            </Box>
-          </Grid>
-
-          <Grid size={{ xs: 12, md: 6 }}>
-            <Box
-              sx={{
-                height: '100%',
-                p: 3.5,
-                borderRadius: 4,
-                bgcolor: '#eef4ff',
-                border: '1px solid #c9ddff',
-              }}
-            >
-              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
-                <GroupsRoundedIcon sx={{ color: '#1565c0' }} />
-                <Typography variant="h5" sx={{ fontFamily: fontHeader, fontWeight: 900, color: '#0d47a1' }}>
-                  Mời bạn cùng học – cùng nhận ưu đãi
-                </Typography>
-              </Stack>
-              <Typography sx={{ mt: 1.5, lineHeight: 1.75 }}>
-                Bạn mới được giảm 100.000đ trên khóa đăng ký; người giới thiệu nhận
-                100.000đ ưu đãi cho khóa tiếp theo khi đăng ký thành công.
-              </Typography>
-            </Box>
-          </Grid>
-        </Grid>
-
-        <Box
-          sx={{
-            mt: 6,
-            p: { xs: 3, md: 5 },
-            borderRadius: 5,
-            bgcolor: 'white',
-            border: '1px solid #e5eaf0',
-          }}
-        >
-          <Typography variant="h4" sx={{ fontFamily: fontHeader, fontWeight: 900, color: '#1a237e' }}>
-            Đăng ký chỉ với 3 bước
-          </Typography>
-          <Grid container spacing={2.5} sx={{ mt: 1 }}>
-            {[
-              ['1', 'Chọn môn quan tâm', 'Có thể chọn một hoặc nhiều môn cần được tư vấn.'],
-              ['2', 'Gửi thông tin', 'Điền thông tin học sinh, phụ huynh và nhu cầu học tập.'],
-              ['3', 'Nhận tư vấn', 'Đội ngũ trung tâm liên hệ để tư vấn lớp phù hợp và hướng dẫn đăng ký.'],
-            ].map(([step, title, desc]) => (
-              <Grid key={step} size={{ xs: 12, md: 4 }}>
-                <Box sx={{ p: 2.5, height: '100%' }}>
-                  <Typography variant="h4" color="primary" sx={{ fontWeight: 900 }}>
-                    {step}
+        <Grid container spacing={3} sx={{ mt: { xs: 6, md: 8 } }}>
+          {[
+            {
+              icon: <PlayCircleRoundedIcon />,
+              title: 'Học & xem lại',
+              desc: 'Video và LMS giúp học sinh thuận tiện xem lại nội dung cần củng cố.',
+              accent: '#2f6fed',
+              soft: '#eaf2ff',
+            },
+            {
+              icon: <AutoStoriesRoundedIcon />,
+              title: 'Tài liệu theo môn',
+              desc: 'Tài liệu hỗ trợ hệ thống kiến thức và duy trì nhịp tự học sau mỗi buổi.',
+              accent: '#7b61d1',
+              soft: '#f2efff',
+            },
+            {
+              icon: <AssignmentRoundedIcon />,
+              title: 'Luyện đề',
+              desc: 'Đề luyện và đề thi thử giúp học sinh rèn tốc độ, kỹ năng và tâm lý làm bài.',
+              accent: '#f08a24',
+              soft: '#fff3e8',
+            },
+          ].map((item, index) => (
+            <Grid key={item.title} size={{ xs: 12, md: 4 }}>
+              <FadeInScroll delay={index * 0.07}>
+                <Box
+                  className="card-lift"
+                  sx={{
+                    height: '100%',
+                    p: 3,
+                    borderRadius: 4.5,
+                    bgcolor: 'white',
+                    border: '1px solid #e6edf7',
+                    boxShadow: '0 10px 30px rgba(15,48,105,.05)',
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 2.8,
+                      bgcolor: item.soft,
+                      color: item.accent,
+                      display: 'grid',
+                      placeItems: 'center',
+                    }}
+                  >
+                    {item.icon}
+                  </Box>
+                  <Typography variant="h6" sx={{ mt: 1.8, fontFamily: fontHeader, fontWeight: 900, color: '#102044' }}>
+                    {item.title}
                   </Typography>
-                  <Typography sx={{ fontWeight: 900, mt: 1 }}>{title}</Typography>
-                  <Typography color="text.secondary" variant="body2" sx={{ mt: 0.8, lineHeight: 1.6 }}>
-                    {desc}
+                  <Typography color="text.secondary" sx={{ mt: 0.8, lineHeight: 1.7 }}>
+                    {item.desc}
                   </Typography>
                 </Box>
-              </Grid>
-            ))}
-          </Grid>
+              </FadeInScroll>
+            </Grid>
+          ))}
+        </Grid>
 
-          <Button
-            component={Link}
-            href="/chinh-sach"
-            variant="outlined"
-            startIcon={<PolicyRoundedIcon />}
-            sx={{ mt: 2.5, borderRadius: 999, px: 3, fontWeight: 900 }}
+        <FadeInScroll>
+          <Box
+            sx={{
+              mt: { xs: 6, md: 8 },
+              p: { xs: 3, md: 4.2 },
+              borderRadius: 5,
+              bgcolor: '#102a66',
+              color: 'white',
+              position: 'relative',
+              overflow: 'hidden',
+            }}
           >
-            Xem quyền lợi học viên
-          </Button>
-        </Box>
+            <Box
+              className="floating-orb"
+              sx={{
+                position: 'absolute',
+                width: 280,
+                height: 280,
+                borderRadius: '50%',
+                right: -90,
+                top: -120,
+                bgcolor: 'rgba(255,255,255,.07)',
+              }}
+            />
+            <Grid container spacing={3} sx={{ alignItems: 'center', position: 'relative' }}>
+              <Grid size={{ xs: 12, md: 8 }}>
+                <Typography
+                  variant="h4"
+                  sx={{ fontFamily: fontHeader, fontWeight: 900, fontSize: { xs: '1.7rem', md: '2.2rem' } }}
+                >
+                  Đăng ký đơn giản với 3 bước
+                </Typography>
+                <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  spacing={1.2}
+                  sx={{ mt: 2.2 }}
+                >
+                  {[
+                    ['1', 'Chọn môn'],
+                    ['2', 'Gửi thông tin'],
+                    ['3', 'Nhận tư vấn'],
+                  ].map(([step, label]) => (
+                    <Stack
+                      key={step}
+                      direction="row"
+                      spacing={1}
+                      sx={{
+                        alignItems: 'center',
+                        px: 1.4,
+                        py: 0.9,
+                        borderRadius: 999,
+                        bgcolor: 'rgba(255,255,255,.08)',
+                        border: '1px solid rgba(255,255,255,.11)',
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          width: 25,
+                          height: 25,
+                          borderRadius: '50%',
+                          bgcolor: '#ff8a1f',
+                          display: 'grid',
+                          placeItems: 'center',
+                          fontWeight: 900,
+                          fontSize: '.76rem',
+                        }}
+                      >
+                        {step}
+                      </Box>
+                      <Typography sx={{ fontWeight: 800, fontSize: '.88rem' }}>{label}</Typography>
+                    </Stack>
+                  ))}
+                </Stack>
+              </Grid>
+              <Grid size={{ xs: 12, md: 4 }} sx={{ textAlign: { md: 'right' } }}>
+                <Button
+                  component={Link}
+                  href="/#form-dang-ky"
+                  variant="contained"
+                  endIcon={<ArrowForwardRoundedIcon />}
+                  className="shine-button"
+                  sx={{
+                    borderRadius: 999,
+                    px: 3.3,
+                    py: 1.3,
+                    textTransform: 'none',
+                    fontFamily: fontHeader,
+                    fontWeight: 900,
+                    bgcolor: '#ff8a1f',
+                    '&:hover': { bgcolor: '#f57c00' },
+                  }}
+                >
+                  Bắt đầu đăng ký
+                </Button>
+              </Grid>
+            </Grid>
+          </Box>
+        </FadeInScroll>
       </Container>
     </Box>
   );

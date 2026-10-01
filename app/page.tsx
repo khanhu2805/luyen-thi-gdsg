@@ -3,13 +3,13 @@
 import { Box } from '@mui/material';
 import { useState } from 'react';
 import AssignForm from './components/AssignForm';
+import SnackBar from './components/SnackBar';
 import Features from './components/trang-chu/Features';
 import HeroSection from './components/trang-chu/HeroSection';
 import MarqueeNoti from './components/trang-chu/MarqueeNoti';
 import PromoHighlights from './components/trang-chu/PromoHighlights';
 import StudentBenefits from './components/trang-chu/StudentBenefits';
 import Teacher from './components/trang-chu/Teacher';
-import SnackBar from './components/SnackBar';
 
 export default function HomePage() {
   const [phone, setPhone] = useState('');
@@ -38,13 +38,17 @@ export default function HomePage() {
   };
 
   return (
-    <Box sx={{ overflowX: 'hidden', bgcolor: '#f4f7fe' }}>
+    <Box sx={{ overflowX: 'hidden', bgcolor: '#f6f9ff' }}>
       <MarqueeNoti />
       <HeroSection />
-      <PromoHighlights />
-      <Features />
+
+      {/* Đặt đội ngũ ngay sau hero để tăng độ tin cậy khi phụ huynh xem trang */}
       <Teacher />
+
+      <Features />
+      <PromoHighlights />
       <StudentBenefits />
+
       <AssignForm showSnackbar={showSnackbar} setPhone={setPhone} />
 
       <SnackBar

@@ -15,7 +15,7 @@ import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import PolicyRoundedIcon from '@mui/icons-material/PolicyRounded';
 import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
 import Link from 'next/link';
-import { courses, getTeacherById } from '../data/enrollment';
+import { publicCourses as courses, getPublicTeacherById as getTeacherById } from '../data/public-enrollment';
 
 const fontHeader = "'Montserrat', sans-serif";
 const fontBody = "'Nunito', sans-serif";

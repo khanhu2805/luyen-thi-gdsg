@@ -29,6 +29,7 @@ const navItems = [
   { label: 'Đội ngũ', path: '/doi-ngu' },
   { label: 'Sách', path: '/sach' },
   { label: 'Tài liệu', path: '/tai-lieu-on-luyen' },
+  { label: 'Đề thi thử', path: '/de-thi-thu' },
   { label: 'Ưu đãi', path: '/chinh-sach' },
 ];
 

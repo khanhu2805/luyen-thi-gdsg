@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import {
-  Avatar,
   Box,
   Button,
   Chip,
@@ -25,16 +24,6 @@ import { publicTeachers as teachers } from '../data/public-enrollment';
 
 const fontHeader = "'Montserrat', sans-serif";
 const fontBody = "'Nunito', sans-serif";
-
-function initials(name: string) {
-  return name
-    .replace(/^Thầy\s+/i, '')
-    .split(/\s+/)
-    .slice(-2)
-    .map((part) => part[0])
-    .join('')
-    .toUpperCase();
-}
 
 export default function DoiNguPage() {
   const [phone, setPhone] = useState('');
@@ -83,7 +72,7 @@ export default function DoiNguPage() {
 
         <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={{ xs: 5, md: 7 }} sx={{ alignItems: 'center' }}>
-            <Grid size={{ xs: 12, md: 6.5 }}>
+            <Grid size={{ xs: 12, md: 7 }}>
               <FadeInScroll>
                 <Chip
                   icon={<AutoAwesomeRoundedIcon />}
@@ -116,38 +105,11 @@ export default function DoiNguPage() {
 
                 <Typography
                   variant="h6"
-                  sx={{ mt: 2.4, maxWidth: 720, lineHeight: 1.75, opacity: 0.9, fontWeight: 500 }}
+                  sx={{ mt: 2.4, maxWidth: 760, lineHeight: 1.75, opacity: 0.9, fontWeight: 500 }}
                 >
-                  Đội ngũ giảng dạy được giới thiệu theo kinh nghiệm chuyên môn,
-                  quá trình công tác và thế mạnh nổi bật ở từng môn Toán, Ngữ văn, Tiếng Anh.
+                  Đội ngũ giảng dạy các môn Toán, Ngữ văn và Tiếng Anh
+                  có kinh nghiệm chuyên môn, giảng dạy và luyện thi tuyển sinh lớp 10.
                 </Typography>
-
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  spacing={1.2}
-                  sx={{ mt: 3.3 }}
-                >
-                  {[
-                    'Toán · tư duy & bài toán thực tế',
-                    'Ngữ văn · đọc hiểu & nghị luận',
-                    'Tiếng Anh · ngữ pháp & chiến lược',
-                  ].map((item) => (
-                    <Box
-                      key={item}
-                      sx={{
-                        px: 1.5,
-                        py: 0.8,
-                        borderRadius: 999,
-                        bgcolor: 'rgba(255,255,255,.09)',
-                        border: '1px solid rgba(255,255,255,.12)',
-                        fontWeight: 800,
-                        fontSize: '.78rem',
-                      }}
-                    >
-                      {item}
-                    </Box>
-                  ))}
-                </Stack>
 
                 <Button
                   component={Link}
@@ -172,88 +134,106 @@ export default function DoiNguPage() {
               </FadeInScroll>
             </Grid>
 
-            <Grid size={{ xs: 12, md: 5.5 }}>
+            <Grid size={{ xs: 12, md: 5 }}>
               <FadeInScroll delay={0.12} direction="left">
                 <Box
+                  className="glass-dark"
                   sx={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(3, 1fr)',
-                    gap: { xs: 1.1, sm: 1.5 },
-                    maxWidth: 560,
-                    mx: 'auto',
-                    alignItems: 'end',
+                    p: { xs: 2.2, sm: 3 },
+                    borderRadius: 6,
+                    position: 'relative',
+                    overflow: 'hidden',
                   }}
                 >
-                  {teachers.map((teacher, index) => (
-                    <Box
-                      key={teacher.id}
-                      className={index === 1 ? 'floating-card-delay' : 'floating-card'}
-                      sx={{
-                        transform: index === 0 ? 'translateY(22px)' : index === 2 ? 'translateY(36px)' : 'none',
-                      }}
-                    >
+                  <Typography
+                    variant="overline"
+                    sx={{
+                      fontFamily: fontHeader,
+                      fontWeight: 900,
+                      letterSpacing: 1.1,
+                      opacity: 0.78,
+                    }}
+                  >
+                    03 MÔN TRỌNG TÂM
+                  </Typography>
+                  <Typography
+                    variant="h5"
+                    sx={{ mt: 0.5, fontFamily: fontHeader, fontWeight: 900 }}
+                  >
+                    Đội ngũ theo từng môn học
+                  </Typography>
+
+                  <Stack spacing={1.25} sx={{ mt: 2.4 }}>
+                    {teachers.map((teacher) => (
                       <Box
+                        key={teacher.id}
+                        className="card-lift"
                         sx={{
-                          p: 1,
-                          bgcolor: 'rgba(255,255,255,.94)',
-                          borderRadius: 4,
-                          boxShadow: '0 18px 44px rgba(0,0,0,.20)',
+                          p: 1.7,
+                          borderRadius: 3.5,
+                          bgcolor: 'rgba(255,255,255,.09)',
+                          border: '1px solid rgba(255,255,255,.13)',
                         }}
                       >
-                        <Box
-                          sx={{
-                            height: { xs: 190, sm: 270 },
-                            borderRadius: 3.2,
-                            overflow: 'hidden',
-                            bgcolor: teacher.softAccent,
-                            position: 'relative',
-                          }}
-                        >
-                          <Box
-                            component="img"
-                            src={teacher.image}
-                            alt={teacher.name}
-                            sx={{
-                              width: '100%',
-                              height: '100%',
-                              objectFit: 'cover',
-                              objectPosition: 'top center',
-                              display: 'block',
-                            }}
-                          />
+                        <Stack direction="row" spacing={1.4} sx={{ alignItems: 'center' }}>
                           <Box
                             sx={{
-                              position: 'absolute',
-                              inset: 'auto 0 0',
-                              p: { xs: 1, sm: 1.3 },
-                              background: 'linear-gradient(to top, rgba(4,17,44,.88), transparent)',
+                              width: 46,
+                              height: 46,
+                              borderRadius: 2.8,
+                              display: 'grid',
+                              placeItems: 'center',
+                              bgcolor: teacher.accent,
+                              color: 'white',
+                              fontFamily: fontHeader,
+                              fontWeight: 900,
+                              flexShrink: 0,
                             }}
                           >
-                            <Typography
-                              sx={{
-                                fontFamily: fontHeader,
-                                fontWeight: 900,
-                                color: 'white',
-                                fontSize: { xs: '.68rem', sm: '.84rem' },
-                                lineHeight: 1.2,
-                              }}
-                            >
-                              {teacher.name}
-                            </Typography>
-                            <Typography
-                              sx={{
-                                mt: 0.3,
-                                color: 'rgba(255,255,255,.78)',
-                                fontSize: { xs: '.58rem', sm: '.7rem' },
-                              }}
-                            >
+                            {teacher.subject === 'Toán'
+                              ? '∑'
+                              : teacher.subject === 'Ngữ văn'
+                                ? 'V'
+                                : 'A'}
+                          </Box>
+                          <Box sx={{ minWidth: 0 }}>
+                            <Typography sx={{ fontFamily: fontHeader, fontWeight: 900 }}>
                               {teacher.subject}
                             </Typography>
+                            <Typography
+                              variant="body2"
+                              sx={{
+                                mt: 0.2,
+                                opacity: 0.76,
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                              }}
+                            >
+                              {teacher.tagline}
+                            </Typography>
                           </Box>
-                        </Box>
+                        </Stack>
                       </Box>
-                    </Box>
-                  ))}
+                    ))}
+                  </Stack>
+
+                  <Box
+                    sx={{
+                      mt: 2.2,
+                      p: 1.7,
+                      borderRadius: 3.5,
+                      bgcolor: '#fff3e0',
+                      color: '#b85a00',
+                    }}
+                  >
+                    <Typography sx={{ fontFamily: fontHeader, fontWeight: 900 }}>
+                      Phụ huynh chỉ cần chọn môn khi đăng ký
+                    </Typography>
+                    <Typography variant="body2" sx={{ mt: 0.4, lineHeight: 1.6 }}>
+                      Trung tâm sẽ hỗ trợ sắp xếp lớp phù hợp với nhu cầu học tập.
+                    </Typography>
+                  </Box>
                 </Box>
               </FadeInScroll>
             </Grid>
@@ -323,37 +303,20 @@ export default function DoiNguPage() {
                         bgcolor: teacher.softAccent,
                       }}
                     >
-                      {teacher.image ? (
-                        <Box
-                          component="img"
-                          src={teacher.image}
-                          alt={teacher.name}
-                          sx={{
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover',
-                            objectPosition: 'top center',
-                            display: 'block',
-                            transition: 'transform .55s ease',
-                            '.card-lift:hover &': { transform: 'scale(1.025)' },
-                          }}
-                        />
-                      ) : (
-                        <Avatar
-                          sx={{
-                            width: 160,
-                            height: 160,
-                            bgcolor: teacher.accent,
-                            fontSize: 52,
-                            fontWeight: 900,
-                            position: 'absolute',
-                            inset: 0,
-                            m: 'auto',
-                          }}
-                        >
-                          {initials(teacher.name)}
-                        </Avatar>
-                      )}
+                      <Box
+                        component="img"
+                        src={teacher.image}
+                        alt={teacher.name}
+                        sx={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          objectPosition: 'top center',
+                          display: 'block',
+                          transition: 'transform .55s ease',
+                          '.card-lift:hover &': { transform: 'scale(1.025)' },
+                        }}
+                      />
                       <Box
                         sx={{
                           position: 'absolute',
@@ -412,16 +375,17 @@ export default function DoiNguPage() {
                               p: 1.7,
                               borderRadius: 3,
                               bgcolor: teacher.softAccent,
-                              alignItems: 'center',
+                              alignItems: 'flex-start',
+                              height: '100%',
                             }}
                           >
-                            <WorkspacePremiumRoundedIcon sx={{ color: teacher.accent }} />
+                            <WorkspacePremiumRoundedIcon sx={{ color: teacher.accent, mt: 0.2 }} />
                             <Box>
                               <Typography variant="caption" color="text.secondary">
-                                Trình độ
+                                Kinh nghiệm / vai trò
                               </Typography>
-                              <Typography sx={{ fontWeight: 900, color: '#102044' }}>
-                                {teacher.degree}
+                              <Typography sx={{ fontWeight: 900, color: '#102044', fontSize: '.9rem', lineHeight: 1.55 }}>
+                                {teacher.primaryFact}
                               </Typography>
                             </Box>
                           </Stack>
@@ -434,15 +398,16 @@ export default function DoiNguPage() {
                               p: 1.7,
                               borderRadius: 3,
                               bgcolor: '#f5f8fd',
-                              alignItems: 'center',
+                              alignItems: 'flex-start',
+                              height: '100%',
                             }}
                           >
-                            <SchoolRoundedIcon sx={{ color: teacher.accent }} />
+                            <SchoolRoundedIcon sx={{ color: teacher.accent, mt: 0.2 }} />
                             <Box>
                               <Typography variant="caption" color="text.secondary">
-                                Đơn vị / chuyên môn
+                                Thông tin chuyên môn
                               </Typography>
-                              <Typography sx={{ fontWeight: 900, color: '#102044', fontSize: '.9rem' }}>
+                              <Typography sx={{ fontWeight: 900, color: '#102044', fontSize: '.9rem', lineHeight: 1.55 }}>
                                 {teacher.organization}
                               </Typography>
                             </Box>
@@ -505,18 +470,6 @@ export default function DoiNguPage() {
               overflow: 'hidden',
             }}
           >
-            <Box
-              className="floating-orb"
-              sx={{
-                position: 'absolute',
-                width: 250,
-                height: 250,
-                borderRadius: '50%',
-                right: -85,
-                top: -115,
-                bgcolor: 'rgba(255,255,255,.07)',
-              }}
-            />
             <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', position: 'relative' }}>
               <Box
                 sx={{

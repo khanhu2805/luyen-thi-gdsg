@@ -10,17 +10,41 @@ import {
   Typography,
 } from '@mui/material';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import CardGiftcardRoundedIcon from '@mui/icons-material/CardGiftcardRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
-import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
+import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
+import RouteRoundedIcon from '@mui/icons-material/RouteRounded';
+import TranslateRoundedIcon from '@mui/icons-material/TranslateRounded';
+import CalculateRoundedIcon from '@mui/icons-material/CalculateRounded';
 import Link from 'next/link';
 import FadeInScroll from '../FadeInScroll';
-import { publicTeachers } from '../../data/public-enrollment';
 
 const fontHeader = "'Montserrat', sans-serif";
 const fontBody = "'Nunito', sans-serif";
+
+const subjectCards = [
+  {
+    title: 'Toán',
+    desc: 'Tư duy · dạng bài · luyện đề',
+    icon: <CalculateRoundedIcon />,
+    accent: '#8fc3ff',
+  },
+  {
+    title: 'Ngữ văn',
+    desc: 'Đọc hiểu · nghị luận',
+    icon: <MenuBookRoundedIcon />,
+    accent: '#ffb2b2',
+  },
+  {
+    title: 'Tiếng Anh',
+    desc: 'Ngữ pháp · từ vựng',
+    icon: <TranslateRoundedIcon />,
+    accent: '#9fe5c6',
+  },
+];
 
 export default function HeroSection() {
   return (
@@ -151,9 +175,10 @@ export default function HeroSection() {
 
                 <Button
                   component={Link}
-                  href="/doi-ngu"
+                  href="/de-thi-thu"
                   variant="outlined"
                   size="large"
+                  startIcon={<AssignmentRoundedIcon />}
                   sx={{
                     borderRadius: 999,
                     px: 4,
@@ -169,7 +194,7 @@ export default function HeroSection() {
                     },
                   }}
                 >
-                  Khám phá đội ngũ
+                  Xem đề thi thử
                 </Button>
               </Stack>
 
@@ -221,7 +246,6 @@ export default function HeroSection() {
               <Box
                 sx={{
                   position: 'relative',
-                  minHeight: { xs: 430, sm: 500, md: 540 },
                   maxWidth: 520,
                   mx: 'auto',
                 }}
@@ -229,155 +253,165 @@ export default function HeroSection() {
                 <Box
                   className="glass-dark"
                   sx={{
-                    position: 'absolute',
-                    inset: { xs: '34px 12px 34px 12px', sm: '30px 40px 30px 40px' },
                     borderRadius: 7,
-                    transform: 'rotate(-2deg)',
+                    p: { xs: 2.2, sm: 3 },
+                    position: 'relative',
+                    overflow: 'hidden',
                   }}
-                />
+                >
+                  <Box
+                    className="floating-orb"
+                    sx={{
+                      position: 'absolute',
+                      width: 190,
+                      height: 190,
+                      borderRadius: '50%',
+                      right: -70,
+                      top: -80,
+                      bgcolor: 'rgba(255,255,255,.09)',
+                    }}
+                  />
 
-                {publicTeachers.map((teacher, index) => {
-                  const positions = [
-                    {
-                      top: { xs: 34, sm: 24 },
-                      left: { xs: 8, sm: 12 },
-                      width: { xs: 190, sm: 210 },
-                      zIndex: 3,
-                      rotate: '-4deg',
-                      className: 'floating-card',
-                    },
-                    {
-                      top: { xs: 95, sm: 92 },
-                      right: { xs: 0, sm: 0 },
-                      width: { xs: 190, sm: 214 },
-                      zIndex: 4,
-                      rotate: '4deg',
-                      className: 'floating-card-delay',
-                    },
-                    {
-                      bottom: { xs: 10, sm: 8 },
-                      left: { xs: 72, sm: 116 },
-                      width: { xs: 195, sm: 218 },
-                      zIndex: 5,
-                      rotate: '-1deg',
-                      className: 'floating-card',
-                    },
-                  ][index];
-
-                  return (
+                  <Stack direction="row" spacing={1.2} sx={{ alignItems: 'center', position: 'relative' }}>
                     <Box
-                      key={teacher.id}
-                      className={positions.className}
                       sx={{
-                        position: 'absolute',
-                        top: positions.top,
-                        bottom: positions.bottom,
-                        left: positions.left,
-                        right: positions.right,
-                        width: positions.width,
-                        zIndex: positions.zIndex,
-                        transform: 'rotate(' + positions.rotate + ')',
-                        transformOrigin: 'center',
+                        width: 48,
+                        height: 48,
+                        borderRadius: 2.8,
+                        display: 'grid',
+                        placeItems: 'center',
+                        bgcolor: 'rgba(255,209,102,.16)',
+                        color: '#ffd166',
                       }}
                     >
+                      <RouteRoundedIcon />
+                    </Box>
+                    <Box>
+                      <Typography
+                        variant="overline"
+                        sx={{ fontWeight: 900, letterSpacing: 1, opacity: 0.8 }}
+                      >
+                        LỘ TRÌNH ÔN THI
+                      </Typography>
+                      <Typography
+                        variant="h5"
+                        sx={{ fontFamily: fontHeader, fontWeight: 900 }}
+                      >
+                        8 tuần tập trung cho mục tiêu vào 10
+                      </Typography>
+                    </Box>
+                  </Stack>
+
+                  <Stack spacing={1.2} sx={{ mt: 3, position: 'relative' }}>
+                    {subjectCards.map((subject, index) => (
                       <Box
-                        className="card-lift"
+                        key={subject.title}
+                        className={index === 1 ? 'floating-card-delay' : 'card-lift'}
                         sx={{
-                          bgcolor: 'white',
-                          borderRadius: 4.5,
-                          p: 1.2,
-                          boxShadow: '0 20px 45px rgba(0,0,0,.23)',
-                          border: '1px solid rgba(255,255,255,.75)',
+                          p: 1.6,
+                          borderRadius: 3.5,
+                          bgcolor: 'rgba(255,255,255,.10)',
+                          border: '1px solid rgba(255,255,255,.13)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 1.4,
                         }}
                       >
                         <Box
                           sx={{
-                            position: 'relative',
-                            borderRadius: 3.5,
-                            overflow: 'hidden',
-                            height: { xs: 205, sm: 230 },
-                            bgcolor: teacher.softAccent,
+                            width: 44,
+                            height: 44,
+                            borderRadius: 2.6,
+                            display: 'grid',
+                            placeItems: 'center',
+                            bgcolor: 'rgba(255,255,255,.10)',
+                            color: subject.accent,
+                            flexShrink: 0,
                           }}
                         >
-                          <Box
-                            component="img"
-                            src={teacher.image}
-                            alt={teacher.name}
-                            sx={{
-                              width: '100%',
-                              height: '100%',
-                              objectFit: 'cover',
-                              objectPosition: 'top center',
-                              display: 'block',
-                            }}
-                          />
-                          <Box
-                            sx={{
-                              position: 'absolute',
-                              inset: 'auto 0 0',
-                              height: '46%',
-                              background: 'linear-gradient(to top, rgba(5,18,44,.88), transparent)',
-                            }}
-                          />
-                          <Chip
-                            label={teacher.subject}
-                            size="small"
-                            sx={{
-                              position: 'absolute',
-                              top: 10,
-                              left: 10,
-                              bgcolor: teacher.accent,
-                              color: 'white',
-                              fontWeight: 900,
-                            }}
-                          />
-                          <Box sx={{ position: 'absolute', left: 13, right: 13, bottom: 12 }}>
-                            <Typography
-                              sx={{
-                                fontFamily: fontHeader,
-                                fontWeight: 900,
-                                color: 'white',
-                                fontSize: { xs: '.86rem', sm: '.95rem' },
-                                lineHeight: 1.2,
-                              }}
-                            >
-                              {teacher.name}
-                            </Typography>
-                            <Typography
-                              variant="caption"
-                              sx={{ color: 'rgba(255,255,255,.78)', display: 'block', mt: 0.35 }}
-                            >
-                              {teacher.degree}
-                            </Typography>
-                          </Box>
+                          {subject.icon}
                         </Box>
+                        <Box sx={{ flexGrow: 1 }}>
+                          <Typography
+                            sx={{ fontFamily: fontHeader, fontWeight: 900 }}
+                          >
+                            {subject.title}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            sx={{ mt: 0.2, opacity: 0.72 }}
+                          >
+                            {subject.desc}
+                          </Typography>
+                        </Box>
+                        <CheckCircleRoundedIcon sx={{ color: '#9fe5c6', fontSize: 21 }} />
                       </Box>
-                    </Box>
-                  );
-                })}
+                    ))}
+                  </Stack>
+
+                  <Grid container spacing={1.2} sx={{ mt: 2.2, position: 'relative' }}>
+                    <Grid size={{ xs: 6 }}>
+                      <Box
+                        sx={{
+                          p: 1.7,
+                          borderRadius: 3.5,
+                          bgcolor: '#fff3e0',
+                          color: '#b85a00',
+                          height: '100%',
+                        }}
+                      >
+                        <CardGiftcardRoundedIcon />
+                        <Typography sx={{ mt: 0.8, fontWeight: 900, fontSize: '.86rem' }}>
+                          Tặng sách Toán 9
+                        </Typography>
+                        <Typography sx={{ mt: 0.3, fontSize: '.7rem', opacity: 0.8 }}>
+                          Quyền lợi học viên
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid size={{ xs: 6 }}>
+                      <Box
+                        sx={{
+                          p: 1.7,
+                          borderRadius: 3.5,
+                          bgcolor: '#eef1ff',
+                          color: '#4050b2',
+                          height: '100%',
+                        }}
+                      >
+                        <GroupsRoundedIcon />
+                        <Typography sx={{ mt: 0.8, fontWeight: 900, fontSize: '.86rem' }}>
+                          Mời bạn cùng học
+                        </Typography>
+                        <Typography sx={{ mt: 0.3, fontSize: '.7rem', opacity: 0.8 }}>
+                          Cùng nhận ưu đãi
+                        </Typography>
+                      </Box>
+                    </Grid>
+                  </Grid>
+                </Box>
 
                 <Box
                   className="glass-panel floating-card-delay"
                   sx={{
                     position: 'absolute',
-                    right: { xs: 6, sm: 12 },
-                    bottom: { xs: 104, sm: 118 },
-                    zIndex: 7,
-                    borderRadius: 3,
-                    px: 1.5,
-                    py: 1.2,
-                    maxWidth: 180,
+                    right: { xs: -4, sm: -18 },
+                    bottom: { xs: -24, sm: -28 },
+                    borderRadius: 3.3,
+                    px: 1.7,
+                    py: 1.3,
                     color: '#102044',
+                    maxWidth: 190,
                   }}
                 >
                   <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-                    <SchoolRoundedIcon sx={{ color: '#2f6fed', fontSize: 21 }} />
+                    <AssignmentRoundedIcon sx={{ color: '#2f6fed', fontSize: 22 }} />
                     <Box>
                       <Typography sx={{ fontWeight: 900, fontSize: '.78rem' }}>
-                        Đội ngũ chuyên môn
+                        Có kho đề thi thử
                       </Typography>
                       <Typography sx={{ color: '#60708e', fontSize: '.68rem', mt: 0.2 }}>
-                        Đồng hành cùng học sinh lớp 9
+                        Hỗ trợ học sinh tự luyện
                       </Typography>
                     </Box>
                   </Stack>
@@ -391,7 +425,7 @@ export default function HeroSection() {
           <Stack
             direction={{ xs: 'column', md: 'row' }}
             spacing={1.2}
-            sx={{ mt: { xs: 2, md: 3 }, alignItems: { md: 'center' } }}
+            sx={{ mt: { xs: 5, md: 4 }, alignItems: { md: 'center' } }}
           >
             <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
               <CardGiftcardRoundedIcon sx={{ color: '#ffd166' }} />
@@ -410,7 +444,7 @@ export default function HeroSection() {
             <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
               <CheckCircleRoundedIcon sx={{ color: '#9fe5c6' }} />
               <Typography sx={{ fontWeight: 800, fontSize: '.92rem' }}>
-                Video · tài liệu · LMS hỗ trợ ôn tập
+                Video · tài liệu · LMS · đề thi thử
               </Typography>
             </Stack>
           </Stack>

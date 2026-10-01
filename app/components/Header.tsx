@@ -22,11 +22,11 @@ import Link from 'next/link';
 
 const navItems = [
   { label: 'Trang chủ', path: '/' },
-  { label: 'Khóa học & lịch học', path: '/khoa-hoc' },
+  { label: 'Khóa học', path: '/khoa-hoc' },
+  { label: 'Sách', path: '/sach' },
   { label: 'Đội ngũ', path: '/doi-ngu' },
-  { label: 'Tin tức', path: '/tin-tuc' },
-  { label: 'Tài liệu ôn luyện', path: '/tai-lieu-on-luyen' },
-  { label: 'Đề thi thử', path: '/de-thi-thu' },
+  { label: 'Tài liệu', path: '/tai-lieu-on-luyen' },
+  { label: 'Chính sách', path: '/chinh-sach' },
 ];
 
 export default function Header() {
@@ -44,8 +44,8 @@ export default function Header() {
     fontFamily: "'Montserrat', sans-serif",
     color: '#1f2a4a',
     textTransform: 'none',
-    fontSize: '0.9rem',
-    px: 1.5,
+    fontSize: '0.88rem',
+    px: 1.2,
     whiteSpace: 'nowrap',
     '&:hover': { color: '#1976d2', bgcolor: 'transparent' },
   };
@@ -103,12 +103,12 @@ export default function Header() {
               sx={{
                 display: { xs: 'none', md: 'inline-flex' },
                 borderRadius: 999,
-                px: 2.7,
+                px: 2.5,
                 fontWeight: 900,
                 whiteSpace: 'nowrap',
               }}
             >
-              Đăng ký
+              Nhận tư vấn
             </Button>
 
             <IconButton
@@ -164,7 +164,7 @@ export default function Header() {
             variant="contained"
             sx={{ mt: 2, borderRadius: 999, py: 1.3, fontWeight: 900 }}
           >
-            Đăng ký ngay
+            Nhận tư vấn
           </Button>
         </Box>
       </Drawer>

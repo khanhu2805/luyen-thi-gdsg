@@ -15,7 +15,7 @@ import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
 import WorkspacePremiumRoundedIcon from '@mui/icons-material/WorkspacePremiumRounded';
 import AssignForm from '../components/AssignForm';
 import SnackBar from '../components/SnackBar';
-import { teachers } from '../data/enrollment';
+import { publicTeachers as teachers } from '../data/public-enrollment';
 
 const fontHeader = "'Montserrat', sans-serif";
 const fontBody = "'Nunito', sans-serif";

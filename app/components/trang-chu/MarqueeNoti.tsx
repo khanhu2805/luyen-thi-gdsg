@@ -2,7 +2,6 @@
 
 import { Box, Typography } from '@mui/material';
 import { keyframes } from '@mui/system';
-import { ENROLLMENT_OPEN_DATE } from '../../data/enrollment';
 
 const marquee = keyframes`
   from { transform: translateX(0); }
@@ -10,7 +9,7 @@ const marquee = keyframes`
 `;
 
 export default function MarqueeNoti() {
-  const message = `KHAI GIẢNG ${ENROLLMENT_OPEN_DATE}  •  TOÁN  •  NGỮ VĂN  •  TIẾNG ANH  •  MỖI KHÓA 8 BUỔI / 8 TUẦN  •  ĐĂNG KÝ TƯ VẤN & CHỌN CA HỌC TRỰC TUYẾN  •  `;
+  const message = 'TOÁN  •  NGỮ VĂN  •  TIẾNG ANH  •  MỖI KHÓA 8 BUỔI / 8 TUẦN  •  ĐĂNG KÝ TƯ VẤN TRỰC TUYẾN  •  ';
 
   return (
     <Box sx={{ overflow: 'hidden', bgcolor: '#ff9800', color: '#fff', py: 1.1 }}>

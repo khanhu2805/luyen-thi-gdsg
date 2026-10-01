@@ -1,30 +1,21 @@
 'use client';
 
 import {
-  Alert,
   Box,
   Button,
   Card,
   CardContent,
-  Chip,
   Container,
   Divider,
   Grid,
   Stack,
   Typography,
 } from '@mui/material';
-import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
-import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
-import PaymentsRoundedIcon from '@mui/icons-material/PaymentsRounded';
+import PolicyRoundedIcon from '@mui/icons-material/PolicyRounded';
 import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
 import Link from 'next/link';
-import {
-  courses,
-  ENROLLMENT_OPEN_DATE,
-  formatVnd,
-  getTeacherById,
-} from '../data/enrollment';
+import { publicCourses as courses, getPublicTeacherById as getTeacherById } from '../data/public-enrollment';
 
 const fontHeader = "'Montserrat', sans-serif";
 const fontBody = "'Nunito', sans-serif";
@@ -41,10 +32,6 @@ export default function KhoaHocPage() {
         }}
       >
         <Container maxWidth="lg">
-          {/* <Chip
-            label={`KHAI GIẢNG ${ENROLLMENT_OPEN_DATE}`}
-            sx={{ bgcolor: 'rgba(255,255,255,.15)', color: 'white', fontWeight: 900, mb: 2 }}
-          /> */}
           <Typography
             variant="h2"
             sx={{
@@ -53,24 +40,37 @@ export default function KhoaHocPage() {
               fontSize: { xs: '2.2rem', md: '3.6rem' },
             }}
           >
-            Khóa học & lịch học
+            Khóa học ôn thi vào lớp 10
           </Typography>
           <Typography
             variant="h6"
-            sx={{ mt: 2, opacity: 0.92, maxWidth: 850, mx: 'auto', lineHeight: 1.7 }}
+            sx={{ mt: 2, opacity: 0.92, maxWidth: 900, mx: 'auto', lineHeight: 1.7 }}
           >
             Toán · Ngữ văn · Tiếng Anh. Mỗi khóa gồm 8 buổi trong 8 tuần.
-            Học sinh có thể đăng ký nhiều môn; với từng môn, chọn giáo viên và
-            một ca học cố định phù hợp.
+            Học phí và lịch học được tư vấn trực tiếp để phụ huynh nhận thông tin
+            đúng với lớp đang mở tại thời điểm đăng ký.
           </Typography>
         </Container>
       </Box>
 
       <Container maxWidth="xl" sx={{ mt: { xs: 5, md: 7 } }}>
-        {/* <Alert severity="info" sx={{ mb: 5, borderRadius: 3 }}>
-          Ngày 20/09/2026 là mốc khai giảng của đợt tuyển sinh. Buổi học thực tế diễn ra
-          theo thứ và khung giờ của giáo viên/ca học mà học sinh lựa chọn.
-        </Alert> */}
+        <Box
+          sx={{
+            mb: 4,
+            p: { xs: 2.5, md: 3 },
+            borderRadius: 4,
+            bgcolor: '#e8f1ff',
+            border: '1px solid #c9ddff',
+          }}
+        >
+          <Typography sx={{ fontWeight: 900, color: '#0d47a1' }}>
+            Thông tin học phí và lịch học không hiển thị công khai trên website.
+          </Typography>
+          <Typography color="text.secondary" sx={{ mt: 0.7, lineHeight: 1.7 }}>
+            Phụ huynh vui lòng gửi yêu cầu tư vấn. Trung tâm sẽ xác nhận lớp đang mở,
+            giáo viên phụ trách, lịch học phù hợp và mức học phí áp dụng tại thời điểm đăng ký.
+          </Typography>
+        </Box>
 
         <Grid container spacing={3.5}>
           {courses.map((course) => {
@@ -96,7 +96,7 @@ export default function KhoaHocPage() {
                     sx={{
                       p: 3,
                       color: 'white',
-                      background: `linear-gradient(135deg, ${primaryTeacher?.accent || '#1976d2'}, #263238)`,
+                      background: primaryTeacher?.accent || '#1976d2',
                     }}
                   >
                     <Typography variant="overline" sx={{ fontWeight: 900 }}>
@@ -111,20 +111,12 @@ export default function KhoaHocPage() {
                   </Box>
 
                   <CardContent sx={{ p: 3.5, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                    <Stack spacing={1.5}>
-                      <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
-                        <SchoolRoundedIcon color="primary" />
-                        <Typography>
-                          <b>{course.sessions} buổi</b> / {course.weeks} tuần
-                        </Typography>
-                      </Box>
-                      <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
-                        <PaymentsRoundedIcon color="primary" />
-                        <Typography>
-                          <b>{formatVnd(course.price)}</b> / khóa
-                        </Typography>
-                      </Box>
-                    </Stack>
+                    <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
+                      <SchoolRoundedIcon color="primary" />
+                      <Typography>
+                        <b>{course.sessions} buổi</b> / {course.weeks} tuần
+                      </Typography>
+                    </Box>
 
                     <Typography color="text.secondary" sx={{ lineHeight: 1.7, my: 3 }}>
                       {course.description}
@@ -133,10 +125,10 @@ export default function KhoaHocPage() {
                     <Divider sx={{ mb: 2.5 }} />
 
                     <Typography sx={{ fontFamily: fontHeader, fontWeight: 900, mb: 1.5 }}>
-                      Giáo viên & ca học đang mở
+                      Giáo viên phụ trách
                     </Typography>
 
-                    <Stack spacing={2} sx={{ flexGrow: 1 }}>
+                    <Stack spacing={1.5} sx={{ flexGrow: 1 }}>
                       {course.teachers.map((teacherOption) => {
                         const teacher = getTeacherById(teacherOption.teacherId);
 
@@ -150,43 +142,12 @@ export default function KhoaHocPage() {
                               border: '1px solid #e5eaf0',
                             }}
                           >
-                            <Typography sx={{ fontWeight: 900, color: '#1a237e', mb: 1.25 }}>
+                            <Typography sx={{ fontWeight: 900, color: '#1a237e' }}>
                               {teacher?.name || 'Đang cập nhật giáo viên'}
                             </Typography>
-
-                            {teacherOption.schedules.length > 0 ? (
-                              <Stack spacing={1.25}>
-                                {teacherOption.schedules.map((schedule) => (
-                                  <Box key={schedule.id}>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                      <CalendarMonthRoundedIcon
-                                        sx={{ fontSize: 20, color: 'primary.main' }}
-                                      />
-                                      <Typography sx={{ fontWeight: 900 }}>
-                                        {schedule.day}
-                                      </Typography>
-                                    </Box>
-                                    <Box
-                                      sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: 1,
-                                        mt: 0.5,
-                                      }}
-                                    >
-                                      <AccessTimeRoundedIcon
-                                        sx={{ fontSize: 20, color: 'text.secondary' }}
-                                      />
-                                      <Typography color="text.secondary">
-                                        {schedule.time}
-                                      </Typography>
-                                    </Box>
-                                  </Box>
-                                ))}
-                              </Stack>
-                            ) : (
-                              <Typography variant="body2" color="text.secondary">
-                                Chưa có ca học chính thức.
+                            {teacher && (
+                              <Typography variant="body2" color="text.secondary" sx={{ mt: 0.6 }}>
+                                {teacher.degree} · {teacher.organization}
                               </Typography>
                             )}
                           </Box>
@@ -196,9 +157,9 @@ export default function KhoaHocPage() {
 
                     <Stack spacing={1.25} sx={{ mt: 3 }}>
                       {[
-                        'Có thể đăng ký nhiều môn trong cùng một form',
-                        'Mỗi môn chọn giáo viên và ca học riêng',
-                        'Hệ thống cảnh báo nếu các ca đã chọn bị trùng giờ',
+                        'Lộ trình 8 tuần, tập trung kiến thức trọng tâm tuyển sinh lớp 10',
+                        'Video, tài liệu và LMS được cung cấp theo chính sách của khóa học',
+                        'Lịch học và học phí được xác nhận trực tiếp khi tư vấn',
                       ].map((item) => (
                         <Box key={item} sx={{ display: 'flex', gap: 1, alignItems: 'flex-start' }}>
                           <CheckCircleRoundedIcon sx={{ color: 'success.main', fontSize: 20, mt: 0.2 }} />
@@ -207,28 +168,25 @@ export default function KhoaHocPage() {
                       ))}
                     </Stack>
 
-                    <Stack
-                      direction={{ xs: 'column', sm: 'row', md: 'column' }}
-                      spacing={1.25}
-                      sx={{ mt: 3.5 }}
-                    >
+                    <Stack spacing={1.25} sx={{ mt: 3.5 }}>
                       <Button
                         component={Link}
-                        href={`/?course=${course.id}&mode=register#form-dang-ky`}
+                        href={'/?course=' + course.id + '#form-dang-ky'}
                         variant="contained"
                         size="large"
                         sx={{ borderRadius: 999, fontWeight: 900 }}
                       >
-                        Đăng ký khóa học
+                        Đăng ký tư vấn
                       </Button>
                       <Button
                         component={Link}
-                        href={`/?course=${course.id}#form-dang-ky`}
+                        href="/chinh-sach"
                         variant="outlined"
                         size="large"
+                        startIcon={<PolicyRoundedIcon />}
                         sx={{ borderRadius: 999, fontWeight: 900 }}
                       >
-                        Nhận tư vấn
+                        Xem chính sách học viên
                       </Button>
                     </Stack>
                   </CardContent>
@@ -252,10 +210,10 @@ export default function KhoaHocPage() {
           </Typography>
           <Grid container spacing={2.5} sx={{ mt: 1 }}>
             {[
-              ['1', 'Chọn môn', 'Có thể chọn một hoặc nhiều môn trong cùng một lần đăng ký.'],
-              ['2', 'Chọn giáo viên', 'Mỗi môn có danh sách giáo viên riêng nếu có nhiều giáo viên phụ trách.'],
-              ['3', 'Chọn ca học', 'Chọn một ca của giáo viên; hệ thống kiểm tra trùng lịch giữa các môn.'],
-              ['4', 'Xác nhận thông tin', 'Điền thông tin phụ huynh, học sinh và gửi đăng ký.'],
+              ['1', 'Chọn môn', 'Có thể chọn một hoặc nhiều môn cần tư vấn.'],
+              ['2', 'Chọn giáo viên', 'Nếu môn có nhiều giáo viên, phụ huynh có thể chọn giáo viên quan tâm.'],
+              ['3', 'Gửi thông tin', 'Điền thông tin học sinh, phụ huynh và nhu cầu cần tư vấn.'],
+              ['4', 'Trung tâm xác nhận', 'Tư vấn viên liên hệ để xác nhận lịch học, học phí và hướng dẫn đăng ký.'],
             ].map(([step, title, desc]) => (
               <Grid key={step} size={{ xs: 12, sm: 6, md: 3 }}>
                 <Box sx={{ p: 2.5, height: '100%' }}>

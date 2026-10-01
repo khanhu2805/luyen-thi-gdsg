@@ -45,26 +45,28 @@ export default function Footer() {
             </Stack>
             <Typography sx={{ mt: 2.5, maxWidth: 560, fontFamily: fontBody, lineHeight: 1.8, color: '#aebbd0' }}>
               Đồng hành cùng học sinh lớp 9 trong quá trình ôn thi vào 10 với khóa học trực tuyến,
-              giáo viên phụ trách rõ ràng, lịch học minh bạch và tài liệu luyện tập theo từng môn.
+              giáo viên phụ trách rõ ràng, tài liệu luyện tập và hỗ trợ học tập theo từng môn.
             </Typography>
           </Grid>
 
           <Grid size={{ xs: 12, sm: 6, md: 2 }}>
             <Typography sx={{ fontFamily: fontHeader, fontWeight: 900, color: 'white', mb: 2.2 }}>
-              Khóa học
+              Tuyển sinh
             </Typography>
             <Stack spacing={1.4}>
-              <Link href="/khoa-hoc" style={footerLinkStyle}>Khóa học & lịch học</Link>
+              <Link href="/khoa-hoc" style={footerLinkStyle}>Khóa học</Link>
               <Link href="/doi-ngu" style={footerLinkStyle}>Đội ngũ giáo viên</Link>
               <Link href="/#form-dang-ky" style={footerLinkStyle}>Đăng ký tư vấn</Link>
+              <Link href="/chinh-sach" style={footerLinkStyle}>Chính sách học viên</Link>
             </Stack>
           </Grid>
 
           <Grid size={{ xs: 12, sm: 6, md: 2 }}>
             <Typography sx={{ fontFamily: fontHeader, fontWeight: 900, color: 'white', mb: 2.2 }}>
-              Học tập
+              Học tập & sách
             </Typography>
             <Stack spacing={1.4}>
+              <Link href="/sach" style={footerLinkStyle}>Sách luyện tập</Link>
               <Link href="/tai-lieu-on-luyen" style={footerLinkStyle}>Tài liệu ôn luyện</Link>
               <Link href="/de-thi-thu" style={footerLinkStyle}>Đề thi thử</Link>
               <Link href="/tin-tuc" style={footerLinkStyle}>Tin tức giáo dục</Link>

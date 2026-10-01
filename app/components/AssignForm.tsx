@@ -219,8 +219,8 @@ export default function AssignForm(props: Props) {
                 Ôn thi tuyển sinh lớp 10
               </Typography>
               <Typography sx={{ fontFamily: fontBody, opacity: 0.92, lineHeight: 1.75 }}>
-                Phụ huynh có thể chọn một hoặc nhiều môn quan tâm. Trung tâm sẽ liên hệ
-                để xác nhận giáo viên, lịch học và học phí theo lớp đang mở.
+                Phụ huynh có thể chọn một hoặc nhiều môn quan tâm. Đội ngũ tư vấn sẽ
+                liên hệ để hỗ trợ chọn lớp phù hợp với nhu cầu học tập của học sinh.
               </Typography>
 
               <Divider sx={{ my: 4, borderColor: 'rgba(255,255,255,.25)' }} />
@@ -244,6 +244,40 @@ export default function AssignForm(props: Props) {
                     </Typography>
                   </Box>
                 ))}
+              </Stack>
+
+              <Stack spacing={1.2} sx={{ mt: 3 }}>
+                <Box
+                  sx={{
+                    p: 2,
+                    borderRadius: 3,
+                    bgcolor: 'rgba(255,193,7,.18)',
+                    border: '1px solid rgba(255,224,130,.35)',
+                  }}
+                >
+                  <Typography sx={{ fontWeight: 900, color: '#ffecb3' }}>
+                    🎁 Đăng ký khóa học – tặng sách Toán 9
+                  </Typography>
+                  <Typography variant="body2" sx={{ mt: 0.5, opacity: 0.93, lineHeight: 1.6 }}>
+                    Học viên đăng ký và hoàn tất học phí một khóa ôn thi lớp 10 được tặng 01 cuốn
+                    “36 Đề kiểm tra định kỳ Toán 9”.
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    p: 2,
+                    borderRadius: 3,
+                    bgcolor: 'rgba(255,255,255,.10)',
+                    border: '1px solid rgba(255,255,255,.16)',
+                  }}
+                >
+                  <Typography sx={{ fontWeight: 900 }}>
+                    👥 Mời bạn cùng học – cùng nhận ưu đãi
+                  </Typography>
+                  <Typography variant="body2" sx={{ mt: 0.5, opacity: 0.93, lineHeight: 1.6 }}>
+                    Bạn mới được giảm 100.000đ; người giới thiệu nhận 100.000đ ưu đãi cho khóa tiếp theo.
+                  </Typography>
+                </Box>
               </Stack>
             </Grid>
 
@@ -359,7 +393,7 @@ export default function AssignForm(props: Props) {
                     placeholder="Ví dụ: buổi tối các ngày trong tuần"
                     value={formData.desiredSchedule}
                     onChange={(event) => update('desiredSchedule', event.target.value)}
-                    helperText="Đây là nhu cầu của gia đình, không phải lịch học chính thức của lớp."
+                    helperText="Trung tâm sẽ dựa trên khung thời gian này để tư vấn lớp phù hợp."
                   />
 
                   <TextField

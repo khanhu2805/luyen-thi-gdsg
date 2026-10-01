@@ -11,6 +11,8 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import CardGiftcardRoundedIcon from '@mui/icons-material/CardGiftcardRounded';
 import LocalShippingRoundedIcon from '@mui/icons-material/LocalShippingRounded';
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
@@ -34,32 +36,143 @@ export default function SachPage() {
           py: { xs: 8, md: 10 },
           color: 'white',
           textAlign: 'center',
-          background: 'linear-gradient(135deg, #0b2d62, #1976d2)',
+          position: 'relative',
+          overflow: 'hidden',
+          background: 'linear-gradient(135deg, #081f49 0%, #0d47a1 50%, #1976d2 100%)',
         }}
       >
-        <Container maxWidth="lg">
+        <Box
+          sx={{
+            position: 'absolute',
+            width: 360,
+            height: 360,
+            borderRadius: '50%',
+            right: -120,
+            top: -150,
+            bgcolor: 'rgba(255,255,255,.07)',
+          }}
+        />
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Chip
             icon={<MenuBookRoundedIcon />}
             label="SÁCH LUYỆN TẬP"
-            sx={{ mb: 2, bgcolor: 'rgba(255,255,255,.14)', color: 'white', fontWeight: 900 }}
+            sx={{
+              mb: 2,
+              bgcolor: 'rgba(255,255,255,.14)',
+              color: 'white',
+              border: '1px solid rgba(255,255,255,.18)',
+              fontWeight: 900,
+            }}
           />
           <Typography
             variant="h2"
             sx={{
               fontFamily: fontHeader,
               fontWeight: 900,
-              fontSize: { xs: '2.15rem', md: '3.5rem' },
+              fontSize: { xs: '2.15rem', md: '3.55rem' },
             }}
           >
             36 Đề kiểm tra định kỳ Toán 6 · 7 · 8 · 9
           </Typography>
-          <Typography sx={{ mt: 2, maxWidth: 760, mx: 'auto', opacity: 0.92, lineHeight: 1.7 }}>
-            Giá bán lẻ thống nhất 90.000 đồng/cuốn. Giá chưa bao gồm phí vận chuyển.
+          <Typography sx={{ mt: 2, maxWidth: 760, mx: 'auto', opacity: 0.93, lineHeight: 1.75 }}>
+            Bộ sách luyện tập dành cho học sinh THCS, hỗ trợ ôn tập định kỳ và củng cố kỹ năng làm bài.
           </Typography>
         </Container>
       </Box>
 
-      <Container maxWidth="xl" sx={{ mt: { xs: 5, md: 7 } }}>
+      <Container maxWidth="xl" sx={{ mt: { xs: -3, md: -4 }, position: 'relative', zIndex: 2 }}>
+        <Box
+          sx={{
+            p: { xs: 3, md: 4 },
+            borderRadius: 5,
+            color: 'white',
+            overflow: 'hidden',
+            position: 'relative',
+            background: 'linear-gradient(135deg, #ff8f00, #ef6c00)',
+            boxShadow: '0 18px 45px rgba(239,108,0,.2)',
+          }}
+        >
+          <Box
+            sx={{
+              position: 'absolute',
+              width: 220,
+              height: 220,
+              borderRadius: '50%',
+              right: -70,
+              top: -90,
+              bgcolor: 'rgba(255,255,255,.12)',
+            }}
+          />
+          <Grid container spacing={3} sx={{ alignItems: 'center', position: 'relative' }}>
+            <Grid size={{ xs: 12, md: 8 }}>
+              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+                <Box
+                  sx={{
+                    width: 54,
+                    height: 54,
+                    borderRadius: 3,
+                    display: 'grid',
+                    placeItems: 'center',
+                    bgcolor: 'rgba(255,255,255,.16)',
+                  }}
+                >
+                  <CardGiftcardRoundedIcon sx={{ fontSize: 30 }} />
+                </Box>
+                <Box>
+                  <Typography variant="overline" sx={{ fontWeight: 900 }}>
+                    QUÀ TẶNG HỌC VIÊN
+                  </Typography>
+                  <Typography variant="h4" sx={{ fontFamily: fontHeader, fontWeight: 900 }}>
+                    Đăng ký khóa ôn thi lớp 10 – tặng sách Toán 9
+                  </Typography>
+                </Box>
+              </Stack>
+              <Typography sx={{ mt: 2, lineHeight: 1.75, maxWidth: 850 }}>
+                Học viên đăng ký và hoàn tất học phí một khóa ôn thi tuyển sinh lớp 10
+                được tặng <b>01 cuốn “36 Đề kiểm tra định kỳ Toán 9”</b>.
+                Trung tâm hỗ trợ phí vận chuyển đối với sách tặng.
+              </Typography>
+            </Grid>
+            <Grid size={{ xs: 12, md: 4 }} sx={{ textAlign: { xs: 'left', md: 'right' } }}>
+              <Button
+                component={Link}
+                href="/#form-dang-ky"
+                variant="contained"
+                endIcon={<ArrowForwardRoundedIcon />}
+                sx={{
+                  borderRadius: 999,
+                  px: 3.2,
+                  py: 1.3,
+                  bgcolor: 'white',
+                  color: '#e65100',
+                  fontWeight: 900,
+                  boxShadow: 'none',
+                  '&:hover': { bgcolor: '#fff8e1', boxShadow: 'none' },
+                }}
+              >
+                Đăng ký tư vấn
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
+
+        <Box sx={{ textAlign: 'center', mt: { xs: 7, md: 8 }, mb: 4 }}>
+          <Typography
+            variant="h3"
+            sx={{
+              fontFamily: fontHeader,
+              fontWeight: 900,
+              color: '#1a237e',
+              fontSize: { xs: '1.9rem', md: '2.7rem' },
+            }}
+          >
+            Chọn sách theo khối lớp
+          </Typography>
+          <Typography color="text.secondary" sx={{ mt: 1.2 }}>
+            Giá bán lẻ: <b>90.000đ/cuốn</b>.
+          </Typography>
+        </Box>
+
         <Grid container spacing={3}>
           {books.map((book) => (
             <Grid key={book.grade} size={{ xs: 12, sm: 6, lg: 3 }}>
@@ -68,8 +181,13 @@ export default function SachPage() {
                   height: '100%',
                   borderRadius: 5,
                   border: '1px solid #e5eaf0',
-                  boxShadow: '0 16px 38px rgba(31,42,74,.08)',
+                  boxShadow: '0 14px 36px rgba(31,42,74,.08)',
                   overflow: 'hidden',
+                  transition: 'transform .25s ease, box-shadow .25s ease',
+                  '&:hover': {
+                    transform: 'translateY(-6px)',
+                    boxShadow: '0 22px 48px rgba(31,42,74,.13)',
+                  },
                 }}
               >
                 <Box
@@ -84,9 +202,22 @@ export default function SachPage() {
                     flexDirection: 'column',
                     justifyContent: 'space-between',
                     boxShadow: '0 16px 30px rgba(31,42,74,.18)',
+                    position: 'relative',
+                    overflow: 'hidden',
                   }}
                 >
-                  <Box>
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      width: 150,
+                      height: 150,
+                      borderRadius: '50%',
+                      right: -55,
+                      top: -55,
+                      bgcolor: 'rgba(255,255,255,.12)',
+                    }}
+                  />
+                  <Box sx={{ position: 'relative' }}>
                     <Typography variant="overline" sx={{ fontWeight: 900, letterSpacing: 1 }}>
                       GIÁO DỤC SÀI GÒN
                     </Typography>
@@ -94,7 +225,7 @@ export default function SachPage() {
                       36 ĐỀ KIỂM TRA ĐỊNH KỲ
                     </Typography>
                   </Box>
-                  <Box>
+                  <Box sx={{ position: 'relative' }}>
                     <Typography sx={{ fontFamily: fontHeader, fontWeight: 900, fontSize: '2rem' }}>
                       TOÁN
                     </Typography>
@@ -109,26 +240,26 @@ export default function SachPage() {
                     {book.title}
                   </Typography>
                   <Typography variant="h5" sx={{ mt: 2, color: '#d84315', fontWeight: 900 }}>
-                    90.000đ / cuốn
+                    90.000đ
                   </Typography>
-                  <Typography color="text.secondary" variant="body2" sx={{ mt: 1.2, lineHeight: 1.7 }}>
-                    Chưa bao gồm phí vận chuyển. Phí vận chuyển đối với đơn mua sách do người mua thanh toán.
-                  </Typography>
+                  <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mt: 1.2 }}>
+                    <LocalShippingRoundedIcon sx={{ color: 'text.secondary', fontSize: 20 }} />
+                    <Typography color="text.secondary" variant="body2">
+                      Phí vận chuyển được tính theo đơn hàng.
+                    </Typography>
+                  </Stack>
 
                   {book.grade === '9' && (
-                    <Box
+                    <Chip
+                      label="Quà tặng khóa ôn thi lớp 10"
+                      size="small"
                       sx={{
                         mt: 2,
-                        p: 1.5,
-                        borderRadius: 2.5,
                         bgcolor: '#fff3e0',
-                        border: '1px solid #ffe0b2',
+                        color: '#e65100',
+                        fontWeight: 900,
                       }}
-                    >
-                      <Typography variant="body2" sx={{ fontWeight: 800, color: '#e65100' }}>
-                        Học viên hoàn tất học phí một khóa ôn thi tuyển sinh lớp 10 được tặng tối đa 01 cuốn Toán 9/khóa; Công ty chịu phí vận chuyển đối với sách tặng.
-                      </Typography>
-                    </Box>
+                    />
                   )}
 
                   <Button
@@ -149,34 +280,36 @@ export default function SachPage() {
           ))}
         </Grid>
 
-        <Grid container spacing={3} sx={{ mt: 4 }}>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <Box sx={{ height: '100%', p: 3.5, borderRadius: 4, bgcolor: 'white', border: '1px solid #e5eaf0' }}>
-              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
-                <LocalShippingRoundedIcon color="primary" />
-                <Typography variant="h6" sx={{ fontFamily: fontHeader, fontWeight: 900 }}>
-                  Chính sách vận chuyển
-                </Typography>
-              </Stack>
-              <Typography color="text.secondary" sx={{ mt: 1.5, lineHeight: 1.75 }}>
-                Đơn mua sách: người mua thanh toán phí vận chuyển. Sách tặng cho học viên khóa ôn thi lớp 10: Công ty chịu phí vận chuyển.
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <Box sx={{ height: '100%', p: 3.5, borderRadius: 4, bgcolor: 'white', border: '1px solid #e5eaf0' }}>
-              <Typography variant="h6" sx={{ fontFamily: fontHeader, fontWeight: 900 }}>
-                Cần xem chính sách đầy đủ?
-              </Typography>
-              <Typography color="text.secondary" sx={{ mt: 1.5, lineHeight: 1.75 }}>
-                Xem quy định về quà tặng sách, bảo lưu, chuyển lớp, hoàn học phí và chương trình mời bạn cùng học.
-              </Typography>
-              <Button component={Link} href="/chinh-sach" variant="outlined" sx={{ mt: 2, borderRadius: 999, fontWeight: 900 }}>
-                Xem chính sách
-              </Button>
-            </Box>
-          </Grid>
-        </Grid>
+        <Box
+          sx={{
+            mt: 5,
+            p: { xs: 3, md: 4 },
+            borderRadius: 5,
+            bgcolor: 'white',
+            border: '1px solid #e5eaf0',
+            display: { md: 'flex' },
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 3,
+          }}
+        >
+          <Box>
+            <Typography variant="h5" sx={{ fontFamily: fontHeader, fontWeight: 900, color: '#1a237e' }}>
+              Xem thêm quyền lợi dành cho học viên
+            </Typography>
+            <Typography color="text.secondary" sx={{ mt: 0.7, lineHeight: 1.7 }}>
+              Tìm hiểu chương trình “Mời bạn cùng học”, quà tặng sách và các hỗ trợ trong quá trình học.
+            </Typography>
+          </Box>
+          <Button
+            component={Link}
+            href="/chinh-sach"
+            variant="outlined"
+            sx={{ mt: { xs: 2, md: 0 }, borderRadius: 999, px: 3, fontWeight: 900, whiteSpace: 'nowrap' }}
+          >
+            Xem quyền lợi học viên
+          </Button>
+        </Box>
       </Container>
     </Box>
   );

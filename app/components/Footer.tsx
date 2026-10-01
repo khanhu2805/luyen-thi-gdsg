@@ -57,7 +57,7 @@ export default function Footer() {
               <Link href="/khoa-hoc" style={footerLinkStyle}>Khóa học</Link>
               <Link href="/doi-ngu" style={footerLinkStyle}>Đội ngũ giáo viên</Link>
               <Link href="/#form-dang-ky" style={footerLinkStyle}>Đăng ký tư vấn</Link>
-              <Link href="/chinh-sach" style={footerLinkStyle}>Chính sách học viên</Link>
+              <Link href="/chinh-sach" style={footerLinkStyle}>Quyền lợi & ưu đãi</Link>
             </Stack>
           </Grid>
 

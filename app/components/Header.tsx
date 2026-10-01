@@ -26,7 +26,7 @@ const navItems = [
   { label: 'Sách', path: '/sach' },
   { label: 'Đội ngũ', path: '/doi-ngu' },
   { label: 'Tài liệu', path: '/tai-lieu-on-luyen' },
-  { label: 'Chính sách', path: '/chinh-sach' },
+  { label: 'Ưu đãi', path: '/chinh-sach' },
 ];
 
 export default function Header() {

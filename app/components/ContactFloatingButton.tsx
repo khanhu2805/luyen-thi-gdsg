@@ -3,93 +3,95 @@
 import { Box, Tooltip, Typography } from '@mui/material';
 import { keyframes } from '@mui/system';
 import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
+import ForumRoundedIcon from '@mui/icons-material/ForumRounded';
 
-// Hiệu ứng tỏa sáng cho Zalo (Màu xanh Zalo)
-const pulseGlowZalo = keyframes`
-  0% { box-shadow: 0 0 0 0 rgba(0, 104, 255, 0.7); }
-  70% { box-shadow: 0 0 0 15px rgba(0, 104, 255, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(0, 104, 255, 0); }
-`;
-
-// Hiệu ứng tỏa sáng cho Facebook (Màu xanh Facebook)
-const pulseGlowFb = keyframes`
-  0% { box-shadow: 0 0 0 0 rgba(24, 119, 242, 0.7); }
-  70% { box-shadow: 0 0 0 15px rgba(24, 119, 242, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(24, 119, 242, 0); }
+const pulseGlow = keyframes`
+  0% { box-shadow: 0 0 0 0 rgba(47, 111, 237, .32); }
+  70% { box-shadow: 0 0 0 13px rgba(47, 111, 237, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(47, 111, 237, 0); }
 `;
 
 export default function FloatingContactButtons() {
-  const zaloOALink = "https://zalo.me/1357593207866827845"; // Thay ID Zalo của bạn
-  const fbMessengerLink = "https://www.facebook.com/profile.php?id=61589419747743"; // Thay link Messenger của bạn
+  const zaloOALink = 'https://zalo.me/1357593207866827845';
+  const facebookLink = 'https://www.facebook.com/profile.php?id=61589419747743';
+
+  const buttonSx = {
+    width: { xs: 52, md: 58 },
+    height: { xs: 52, md: 58 },
+    borderRadius: 3.3,
+    display: 'grid',
+    placeItems: 'center',
+    color: 'white',
+    textDecoration: 'none',
+    boxShadow: '0 12px 28px rgba(15,48,105,.18)',
+    border: '2px solid rgba(255,255,255,.92)',
+    transition: 'transform .25s ease, box-shadow .25s ease',
+    '&:hover': {
+      transform: 'translateY(-4px) scale(1.04)',
+      boxShadow: '0 18px 34px rgba(15,48,105,.24)',
+    },
+  };
 
   return (
     <Box
       sx={{
         position: 'fixed',
-        bottom: { xs: 40, md: 50 },
-        right: { xs: 20, md: 30 },
-        zIndex: 9999,
+        bottom: { xs: 22, md: 30 },
+        right: { xs: 16, md: 24 },
+        zIndex: 1200,
         display: 'flex',
-        flexDirection: 'column', // Xếp dọc 2 nút
-        gap: 2.5, // Khoảng cách giữa 2 nút
+        flexDirection: 'column',
+        gap: 1.25,
       }}
     >
-      {/* ================= NÚT FACEBOOK ================= */}
-      <Tooltip title="Chat qua Messenger" placement="left" arrow>
+      <Tooltip title="Facebook Luyện thi GDSG" placement="left" arrow>
         <Box
           component="a"
-          href={fbMessengerLink}
+          href={facebookLink}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="Facebook Luyện thi Giáo dục Sài Gòn"
           sx={{
-            display: 'flex',
-            width: { xs: 55, md: 65 },
-            height: { xs: 55, md: 65 },
-            borderRadius: '50%',
-            bgcolor: '#1877F2', // Xanh đặc trưng Facebook
-            justifyContent: 'center',
-            alignItems: 'center',
-            cursor: 'pointer',
-            animation: `${pulseGlowFb} 2s infinite`,
-            transition: 'transform 0.3s ease',
-            '&:hover': {
-              transform: 'scale(1.1) rotate(-5deg)',
-            }
+            ...buttonSx,
+            bgcolor: '#1877f2',
           }}
         >
-          <FacebookRoundedIcon sx={{ color: 'white', fontSize: { xs: 35, md: 42 } }} />
+          <FacebookRoundedIcon sx={{ fontSize: { xs: 30, md: 33 } }} />
         </Box>
       </Tooltip>
 
-      {/* ================= NÚT ZALO ================= */}
-      <Tooltip title="Chat với tư vấn viên" placement="left" arrow>
+      <Tooltip title="Chat Zalo với tư vấn viên" placement="left" arrow>
         <Box
           component="a"
           href={zaloOALink}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="Zalo tư vấn tuyển sinh"
           sx={{
-            display: 'flex',
-            width: { xs: 55, md: 65 },
-            height: { xs: 55, md: 65 },
-            borderRadius: '50%',
-            bgcolor: '#0068ff', // Xanh đặc trưng Zalo
-            justifyContent: 'center',
-            alignItems: 'center',
-            cursor: 'pointer',
-            animation: `${pulseGlowZalo} 2s infinite`,
-            transition: 'transform 0.3s ease',
-            '&:hover': {
-              transform: 'scale(1.1) rotate(5deg)',
-            }
+            ...buttonSx,
+            bgcolor: '#0068ff',
+            animation: `${pulseGlow} 2.8s ease-out infinite`,
           }}
         >
-          <Typography sx={{ color: 'white', fontWeight: 900, fontSize: '1.2rem', fontFamily: "'Montserrat', sans-serif" }}>
-            Zalo
-          </Typography>
+          <Box sx={{ textAlign: 'center', lineHeight: 1 }}>
+            <ForumRoundedIcon sx={{ fontSize: 22, display: 'block', mx: 'auto' }} />
+            <Typography
+              component="span"
+              sx={{
+                display: 'block',
+                mt: 0.15,
+                color: 'white',
+                fontWeight: 900,
+                fontSize: '.58rem',
+                fontFamily: "'Montserrat', sans-serif",
+                letterSpacing: 0.2,
+              }}
+            >
+              ZALO
+            </Typography>
+          </Box>
         </Box>
       </Tooltip>
-      
     </Box>
   );
 }

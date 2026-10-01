@@ -1,571 +1,484 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   Box,
-  Container,
-  Typography,
-  Grid,
-  Card,
-  CardContent,
   Button,
-  TextField,
-  InputAdornment,
+  Card,
   Chip,
-  Stack
+  Container,
+  Grid,
+  InputAdornment,
+  Stack,
+  TextField,
+  Typography,
 } from '@mui/material';
-import { keyframes } from '@mui/system';
-import SearchIcon from '@mui/icons-material/Search';
-import TimerRoundedIcon from '@mui/icons-material/TimerRounded';
-import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
+import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import PictureAsPdfRoundedIcon from '@mui/icons-material/PictureAsPdfRounded';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import TimerRoundedIcon from '@mui/icons-material/TimerRounded';
+import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import Link from 'next/link';
+import FadeInScroll from '../components/FadeInScroll';
 
-// --- ANIMATIONS ---
-const fadeInUp = keyframes`
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-`;
-
-const float = keyframes`
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-  100% { transform: translateY(0px); }
-`;
-
-// --- FONTS ---
 const fontHeader = "'Montserrat', sans-serif";
 const fontBody = "'Nunito', sans-serif";
 
-// --- MOCK DATA ĐỀ THI THỬ (Dạng PDF) ---
-const mockExams = [
+type ExamItem = {
+  id: string;
+  title: string;
+  subject: 'Toán' | 'Ngữ Văn' | 'Tiếng Anh';
+  type: 'exam' | 'answer';
+  time: string;
+  year: string;
+  fileUrl: string;
+};
+
+const literatureExams: ExamItem[] = Array.from({ length: 10 }, (_, index) => {
+  const number = index + 1;
+
+  return [
+    {
+      id: 'van-exam-' + number,
+      title: 'Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề ' + number + ')',
+      subject: 'Ngữ Văn' as const,
+      type: 'exam' as const,
+      time: '120 phút',
+      year: '2026',
+      fileUrl: '/exam/mon-van/de-thi/de' + number + '.pdf',
+    },
+    {
+      id: 'van-answer-' + number,
+      title: 'Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề ' + number + ')',
+      subject: 'Ngữ Văn' as const,
+      type: 'answer' as const,
+      time: '120 phút',
+      year: '2026',
+      fileUrl: '/exam/mon-van/dap-an/de' + number + '.pdf',
+    },
+  ];
+}).flat();
+
+const officialExams: ExamItem[] = [
   {
-    id: 1,
-    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 1)",
-    subject: "Ngữ Văn",
+    id: 'official-toan-exam',
+    title: 'Đề thi Tuyển sinh 10 - Môn Toán',
+    subject: 'Toán',
     type: 'exam',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/de-thi/de1.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
+    time: '120 phút',
+    year: '2025',
+    fileUrl: '/exam/Đề thi NH 2024–2025/De-thi-TS10-nam-hoc-2025-2026-Mon-Toan-pdf.pdf',
   },
   {
-    id: 2,
-    title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 1)",
-    subject: "Ngữ Văn",
+    id: 'official-toan-answer',
+    title: 'Đáp án Đề thi Tuyển sinh 10 - Môn Toán',
+    subject: 'Toán',
     type: 'answer',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/dap-an/de1.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
+    time: '120 phút',
+    year: '2025',
+    fileUrl: '/exam/Đề thi NH 2024–2025/Dap-an-De-thi-TS10-nam-hoc-2025-2026-Mon-Toan-pdf.pdf',
   },
   {
-    id: 3,
-    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 2)",
-    subject: "Ngữ Văn",
+    id: 'official-anh-exam',
+    title: 'Đề thi Tuyển sinh 10 - Môn Tiếng Anh',
+    subject: 'Tiếng Anh',
     type: 'exam',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/de-thi/de2.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
+    time: '90 phút',
+    year: '2025',
+    fileUrl: '/exam/Đề thi NH 2024–2025/De-thi-TS10-nam-hoc-2025-2026-Mon-Tieng-Anh-pdf.pdf',
   },
   {
-    id: 4,
-    title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 2)",
-    subject: "Ngữ Văn",
+    id: 'official-anh-answer',
+    title: 'Đáp án Đề thi Tuyển sinh 10 - Môn Tiếng Anh',
+    subject: 'Tiếng Anh',
     type: 'answer',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/dap-an/de2.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
+    time: '90 phút',
+    year: '2025',
+    fileUrl: '/exam/Đề thi NH 2024–2025/Dap-an-De-thi-TS10-nam-hoc-2025-2026-Mon-Tieng-Anh-pdf.pdf',
   },
   {
-    id: 5,
-    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 3)",
-    subject: "Ngữ Văn",
+    id: 'official-van-exam',
+    title: 'Đề thi Tuyển sinh 10 - Môn Ngữ Văn',
+    subject: 'Ngữ Văn',
     type: 'exam',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/de-thi/de3.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
+    time: '120 phút',
+    year: '2025',
+    fileUrl: '/exam/Đề thi NH 2024–2025/De-thi-TS10-nam-hoc-2025-2026-Mon-Ngu-van-pdf.pdf',
   },
   {
-    id: 6,
-    title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 3)",
-    subject: "Ngữ Văn",
+    id: 'official-van-answer',
+    title: 'Đáp án Đề thi Tuyển sinh 10 - Môn Ngữ Văn',
+    subject: 'Ngữ Văn',
     type: 'answer',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/dap-an/de3.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 7,
-    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 4)",
-    subject: "Ngữ Văn",
-    type: 'exam',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/de-thi/de4.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 8,
-    title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 4)",
-    subject: "Ngữ Văn",
-    type: 'answer',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/dap-an/de4.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 9,
-    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 5)",
-    subject: "Ngữ Văn",
-    type: 'exam',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/de-thi/de5.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 10,
-    title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 5)",
-    subject: "Ngữ Văn",
-    type: 'answer',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/dap-an/de5.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 11,
-    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 6)",
-    subject: "Ngữ Văn",
-    type: 'exam',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/de-thi/de6.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 12,
-    title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 6)",
-    subject: "Ngữ Văn",
-    type: 'answer',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/dap-an/de6.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 13,
-    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 7)",
-    subject: "Ngữ Văn",
-    type: 'exam',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/de-thi/de7.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 14,
-    title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 7)",
-    subject: "Ngữ Văn",
-    type: 'answer',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/dap-an/de7.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 15,
-    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 8)",
-    subject: "Ngữ Văn",
-    type: 'exam',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/de-thi/de8.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 16,
-    title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 8)",
-    subject: "Ngữ Văn",
-    type: 'answer',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/dap-an/de8.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 17,
-    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 9)",
-    subject: "Ngữ Văn",
-    type: 'exam',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/de-thi/de9.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 18,
-    title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 9)",
-    subject: "Ngữ Văn",
-    type: 'answer',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/dap-an/de9.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 19,
-    title: "Đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 10)",
-    subject: "Ngữ Văn",
-    type: 'exam',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/de-thi/de10.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 20,
-    title: "Đáp án đề thi thử Tuyển sinh 10 - Môn Ngữ Văn (Đề 10)",
-    subject: "Ngữ Văn",
-    type: 'answer',
-    time: "120 phút",
-    year: "2026",
-    fileUrl: "/exam/mon-van/dap-an/de10.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "error"
-  },
-  {
-    id: 21,
-    title: "Đề thi Tuyển sinh 10 (Năm học 2024-2025) - Môn Toán",
-    subject: "Toán",
-    type: 'exam',
-    time: "120 phút",
-    year: "2025",
-    fileUrl: "/exam/Đề thi NH 2024–2025/De-thi-TS10-nam-hoc-2025-2026-Mon-Toan-pdf.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "primary"
-  },
-  {
-    id: 22,
-    title: "Đáp án Đề thi Tuyển sinh 10 (Năm học 2024-2025) - Môn Toán",
-    subject: "Toán",
-    type: 'answer',
-    time: "120 phút",
-    year: "2025",
-    fileUrl: "/exam/Đề thi NH 2024–2025/Dap-an-De-thi-TS10-nam-hoc-2025-2026-Mon-Toan-pdf.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "primary"
-  },
-  {
-    id: 23,
-    title: "Đề thi Tuyển sinh 10 (Năm học 2024-2025) - Môn Tiếng Anh",
-    subject: "Tiếng Anh",
-    type: 'exam',
-    time: "90 phút",
-    year: "2025",
-    fileUrl: "/exam/Đề thi NH 2024–2025/De-thi-TS10-nam-hoc-2025-2026-Mon-Tieng-Anh-pdf.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "success"
-  },
-  {
-    id: 24,
-    title: "Đáp án Đề thi Tuyển sinh 10 (Năm học 2024-2025) - Môn Tiếng Anh",
-    subject: "Tiếng Anh",
-    type: 'answer',
-    time: "90 phút",
-    year: "2025",
-    fileUrl: "/exam/Đề thi NH 2024–2025/Dap-an-De-thi-TS10-nam-hoc-2025-2026-Mon-Tieng-Anh-pdf.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "success"
-  },
-  {
-    id: 25,
-    title: "Đề thi Tuyển sinh 10 (Năm học 2024-2025) - Môn Ngữ Văn",
-    subject: "Ngữ Văn",
-    type: 'exam',
-    time: "120 phút",
-    year: "2025",
-    fileUrl: "/exam/Đề thi NH 2024–2025/De-thi-TS10-nam-hoc-2025-2026-Mon-Ngu-Van-pdf.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "success"
-  },
-  {
-    id: 26,
-    title: "Đáp án Đề thi Tuyển sinh 10 (Năm học 2024-2025) - Môn Ngữ Văn",
-    subject: "Ngữ Văn",
-    type: 'answer',
-    time: "120 phút",
-    year: "2025",
-    fileUrl: "/exam/Đề thi NH 2024–2025/Dap-an-De-thi-TS10-nam-hoc-2025-2026-Mon-Ngu-Van-pdf.pdf",
-    icon: "✍️",
-    color: "#fbe9e7",
-    tagColor: "success"
+    time: '120 phút',
+    year: '2025',
+    fileUrl: '/exam/Đề thi NH 2024–2025/Dap-an-De-thi-TS10-nam-hoc-2025-2026-Mon-Ngu-van-pdf.pdf',
   },
 ];
 
-const subjects = ["Tất cả", "Toán", "Ngữ Văn", "Tiếng Anh"];
+const exams = [...literatureExams, ...officialExams];
+const subjects = ['Tất cả', 'Toán', 'Ngữ Văn', 'Tiếng Anh'] as const;
+
+const subjectMeta = {
+  'Toán': { accent: '#2f6fed', soft: '#eaf2ff', label: 'TOÁN' },
+  'Ngữ Văn': { accent: '#e14d4d', soft: '#fff0f0', label: 'NGỮ VĂN' },
+  'Tiếng Anh': { accent: '#22a06b', soft: '#e9f8f1', label: 'TIẾNG ANH' },
+};
 
 export default function DeThiThuPage() {
-  const [activeSubject, setActiveSubject] = useState("Tất cả");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [activeSubject, setActiveSubject] = useState<(typeof subjects)[number]>('Tất cả');
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredExams = mockExams.filter(exam => {
-    const matchSubject = activeSubject === "Tất cả" || exam.subject === activeSubject;
-    const matchSearch = exam.title.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchSubject && matchSearch;
-  });
+  const filteredExams = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+
+    return exams.filter((exam) => {
+      const matchSubject = activeSubject === 'Tất cả' || exam.subject === activeSubject;
+      const matchSearch = !query || exam.title.toLowerCase().includes(query);
+      return matchSubject && matchSearch;
+    });
+  }, [activeSubject, searchQuery]);
 
   return (
-    <Box sx={{ fontFamily: fontBody, bgcolor: '#f8fafc', minHeight: '100vh', pb: 15 }}>
+    <Box sx={{ fontFamily: fontBody, bgcolor: '#f6f9ff', minHeight: '100vh', pb: 12 }}>
+      <Box
+        className="animated-mesh noise-overlay"
+        sx={{
+          py: { xs: 8, md: 10 },
+          textAlign: 'center',
+          color: 'white',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        <Box
+          className="floating-orb"
+          sx={{
+            position: 'absolute',
+            width: 370,
+            height: 370,
+            borderRadius: '50%',
+            left: -145,
+            top: -130,
+            bgcolor: 'rgba(255,255,255,.06)',
+          }}
+        />
 
-      {/* ================= HEADER SECTION ================= */}
-      <Box sx={{
-        background: 'linear-gradient(135deg, #311b92 0%, #512da8 100%)', // Tông màu tím đậm tạo cảm giác tập trung thi cử
-        pt: { xs: 12, md: 15 }, pb: { xs: 10, md: 12 },
-        textAlign: 'center', color: 'white', position: 'relative', overflow: 'hidden'
-      }}>
-        <Box sx={{ position: 'absolute', top: -50, left: -50, width: 200, height: 200, bgcolor: 'rgba(255,255,255,0.05)', borderRadius: '50%', animation: `${float} 6s infinite` }} />
-        <Box sx={{ position: 'absolute', bottom: -50, right: 100, width: 150, height: 150, bgcolor: 'rgba(255,255,255,0.05)', borderRadius: '50%', animation: `${float} 5s infinite reverse` }} />
-
-        <Container maxWidth="md" sx={{ position: 'relative', zIndex: 2, animation: `${fadeInUp} 0.8s ease-out` }}>
-          <Typography variant="h2" sx={{ textTransform: 'uppercase', fontFamily: fontHeader, fontWeight: 900, mb: 3, fontSize: { xs: '2.5rem', md: '3.5rem' } }}>
-            ĐỀ THI <span style={{ color: '#ffea00' }}>Thực Chiến</span>
-          </Typography>
-          <Typography variant="h6" sx={{ fontWeight: 400, opacity: 0.9, mb: 5, lineHeight: 1.6 }}>
-            Ngân hàng đề thi thử bám sát cấu trúc mới nhất của Sở GD&ĐT. Hãy chuẩn bị giấy bút, bấm giờ và thử sức ngay!
-          </Typography>
-
-          {/* Thanh Tìm Kiếm */}
-          <Card sx={{ p: 1, borderRadius: 50, boxShadow: '0 15px 35px rgba(0,0,0,0.2)' }}>
-            <TextField
-              fullWidth
-              placeholder="Tìm kiếm tên đề, ..."
-              variant="outlined"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              sx={{ '& fieldset': { border: 'none' }, '& input': { fontFamily: fontBody, fontSize: '1.1rem', py: 1.5 } }}
-              slotProps={{
-                input: {
-                  startAdornment: <InputAdornment position="start"><SearchIcon color="primary" sx={{ fontSize: 28, ml: 1 }} /></InputAdornment>,
-                }
+        <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1 }}>
+          <FadeInScroll>
+            <Chip
+              icon={<AssignmentRoundedIcon />}
+              label="KHO ĐỀ LUYỆN"
+              sx={{
+                mb: 2,
+                bgcolor: 'rgba(255,255,255,.13)',
+                color: 'white',
+                border: '1px solid rgba(255,255,255,.18)',
+                fontFamily: fontHeader,
+                fontWeight: 900,
+                '& .MuiChip-icon': { color: '#ffd166' },
               }}
             />
-          </Card>
+            <Typography
+              variant="h2"
+              sx={{
+                fontFamily: fontHeader,
+                fontWeight: 900,
+                fontSize: { xs: '2.3rem', md: '3.7rem' },
+                lineHeight: 1.08,
+                letterSpacing: '-0.04em',
+              }}
+            >
+              Luyện đề như thi thật.
+              <Box component="span" sx={{ display: 'block', color: '#ffd166' }}>
+                Biết mình đang ở đâu.
+              </Box>
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{ mt: 2.2, opacity: 0.9, lineHeight: 1.75, fontWeight: 500 }}
+            >
+              Chọn môn, bấm giờ và thử sức với đề thi tuyển sinh lớp 10.
+              Đáp án được tách riêng để học sinh có thể tự làm trước khi đối chiếu.
+            </Typography>
+          </FadeInScroll>
+
+          <FadeInScroll delay={0.1}>
+            <Card
+              className="glass-panel"
+              sx={{ mt: 4, p: 0.8, borderRadius: 999, maxWidth: 700, mx: 'auto' }}
+            >
+              <TextField
+                fullWidth
+                placeholder="Tìm kiếm đề thi..."
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+                sx={{
+                  '& fieldset': { border: 'none' },
+                  '& .MuiInputBase-root': { borderRadius: 999 },
+                  '& input': { fontFamily: fontBody, py: 1.45 },
+                }}
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchRoundedIcon sx={{ color: '#2f6fed' }} />
+                      </InputAdornment>
+                    ),
+                  },
+                }}
+              />
+            </Card>
+          </FadeInScroll>
         </Container>
       </Box>
 
-      {/* ================= FILTER SECTION ================= */}
-      <Container maxWidth="lg" sx={{ mt: -3, position: 'relative', zIndex: 10 }}>
-        <Box sx={{
-          display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 2,
-          bgcolor: 'white', p: 2, borderRadius: 50, boxShadow: '0 10px 30px rgba(0,0,0,0.05)'
-        }}>
-          {subjects.map((subject) => (
-            <Button
-              key={subject}
-              onClick={() => setActiveSubject(subject)}
-              variant={activeSubject === subject ? "contained" : "text"}
-              sx={{
-                borderRadius: 50, px: 4, py: 1, fontFamily: fontHeader, fontWeight: 700,
-                color: activeSubject === subject ? 'white' : 'text.secondary',
-                bgcolor: activeSubject === subject ? '#512da8' : 'transparent',
-                transition: 'all 0.3s',
-                '&:hover': { bgcolor: activeSubject === subject ? '#311b92' : 'grey.100' }
-              }}
-            >
-              {subject}
-            </Button>
-          ))}
-        </Box>
+      <Container maxWidth="lg" sx={{ mt: -3, position: 'relative', zIndex: 5 }}>
+        <FadeInScroll>
+          <Box
+            className="glass-panel"
+            sx={{
+              p: 1.2,
+              borderRadius: 4,
+              display: 'flex',
+              gap: 0.8,
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <TuneRoundedIcon sx={{ color: '#71809a', mr: 0.4 }} />
+            {subjects.map((subject) => {
+              const active = activeSubject === subject;
+
+              return (
+                <Button
+                  key={subject}
+                  onClick={() => setActiveSubject(subject)}
+                  variant={active ? 'contained' : 'text'}
+                  sx={{
+                    borderRadius: 999,
+                    px: 2.6,
+                    py: 0.85,
+                    textTransform: 'none',
+                    fontFamily: fontHeader,
+                    fontWeight: 900,
+                    color: active ? 'white' : '#52627d',
+                    bgcolor: active ? '#153a8a' : 'transparent',
+                    '&:hover': { bgcolor: active ? '#153a8a' : '#edf3fc' },
+                  }}
+                >
+                  {subject}
+                </Button>
+              );
+            })}
+          </Box>
+        </FadeInScroll>
       </Container>
 
-      {/* ================= EXAMS GRID ================= */}
-      <Container maxWidth="xl" sx={{ mt: 8 }}>
+      <Container maxWidth="xl" sx={{ mt: 7 }}>
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          spacing={1}
+          sx={{ mb: 3, alignItems: { sm: 'center' }, justifyContent: 'space-between' }}
+        >
+          <Typography
+            variant="h5"
+            sx={{ fontFamily: fontHeader, fontWeight: 900, color: '#102044' }}
+          >
+            {activeSubject === 'Tất cả' ? 'Tất cả đề & đáp án' : 'Môn ' + activeSubject}
+          </Typography>
+          <Typography color="text.secondary" variant="body2">
+            {filteredExams.length} tài liệu phù hợp
+          </Typography>
+        </Stack>
+
         {filteredExams.length === 0 ? (
           <Box sx={{ textAlign: 'center', py: 10 }}>
-            <Typography variant="h5" sx={{ fontFamily: fontHeader, color: 'text.secondary', mb: 2 }}>
-              Không tìm thấy đề thi phù hợp 😢
+            <AssignmentRoundedIcon sx={{ fontSize: 48, color: '#a6b3c8' }} />
+            <Typography variant="h5" sx={{ mt: 1.5, fontFamily: fontHeader, fontWeight: 900, color: '#53627d' }}>
+              Chưa tìm thấy đề phù hợp
             </Typography>
-            <Typography variant="body1" color="text.secondary">
-              Vui lòng thử lại với từ khóa khác hoặc chọn môn học khác nhé.
+            <Typography color="text.secondary" sx={{ mt: 0.7 }}>
+              Thử từ khóa khác hoặc chọn lại môn học.
             </Typography>
           </Box>
         ) : (
-          <Grid container spacing={4}>
-            {filteredExams.map((exam, index) => (
-              <Grid size={{ xs: 12, sm: 6, md: 3 }} key={exam.id}>
-                <Card sx={{
-                  height: '100%', borderRadius: 4, display: 'flex', flexDirection: 'column',
-                  border: '1px solid #e0e0e0', transition: 'all 0.3s ease',
-                  animation: `${fadeInUp} 0.6s ease-out ${index * 0.1}s both`,
-                  '&:hover': {
-                    transform: 'translateY(-8px)',
-                    boxShadow: '0 20px 40px rgba(81, 45, 168, 0.12)',
-                    borderColor: '#512da8'
-                  }
-                }}>
-                  {/* Card Header (Icon & Tag Năm) */}
-                  <Box sx={{ p: 3, pb: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <Box sx={{
-                      width: 60, height: 60, borderRadius: 3, bgcolor: exam.color,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem'
-                    }}>
-                      {exam.icon}
-                    </Box>
-                    <Chip
-                      label={`Năm ${exam.year}`}
-                      size="small"
-                      sx={{ fontWeight: 'bold', fontFamily: fontBody, bgcolor: 'grey.100' }}
-                    />
-                  </Box>
+          <Grid container spacing={2.5}>
+            {filteredExams.map((exam, index) => {
+              const meta = subjectMeta[exam.subject];
+              const isExam = exam.type === 'exam';
 
-                  {/* Card Content */}
-                  <CardContent sx={{ flexGrow: 1, p: 3 }}>
-                    <Typography variant="subtitle2" sx={{ color: exam.tagColor === 'primary' ? '#1976d2' : exam.tagColor === 'error' ? '#d32f2f' : '#2e7d32', fontWeight: 800, mb: 1, textTransform: 'uppercase' }}>
-                      Môn {exam.subject}
-                    </Typography>
-                    <Typography variant="h6" sx={{ fontFamily: fontHeader, fontWeight: 800, color: '#1a237e', mb: 2, lineHeight: 1.4 }}>
-                      {exam.title}
-                    </Typography>
-
-                    {/* Meta info: Trường & Thời gian */}
-                    <Stack spacing={1.5} sx={{ mt: 'auto', pt: 2, borderTop: '1px dashed #eee' }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'text.secondary' }}>
-                        <TimerRoundedIcon fontSize="small" color="warning" />
-                        <Typography variant="body2" sx={{ fontWeight: 600 }}>Thời gian: {exam.time}</Typography>
-                      </Box>
-                    </Stack>
-                  </CardContent>
-
-                  {/* Card Actions - Mở Tab Mới */}
-                  <Box sx={{ p: 3, pt: 0 }}>
-                    <Button
-                      component="a"
-                      href={exam.fileUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      fullWidth variant="contained"
-                      startIcon={<PictureAsPdfRoundedIcon />}
+              return (
+                <Grid size={{ xs: 12, sm: 6, lg: 3 }} key={exam.id}>
+                  <FadeInScroll delay={(index % 4) * 0.04}>
+                    <Card
+                      className="card-lift"
                       sx={{
-                        borderRadius: 2, fontFamily: fontHeader, fontWeight: 700, py: 1.2,
-                        bgcolor: `${exam.type == 'exam' ? '#512da8' : '#2e7d32'}`, '&:hover': { bgcolor: `${exam.type == 'exam' ? '#311b92' : '#1b5e20'}` }
+                        height: '100%',
+                        borderRadius: 4.5,
+                        border: '1px solid #e4ecf7',
+                        boxShadow: '0 12px 32px rgba(15,48,105,.055)',
+                        bgcolor: 'white',
+                        overflow: 'hidden',
+                        display: 'flex',
+                        flexDirection: 'column',
                       }}
                     >
-                      Mở {exam.type == 'exam' ? 'đề thi' : 'đáp án'}
-                    </Button>
-                  </Box>
-                </Card>
-              </Grid>
-            ))}
+                      <Box
+                        sx={{
+                          p: 2.5,
+                          bgcolor: meta.soft,
+                          borderBottom: '1px solid #e9eef7',
+                          position: 'relative',
+                          overflow: 'hidden',
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            position: 'absolute',
+                            width: 120,
+                            height: 120,
+                            borderRadius: '50%',
+                            right: -50,
+                            top: -55,
+                            bgcolor: 'rgba(255,255,255,.55)',
+                          }}
+                        />
+                        <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center', position: 'relative' }}>
+                          <Box
+                            sx={{
+                              width: 48,
+                              height: 48,
+                              borderRadius: 2.7,
+                              bgcolor: meta.accent,
+                              color: 'white',
+                              display: 'grid',
+                              placeItems: 'center',
+                            }}
+                          >
+                            {isExam ? <AssignmentRoundedIcon /> : <CheckCircleRoundedIcon />}
+                          </Box>
+                          <Chip
+                            label={exam.year}
+                            size="small"
+                            sx={{ bgcolor: 'white', fontWeight: 900, color: '#52627d' }}
+                          />
+                        </Stack>
+                      </Box>
+
+                      <Box sx={{ p: 2.7, display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                        <Typography
+                          variant="overline"
+                          sx={{
+                            fontFamily: fontHeader,
+                            fontWeight: 900,
+                            color: meta.accent,
+                            letterSpacing: 0.8,
+                          }}
+                        >
+                          {meta.label} · {isExam ? 'ĐỀ THI' : 'ĐÁP ÁN'}
+                        </Typography>
+
+                        <Typography
+                          variant="h6"
+                          sx={{
+                            mt: 0.7,
+                            fontFamily: fontHeader,
+                            fontWeight: 900,
+                            color: '#102044',
+                            lineHeight: 1.4,
+                          }}
+                        >
+                          {exam.title}
+                        </Typography>
+
+                        <Stack direction="row" spacing={0.8} sx={{ mt: 2, alignItems: 'center', color: '#71809a' }}>
+                          <TimerRoundedIcon sx={{ fontSize: 19, color: '#f08a24' }} />
+                          <Typography variant="body2" sx={{ fontWeight: 700 }}>
+                            {exam.time}
+                          </Typography>
+                        </Stack>
+
+                        <Button
+                          component="a"
+                          href={exam.fileUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          fullWidth
+                          variant="contained"
+                          startIcon={<PictureAsPdfRoundedIcon />}
+                          sx={{
+                            mt: 'auto',
+                            pt: 1.15,
+                            pb: 1.15,
+                            borderRadius: 999,
+                            textTransform: 'none',
+                            fontFamily: fontHeader,
+                            fontWeight: 900,
+                            bgcolor: isExam ? meta.accent : '#22a06b',
+                            '&:hover': {
+                              bgcolor: isExam ? meta.accent : '#1c8b5e',
+                              filter: isExam ? 'brightness(.92)' : 'none',
+                            },
+                          }}
+                        >
+                          Mở {isExam ? 'đề thi' : 'đáp án'}
+                        </Button>
+                      </Box>
+                    </Card>
+                  </FadeInScroll>
+                </Grid>
+              );
+            })}
           </Grid>
         )}
-      </Container>
 
-      {/* ================= CALL TO ACTION ================= */}
-      {/* <Container maxWidth="md" sx={{ mt: 15 }}>
-        <Box sx={{ 
-          background: 'linear-gradient(135deg, #1976d2 0%, #115293 100%)',
-          borderRadius: 6, p: { xs: 4, md: 6 }, textAlign: 'center', color: 'white',
-          boxShadow: '0 20px 40px rgba(25, 118, 210, 0.3)'
-        }}>
-          <Typography variant="h4" sx={{ fontFamily: fontHeader, fontWeight: 900, mb: 2 }}>
-            Bạn muốn nhận đáp án chi tiết?
-          </Typography>
-          <Typography variant="body1" sx={{ mb: 4, fontSize: '1.1rem', opacity: 0.9 }}>
-            Đăng ký thông tin để nhận trọn bộ file đáp án giải chi tiết từng câu và video phân tích lỗi sai thường gặp từ các thầy cô HTV3.
-          </Typography>
-          <Button 
-            component={Link} href="/#form-dang-ky"
-            variant="contained" size="large"
-            sx={{ 
-              bgcolor: 'white', color: '#1976d2', borderRadius: 50, px: 5, py: 1.5, 
-              fontFamily: fontHeader, fontWeight: 800, fontSize: '1.1rem',
-              '&:hover': { bgcolor: 'grey.100', transform: 'scale(1.05)' },
-              transition: '0.2s'
-            }}
-          >
-            Đăng Ký Nhận Đáp Án
-          </Button>
-        </Box>
-      </Container> */}
-      {/* ================= CALL TO ACTION ================= */}
-      <Container maxWidth="md" sx={{ mt: 15 }}>
-        <Box sx={{
-          background: 'linear-gradient(135deg, #ff9800 0%, #ff5722 100%)',
-          borderRadius: 6, p: { xs: 4, md: 6 }, textAlign: 'center', color: 'white',
-          boxShadow: '0 20px 40px rgba(255, 87, 34, 0.3)'
-        }}>
-          <Typography variant="h4" sx={{ fontFamily: fontHeader, fontWeight: 900, mb: 2 }}>
-            Muốn tìm hiểu chi tiết về lộ trình?
-          </Typography>
-          <Typography variant="body1" sx={{ mb: 4, fontSize: '1.1rem', opacity: 0.9 }}>
-            Để lại thông tin để được đội ngũ chuyên gia tư vấn chi tiết và định hướng lộ trình học tập cá nhân hóa phù hợp nhất.
-          </Typography>
-          <Button
-            component={Link} href="/#form-dang-ky"
-            variant="contained" size="large"
+        <FadeInScroll>
+          <Box
             sx={{
-              bgcolor: 'white', color: '#ff5722', borderRadius: 50, px: 5, py: 1.8,
-              fontFamily: fontHeader, fontWeight: 800, fontSize: '1.1rem',
-              '&:hover': { bgcolor: 'grey.100', transform: 'scale(1.05)' },
-              transition: '0.2s'
+              mt: 7,
+              p: { xs: 3, md: 4 },
+              borderRadius: 5,
+              bgcolor: '#102a66',
+              color: 'white',
+              display: { md: 'flex' },
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 3,
             }}
           >
-            Đăng Ký Tư Vấn Miễn Phí
-          </Button>
-        </Box>
+            <Box>
+              <Typography variant="h5" sx={{ fontFamily: fontHeader, fontWeight: 900 }}>
+                Muốn có lộ trình ôn tập theo từng môn?
+              </Typography>
+              <Typography sx={{ mt: 0.7, opacity: 0.8, lineHeight: 1.7 }}>
+                Chọn môn quan tâm để được tư vấn khóa học và cách kết hợp học – xem lại – luyện đề.
+              </Typography>
+            </Box>
+            <Button
+              component={Link}
+              href="/#form-dang-ky"
+              variant="contained"
+              sx={{
+                mt: { xs: 2, md: 0 },
+                borderRadius: 999,
+                px: 3,
+                py: 1.2,
+                textTransform: 'none',
+                fontFamily: fontHeader,
+                fontWeight: 900,
+                whiteSpace: 'nowrap',
+                bgcolor: '#ff8a1f',
+                '&:hover': { bgcolor: '#f57c00' },
+              }}
+            >
+              Đăng ký tư vấn
+            </Button>
+          </Box>
+        </FadeInScroll>
       </Container>
-
     </Box>
   );
 }

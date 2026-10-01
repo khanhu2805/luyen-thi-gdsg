@@ -19,9 +19,9 @@ import {
 } from '@mui/material';
 import CourseSelectionField from './CourseSelectionField';
 import {
-  CourseSelection,
-  courses,
-} from '../data/enrollment';
+  PublicCourseSelection as CourseSelection,
+  publicCourses as courses,
+} from '../data/public-enrollment';
 
 type SnackbarSeverity = 'success' | 'error' | 'warning' | 'info';
 

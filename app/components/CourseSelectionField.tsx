@@ -11,10 +11,10 @@ import {
   Typography,
 } from '@mui/material';
 import {
-  CourseSelection,
-  courses,
-  getTeacherById,
-} from '../data/enrollment';
+  PublicCourseSelection as CourseSelection,
+  publicCourses as courses,
+  getPublicTeacherById as getTeacherById,
+} from '../data/public-enrollment';
 
 type Props = {
   value: CourseSelection[];

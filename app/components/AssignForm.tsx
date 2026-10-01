@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Alert,
   Box,
@@ -21,9 +21,6 @@ import CourseSelectionField from './CourseSelectionField';
 import {
   CourseSelection,
   courses,
-  ENROLLMENT_OPEN_DATE,
-  formatVnd,
-  makeDefaultCourseSelection,
 } from '../data/enrollment';
 
 type SnackbarSeverity = 'success' | 'error' | 'warning' | 'info';
@@ -36,10 +33,8 @@ type Props = {
   setPhone: (phone: string) => void;
 };
 
-type Mode = 'consultation' | 'registration';
-
 type FormState = {
-  mode: Mode;
+  mode: 'consultation';
   studentName: string;
   studentEmail: string;
   grade: string;
@@ -71,11 +66,6 @@ const emptyForm: FormState = {
 const fontHeader = "'Montserrat', sans-serif";
 const fontBody = "'Nunito', sans-serif";
 
-const toMinutes = (value: string) => {
-  const [hour, minute] = value.split(':').map(Number);
-  return hour * 60 + minute;
-};
-
 export default function AssignForm(props: Props) {
   const [formData, setFormData] = useState<FormState>(emptyForm);
   const [selectedCourses, setSelectedCourses] = useState<CourseSelection[]>([]);
@@ -85,32 +75,20 @@ export default function AssignForm(props: Props) {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const courseId = params.get('course');
-    const mode = params.get('mode');
+    const course = courses.find((item) => item.id === courseId);
 
-    if (courseId && courses.some((item) => item.id === courseId)) {
-      const selection = makeDefaultCourseSelection(courseId);
+    if (!course) return;
 
-      if (selection) {
-        setSelectedCourses([selection]);
-      }
+    const onlyTeacher = course.teachers.length === 1 ? course.teachers[0] : undefined;
 
-      if (mode === 'register') {
-        setFormData((prev) => ({
-          ...prev,
-          mode: 'registration',
-        }));
-      }
-    }
+    setSelectedCourses([
+      {
+        courseId: course.id,
+        teacherId: onlyTeacher?.teacherId || '',
+        scheduleId: '',
+      },
+    ]);
   }, []);
-
-  const totalAmount = useMemo(
-    () =>
-      selectedCourses.reduce((sum, selection) => {
-        const course = courses.find((item) => item.id === selection.courseId);
-        return sum + (course?.price || 0);
-      }, 0),
-    [selectedCourses],
-  );
 
   const update = (field: keyof FormState, value: string | boolean) => {
     setServerError('');
@@ -146,60 +124,8 @@ export default function AssignForm(props: Props) {
       return 'Số điện thoại phụ huynh phải gồm 10 số và bắt đầu bằng 0.';
     }
 
-    if (formData.mode === 'registration') {
-      if (selectedCourses.length === 0) {
-        return 'Vui lòng chọn ít nhất một môn học muốn đăng ký.';
-      }
-
-      const resolved = [];
-
-      for (const selection of selectedCourses) {
-        const course = courses.find((item) => item.id === selection.courseId);
-
-        if (!course) {
-          return 'Có môn học không còn tồn tại. Vui lòng chọn lại.';
-        }
-
-        const teacherOption = course.teachers.find(
-          (item) => item.teacherId === selection.teacherId,
-        );
-
-        if (!teacherOption) {
-          return `Vui lòng chọn giáo viên cho môn ${course.subject}.`;
-        }
-
-        if (teacherOption.schedules.length === 0) {
-          return `Giáo viên đã chọn của môn ${course.subject} chưa có ca học chính thức.`;
-        }
-
-        const schedule = teacherOption.schedules.find(
-          (item) => item.id === selection.scheduleId,
-        );
-
-        if (!schedule) {
-          return `Vui lòng chọn lịch học cho môn ${course.subject}.`;
-        }
-
-        resolved.push({ course, schedule });
-      }
-
-      for (let i = 0; i < resolved.length; i += 1) {
-        for (let j = i + 1; j < resolved.length; j += 1) {
-          const first = resolved[i];
-          const second = resolved[j];
-
-          if (first.schedule.day !== second.schedule.day) continue;
-
-          const firstStart = toMinutes(first.schedule.start);
-          const firstEnd = toMinutes(first.schedule.end);
-          const secondStart = toMinutes(second.schedule.start);
-          const secondEnd = toMinutes(second.schedule.end);
-
-          if (firstStart < secondEnd && secondStart < firstEnd) {
-            return `Lịch ${first.course.subject} (${first.schedule.label}) bị trùng với ${second.course.subject} (${second.schedule.label}). Vui lòng chọn ca khác.`;
-          }
-        }
-      }
+    if (selectedCourses.length === 0) {
+      return 'Vui lòng chọn ít nhất một môn học quan tâm.';
     }
 
     if (!formData.consent) {
@@ -228,6 +154,7 @@ export default function AssignForm(props: Props) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
+          mode: 'consultation',
           selections: selectedCourses,
         }),
       });
@@ -238,16 +165,11 @@ export default function AssignForm(props: Props) {
         throw new Error(result.message || 'Không thể gửi đăng ký.');
       }
 
-      // Luồng chuyển sang VNPAY đang được giữ nguyên trạng thái hiện tại của dự án.
-      // Khi mở lại thanh toán trực tiếp, có thể dùng:
-      // if (formData.mode === 'registration' && result.paymentUrl) {
-      //   window.location.assign(result.paymentUrl);
-      //   return;
-      // }
-
       props.setPhone(formData.parentPhone);
       props.showSnackbar(
-        `Đăng ký thành công! Đội ngũ tư vấn sẽ liên hệ với bạn qua số điện thoại ${formData.parentPhone} trong thời gian sớm nhất.`,
+        'Đăng ký tư vấn thành công! Đội ngũ tư vấn sẽ liên hệ qua số điện thoại ' +
+          formData.parentPhone +
+          ' để xác nhận lớp học, lịch học và thông tin học phí.',
         'success',
       );
       setFormData(emptyForm);
@@ -288,17 +210,17 @@ export default function AssignForm(props: Props) {
                 variant="overline"
                 sx={{ fontFamily: fontHeader, fontWeight: 900, letterSpacing: 1.5 }}
               >
-                TUYỂN SINH ĐỢT MỚI
+                ĐĂNG KÝ TƯ VẤN
               </Typography>
-              {/* <Typography
+              <Typography
                 variant="h3"
                 sx={{ fontFamily: fontHeader, fontWeight: 900, mt: 1, mb: 2 }}
               >
-                Khai giảng {ENROLLMENT_OPEN_DATE}
-              </Typography> */}
+                Ôn thi tuyển sinh lớp 10
+              </Typography>
               <Typography sx={{ fontFamily: fontBody, opacity: 0.92, lineHeight: 1.75 }}>
-                Phụ huynh có thể chọn nhiều môn trong cùng một lần đăng ký. Mỗi môn
-                chọn giáo viên và ca học riêng.
+                Phụ huynh có thể chọn một hoặc nhiều môn quan tâm. Trung tâm sẽ liên hệ
+                để xác nhận giáo viên, lịch học và học phí theo lớp đang mở.
               </Typography>
 
               <Divider sx={{ my: 4, borderColor: 'rgba(255,255,255,.25)' }} />
@@ -318,7 +240,7 @@ export default function AssignForm(props: Props) {
                       {course.subject} · {course.sessions} buổi / {course.weeks} tuần
                     </Typography>
                     <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                      {course.teachers.length} giáo viên · {formatVnd(course.price)}
+                      {course.teachers.length} giáo viên phụ trách
                     </Typography>
                   </Box>
                 ))}
@@ -427,27 +349,18 @@ export default function AssignForm(props: Props) {
                   <Divider />
 
                   <CourseSelectionField
-                    mode={formData.mode}
                     value={selectedCourses}
                     onChange={handleCourseSelectionChange}
                   />
 
-                  {formData.mode === 'consultation' && (
-                    <TextField
-                      fullWidth
-                      label="Lịch học mong muốn"
-                      placeholder="Ví dụ: tối Thứ 5, 19:00 – 21:00"
-                      value={formData.desiredSchedule}
-                      onChange={(event) => update('desiredSchedule', event.target.value)}
-                    />
-                  )}
-
-                  {formData.mode === 'registration' && selectedCourses.length > 0 && (
-                    <Alert severity="info">
-                      Đã chọn <b>{selectedCourses.length} môn</b>. Tổng học phí:{' '}
-                      <b>{formatVnd(totalAmount)}</b>.
-                    </Alert>
-                  )}
+                  <TextField
+                    fullWidth
+                    label="Khung thời gian thuận tiện"
+                    placeholder="Ví dụ: buổi tối các ngày trong tuần"
+                    value={formData.desiredSchedule}
+                    onChange={(event) => update('desiredSchedule', event.target.value)}
+                    helperText="Đây là nhu cầu của gia đình, không phải lịch học chính thức của lớp."
+                  />
 
                   <TextField
                     fullWidth
@@ -503,8 +416,6 @@ export default function AssignForm(props: Props) {
                   >
                     {isSubmitting ? (
                       <CircularProgress size={25} sx={{ color: 'white' }} />
-                    ) : formData.mode === 'registration' ? (
-                      'Đăng ký tham gia khóa học'
                     ) : (
                       'Gửi yêu cầu tư vấn'
                     )}

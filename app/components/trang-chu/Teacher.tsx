@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import Link from 'next/link';
-import { teachers } from '../../data/enrollment';
+import { publicTeachers as teachers } from '../../data/public-enrollment';
 
 function initials(name: string) {
   return name

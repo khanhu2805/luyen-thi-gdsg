@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  Alert,
   Box,
   Checkbox,
   FormControlLabel,
@@ -14,18 +13,15 @@ import {
 import {
   CourseSelection,
   courses,
-  formatVnd,
   getTeacherById,
-  makeDefaultCourseSelection,
 } from '../data/enrollment';
 
 type Props = {
-  mode: 'consultation' | 'registration';
   value: CourseSelection[];
   onChange: (value: CourseSelection[]) => void;
 };
 
-export default function CourseSelectionField({ mode, value, onChange }: Props) {
+export default function CourseSelectionField({ value, onChange }: Props) {
   const toggleCourse = (courseId: string) => {
     const exists = value.some((item) => item.courseId === courseId);
 
@@ -34,36 +30,27 @@ export default function CourseSelectionField({ mode, value, onChange }: Props) {
       return;
     }
 
-    const defaultSelection = makeDefaultCourseSelection(courseId);
-    if (!defaultSelection) return;
+    const course = courses.find((item) => item.id === courseId);
+    if (!course) return;
 
-    onChange([...value, defaultSelection]);
+    const onlyTeacher = course.teachers.length === 1 ? course.teachers[0] : undefined;
+
+    onChange([
+      ...value,
+      {
+        courseId,
+        teacherId: onlyTeacher?.teacherId || '',
+        scheduleId: '',
+      },
+    ]);
   };
 
   const changeTeacher = (courseId: string, teacherId: string) => {
-    const course = courses.find((item) => item.id === courseId);
-    const teacherOption = course?.teachers.find(
-      (item) => item.teacherId === teacherId,
-    );
-
-    const scheduleId =
-      teacherOption?.schedules.length === 1
-        ? teacherOption.schedules[0].id
-        : '';
-
     onChange(
       value.map((item) =>
         item.courseId === courseId
-          ? { ...item, teacherId, scheduleId }
+          ? { ...item, teacherId, scheduleId: '' }
           : item,
-      ),
-    );
-  };
-
-  const changeSchedule = (courseId: string, scheduleId: string) => {
-    onChange(
-      value.map((item) =>
-        item.courseId === courseId ? { ...item, scheduleId } : item,
       ),
     );
   };
@@ -72,18 +59,16 @@ export default function CourseSelectionField({ mode, value, onChange }: Props) {
     <Stack spacing={2}>
       <Box>
         <Typography sx={{ fontWeight: 900, color: '#1a237e' }}>
-          {mode === 'registration' ? 'Môn học đăng ký *' : 'Môn học quan tâm'}
+          Môn học quan tâm *
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-          Có thể chọn nhiều môn. Mỗi môn có thể có nhiều giáo viên và nhiều ca học.
+          Có thể chọn nhiều môn. Học phí và lịch học sẽ được tư vấn trực tiếp sau khi
+          trung tâm tiếp nhận thông tin.
         </Typography>
       </Box>
 
       {courses.map((course) => {
         const selected = value.find((item) => item.courseId === course.id);
-        const selectedTeacherOption = course.teachers.find(
-          (item) => item.teacherId === selected?.teacherId,
-        );
         const selectedTeacher = selected?.teacherId
           ? getTeacherById(selected.teacherId)
           : undefined;
@@ -114,8 +99,7 @@ export default function CourseSelectionField({ mode, value, onChange }: Props) {
                       {course.subject}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {course.sessions} buổi / {course.weeks} tuần ·{' '}
-                      {formatVnd(course.price)}
+                      {course.sessions} buổi / {course.weeks} tuần
                     </Typography>
                   </Box>
                 }
@@ -123,8 +107,7 @@ export default function CourseSelectionField({ mode, value, onChange }: Props) {
             </Box>
 
             {selected && (
-              <Stack
-                spacing={2}
+              <Box
                 sx={{
                   px: 2,
                   pb: 2,
@@ -137,14 +120,13 @@ export default function CourseSelectionField({ mode, value, onChange }: Props) {
                   <TextField
                     select
                     fullWidth
-                    required={mode === 'registration'}
-                    label="Giáo viên"
+                    label="Giáo viên quan tâm"
                     value={selected.teacherId}
                     onChange={(event) =>
                       changeTeacher(course.id, event.target.value)
                     }
                   >
-                    <MenuItem value="">Chọn giáo viên</MenuItem>
+                    <MenuItem value="">Chưa chọn giáo viên</MenuItem>
                     {course.teachers.map((teacherOption) => {
                       const teacher = getTeacherById(teacherOption.teacherId);
                       return (
@@ -160,57 +142,14 @@ export default function CourseSelectionField({ mode, value, onChange }: Props) {
                 ) : (
                   <Box>
                     <Typography variant="caption" color="text.secondary">
-                      Giáo viên
+                      Giáo viên phụ trách
                     </Typography>
                     <Typography sx={{ fontWeight: 800 }}>
                       {selectedTeacher?.name || 'Đang cập nhật'}
                     </Typography>
                   </Box>
                 )}
-
-                {selectedTeacherOption ? (
-                  selectedTeacherOption.schedules.length > 1 ? (
-                    <TextField
-                      select
-                      fullWidth
-                      required={mode === 'registration'}
-                      label={
-                        mode === 'registration'
-                          ? 'Chọn lịch học'
-                          : 'Lịch học quan tâm'
-                      }
-                      value={selected.scheduleId}
-                      onChange={(event) =>
-                        changeSchedule(course.id, event.target.value)
-                      }
-                    >
-                      <MenuItem value="">Chưa chọn lịch</MenuItem>
-                      {selectedTeacherOption.schedules.map((schedule) => (
-                        <MenuItem key={schedule.id} value={schedule.id}>
-                          {schedule.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  ) : selectedTeacherOption.schedules.length === 1 ? (
-                    <Box>
-                      <Typography variant="caption" color="text.secondary">
-                        Lịch học
-                      </Typography>
-                      <Typography sx={{ fontWeight: 800 }}>
-                        {selectedTeacherOption.schedules[0].label}
-                      </Typography>
-                    </Box>
-                  ) : (
-                    <Alert severity="warning">
-                      Giáo viên này chưa có ca học chính thức.
-                    </Alert>
-                  )
-                ) : (
-                  <Typography variant="body2" color="text.secondary">
-                    Chọn giáo viên để xem các ca học đang mở.
-                  </Typography>
-                )}
-              </Stack>
+              </Box>
             )}
           </Paper>
         );

@@ -80,8 +80,7 @@ export default function KhoaHocPage() {
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
             spacing={1.2}
-            justifyContent="center"
-            sx={{ mt: 3 }}
+            sx={{ mt: 3, justifyContent: 'center' }}
           >
             <Chip
               icon={<CardGiftcardRoundedIcon />}

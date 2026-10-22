@@ -29,7 +29,7 @@ export const answerBooks: AnswerBook[] = [
     slug: 'dap-an-toan-7',
     title: '36 đề kiểm tra định kỳ Toán 7',
     desc: 'Đáp án dùng kèm sách 36 đề kiểm tra định kỳ Toán 7.',
-    fileUrl: '/answers/36 DE TOAN_Lop7_Dap-An_QR.pdf',
+    fileUrl: '/answers/36 DE TOAN_Lop7_Dan-An_QR.pdf',
     coverUrl: null,
   },
   {

@@ -9,16 +9,17 @@
 - `app/components/Header.tsx` và `app/components/Footer.tsx`: điều chỉnh thanh điều hướng/chân trang cùng ngôn ngữ thiết kế đơn giản, hạn chế hiệu ứng màu và khẩu hiệu.
 - `xem-truoc-thu-vien.html`: bản mockup tĩnh để xem nhanh phong cách trong trình duyệt, **không phải bản build Next.js**.
 
-## Kết nối file đáp án bạn đang có
+## Đáp án đã có trong mã nguồn mới nhất
 
-Repository ở nhánh `master` chưa chứa PDF đáp án Toán 6–9. Vì vậy bản thiết kế **không tự đặt các đường dẫn chưa tồn tại**.
+Nhánh `master` đã có 4 file PDF đáp án Toán 6–9 ở thư mục `public/answers/`. Trang `/sach` và `/tai-lieu-on-luyen` sử dụng chung các đường dẫn trong `app/data/answerBooks.ts`; không được đặt `fileUrl` về `null` khi thêm ảnh bìa.
 
-1. Tạo thư mục `public/answers/` trong repository (nếu chưa có).
-2. Sao chép từng file PDF đáp án và đặt tên, ví dụ: `toan-6.pdf`, `toan-7.pdf`, `toan-8.pdf`, `toan-9.pdf`.
-3. Sửa `app/data/answerBooks.ts`: thay `fileUrl: null` ở đúng lớp thành `fileUrl: '/answers/toan-6.pdf'`, và tương tự cho các lớp khác.
-4. Mở `/tai-lieu-on-luyen`, chọn đáp án theo lớp, thử mở file PDF. Đồng thời kiểm tra các nút xem đáp án trong `/sach`.
+Các file đang kết nối:
+- Toán 6: `/answers/36 DE TOAN_Lop6_Dap-An_QR.pdf`
+- Toán 7: `/answers/36 DE TOAN_Lop7_Dan-An_QR.pdf`
+- Toán 8: `/answers/36 DE TOAN_Lop8_Dap-An_QR.pdf`
+- Toán 9: `/answers/36 DE TOAN_Lop9_Dap-An_QR.pdf`
 
-**Lưu ý:** Chỉ bật liên kết khi file thực sự tồn tại và đã có quyền đăng tải. Các câu trả lời trong PDF được giữ nguyên; bộ mã này chỉ thay đổi cách người học tìm và đọc tài liệu.
+Chữ `Dan-An` trong tên file lớp 7 là tên thực tế ở repo, giữ nguyên để tránh lỗi 404.
 
 ## Cài đặt, kiểm thử
 
@@ -40,7 +41,7 @@ Sử dụng nhận diện chính: navy `#283878`, đỏ `#E82020`, trắng và n
 ## Trạng thái
 
 - Đã có: mã nguồn thay thế cho sáu tệp kể trên và bản xem trước HTML.
-- Chưa có: các PDF đáp án Toán 6–9 trong repository đang truy cập.
+- Đã có: 4 file PDF đáp án Toán 6–9 trong `master`, giữ nguyên đường dẫn khi tích hợp ảnh bìa.
 - Chưa kiểm chứng được: `npm run lint` và `npm run build` trên toàn bộ dự án (môi trường này không có dependencies và không tải được GitHub).
 - Bản thiết kế được đưa lên branch `feat/redesign-thu-vien-dap-an` để review; chưa merge vào `master` và chưa triển khai website production.
 ## Chèn ảnh bìa sách

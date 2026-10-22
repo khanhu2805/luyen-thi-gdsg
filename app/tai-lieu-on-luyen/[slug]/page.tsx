@@ -13,6 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import ArrowOutwardRoundedIcon from '@mui/icons-material/ArrowOutwardRounded';
 import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 import PictureAsPdfOutlinedIcon from '@mui/icons-material/PictureAsPdfOutlined';
@@ -50,9 +51,9 @@ export default function DapAnPage() {
             <MuiLink component={Link} href="/tai-lieu-on-luyen" underline="hover" sx={{ color: muted }}>Tài liệu học tập</MuiLink>
             <Typography sx={{ color: navy, fontWeight: 700, fontSize: 13 }}>Đáp án Toán {book.grade}</Typography>
           </Breadcrumbs>
-          <Grid container spacing={{ xs: 3, md: 5 }} alignItems="center">
+          <Grid container spacing={{ xs: 3, md: 5 }} sx={{ alignItems: 'center' }}>
             <Grid size={{ xs: 12, sm: 8 }}>
-              <Stack direction="row" spacing={1.2} alignItems="center" sx={{ mb: 2 }}>
+              <Stack direction="row" spacing={1.2} sx={{ alignItems: 'center', mb: 2 }}>
                 <Box sx={{ width: 28, height: 2.5, bgcolor: red }} />
                 <Typography sx={{ color: red, fontSize: 12, fontWeight: 800, letterSpacing: '.08em' }}>HƯỚNG DẪN GIẢI · TOÁN {book.grade}</Typography>
               </Stack>

@@ -9,6 +9,8 @@ export type AnswerBook = {
   title: string;
   desc: string;
   fileUrl: string | null;
+  /** Đường dẫn ảnh bìa trong public/covers/; null nếu chưa có ảnh. */
+  coverUrl: string | null;
 };
 
 export const answerBooks: AnswerBook[] = [
@@ -19,6 +21,7 @@ export const answerBooks: AnswerBook[] = [
     title: '36 đề kiểm tra định kỳ Toán 6',
     desc: 'Đáp án dùng kèm sách 36 đề kiểm tra định kỳ Toán 6.',
     fileUrl: '/answers/36 DE TOAN_Lop6_Dap-An_QR.pdf',
+    coverUrl: null,
   },
   {
     id: 7,
@@ -26,7 +29,8 @@ export const answerBooks: AnswerBook[] = [
     slug: 'dap-an-toan-7',
     title: '36 đề kiểm tra định kỳ Toán 7',
     desc: 'Đáp án dùng kèm sách 36 đề kiểm tra định kỳ Toán 7.',
-    fileUrl: '/answers/36 DE TOAN_Lop7_Dap-An_QR.pdf',
+    fileUrl: '/answers/36 DE TOAN_Lop7_Dan-An_QR.pdf',
+    coverUrl: null,
   },
   {
     id: 8,
@@ -35,6 +39,7 @@ export const answerBooks: AnswerBook[] = [
     title: '36 đề kiểm tra định kỳ Toán 8',
     desc: 'Đáp án dùng kèm sách 36 đề kiểm tra định kỳ Toán 8.',
     fileUrl: '/answers/36 DE TOAN_Lop8_Dap-An_QR.pdf',
+    coverUrl: null,
   },
   {
     id: 9,
@@ -43,6 +48,7 @@ export const answerBooks: AnswerBook[] = [
     title: '36 đề kiểm tra định kỳ Toán 9',
     desc: 'Đáp án dùng kèm sách 36 đề kiểm tra định kỳ Toán 9.',
     fileUrl: '/answers/36 DE TOAN_Lop9_Dap-An_QR.pdf',
+    coverUrl: null,
   },
 ];
 

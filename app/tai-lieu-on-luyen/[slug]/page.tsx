@@ -17,6 +17,7 @@ import ArrowOutwardRoundedIcon from '@mui/icons-material/ArrowOutwardRounded';
 import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 import PictureAsPdfOutlinedIcon from '@mui/icons-material/PictureAsPdfOutlined';
 import { getAnswerBookBySlug } from '@/app/data/answerBooks';
+import BookCover from '@/app/components/BookCover';
 
 const navy = '#283878';
 const red = '#E82020';
@@ -109,6 +110,10 @@ export default function DapAnPage() {
             </Button>
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
+            <Box sx={{ bgcolor: '#fff', border: `1px solid ${border}`, borderRadius: 2, p: 3, mb: 2 }}>
+              <BookCover src={book.coverUrl} title={book.title} subject={`Toán ${book.grade}`} maxWidth={145} />
+              <Typography sx={{ mt: 2, color: muted, fontSize: 13, textAlign: 'center' }}>{book.title}</Typography>
+            </Box>
             <Box sx={{ bgcolor: '#fff', border: `1px solid ${border}`, borderRadius: 2, p: 3 }}>
               <Typography sx={{ fontFamily: heading, fontSize: 18, fontWeight: 800, mb: 2.5 }}>Cách đối chiếu đáp án</Typography>
               {[

@@ -35,7 +35,7 @@ export default function SachPage() {
             <Typography sx={{ fontSize: 13, fontWeight: 700, color: navy }}>Sách luyện tập</Typography>
           </Breadcrumbs>
 
-          <Grid container spacing={{ xs: 4, md: 5 }} alignItems="center">
+          <Grid container spacing={{ xs: 4, md: 5 }} sx={{ alignItems: 'center' }}>
             <Grid size={{ xs: 12, md: 7 }}>
               <Stack direction="row" spacing={1.25} alignItems="center" sx={{ mb: 2.2 }}>
                 <Box sx={{ width: 28, height: 2.5, bgcolor: red }} />

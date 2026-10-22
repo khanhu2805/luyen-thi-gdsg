@@ -50,7 +50,7 @@ export default function DapAnPage() {
             <MuiLink component={Link} href="/tai-lieu-on-luyen" underline="hover" sx={{ color: muted }}>Tài liệu học tập</MuiLink>
             <Typography sx={{ color: navy, fontWeight: 700, fontSize: 13 }}>Đáp án Toán {book.grade}</Typography>
           </Breadcrumbs>
-          <Grid container spacing={{ xs: 3, md: 5 }} alignItems="center">
+          <Grid container spacing={{ xs: 3, md: 5 }} sx={{ alignItems: 'center' }}>
             <Grid size={{ xs: 12, sm: 8 }}>
               <Stack direction="row" spacing={1.2} alignItems="center" sx={{ mb: 2 }}>
                 <Box sx={{ width: 28, height: 2.5, bgcolor: red }} />

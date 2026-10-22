@@ -36,7 +36,7 @@ export default function TaiLieuOnLuyenPage() {
             <Typography sx={{ color: navy, fontSize: 13, fontWeight: 700 }}>Tài liệu học tập</Typography>
           </Breadcrumbs>
 
-          <Grid container spacing={{ xs: 3, md: 7 }} alignItems="center">
+          <Grid container spacing={{ xs: 3, md: 7 }} sx={{ alignItems: 'center' }}>
             <Grid size={{ xs: 12, md: 8 }}>
               <Stack direction="row" spacing={1.2} alignItems="center" sx={{ mb: 2 }}>
                 <Box sx={{ width: 28, height: 2.5, bgcolor: red }} />

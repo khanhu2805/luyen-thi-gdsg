@@ -52,7 +52,7 @@ export default function DapAnPage() {
           </Breadcrumbs>
           <Grid container spacing={{ xs: 3, md: 5 }} sx={{ alignItems: 'center' }}>
             <Grid size={{ xs: 12, sm: 8 }}>
-              <Stack direction="row" spacing={1.2} alignItems="center" sx={{ mb: 2 }}>
+              <Stack direction="row" spacing={1.2} sx={{ alignItems: 'center', mb: 2 }}>
                 <Box sx={{ width: 28, height: 2.5, bgcolor: red }} />
                 <Typography sx={{ color: red, fontSize: 12, fontWeight: 800, letterSpacing: '.08em' }}>HƯỚNG DẪN GIẢI · TOÁN {book.grade}</Typography>
               </Stack>

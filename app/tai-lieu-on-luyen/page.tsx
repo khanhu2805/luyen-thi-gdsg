@@ -38,7 +38,7 @@ export default function TaiLieuOnLuyenPage() {
 
           <Grid container spacing={{ xs: 3, md: 7 }} sx={{ alignItems: 'center' }}>
             <Grid size={{ xs: 12, md: 8 }}>
-              <Stack direction="row" spacing={1.2} alignItems="center" sx={{ mb: 2 }}>
+              <Stack direction="row" spacing={1.2} sx={{ alignItems: 'center', mb: 2 }}>
                 <Box sx={{ width: 28, height: 2.5, bgcolor: red }} />
                 <Typography sx={{ fontSize: 12, fontWeight: 800, letterSpacing: '.1em', color: red }}>THƯ VIỆN HỌC TẬP</Typography>
               </Stack>
@@ -59,11 +59,11 @@ export default function TaiLieuOnLuyenPage() {
             </Grid>
             <Grid size={{ xs: 12, md: 4 }}>
               <Box sx={{ bgcolor: '#F4F6FA', border: `1px solid ${border}`, borderRadius: 3, p: { xs: 2.6, md: 3.5 } }}>
-                <Stack direction="row" spacing={1.7} alignItems="center" sx={{ pb: 2.2, mb: 2.2, borderBottom: '1px solid #DDE2EC' }}>
+                <Stack direction="row" spacing={1.7} sx={{ alignItems: 'center', pb: 2.2, mb: 2.2, borderBottom: '1px solid #DDE2EC' }}>
                   <DescriptionOutlinedIcon sx={{ fontSize: 28, color: navy }} />
                   <Box><Typography sx={{ fontSize: 24, color: navy, fontWeight: 850, lineHeight: 1 }}>3 môn</Typography><Typography sx={{ mt: .4, color: muted, fontSize: 13 }}>Tài liệu ôn thi lớp 10</Typography></Box>
                 </Stack>
-                <Stack direction="row" spacing={1.7} alignItems="center">
+                <Stack direction="row" spacing={1.7} sx={{ alignItems: 'center' }}>
                   <AutoStoriesOutlinedIcon sx={{ fontSize: 28, color: red }} />
                   <Box><Typography sx={{ fontSize: 24, color: navy, fontWeight: 850, lineHeight: 1 }}>4 lớp</Typography><Typography sx={{ mt: .4, color: muted, fontSize: 13 }}>Đáp án bộ sách Toán 6–9</Typography></Box>
                 </Stack>
@@ -131,7 +131,7 @@ export default function TaiLieuOnLuyenPage() {
                           <Typography sx={{ color: red, fontSize: 11, fontWeight: 800, mb: .4 }}>SÁCH TOÁN</Typography>
                           <Typography component="h3" sx={{ fontSize: 19, fontWeight: 850, color: navy, lineHeight: 1.3 }}>Lớp {book.grade}</Typography>
                           <Typography sx={{ color: muted, fontSize: 12.5, mt: 1 }}>{book.fileUrl ? 'Đáp án PDF đã có' : 'Chưa có tệp PDF'}</Typography>
-                          <Stack direction="row" spacing={.4} alignItems="center" sx={{ mt: 1.2, color: navy }}>
+                          <Stack direction="row" spacing={.4} sx={{ alignItems: 'center', mt: 1.2, color: navy }}>
                             <Typography sx={{ fontSize: 12.5, fontWeight: 800 }}>{book.fileUrl ? 'Xem đáp án' : 'Chi tiết'}</Typography>
                             <ArrowForwardRoundedIcon sx={{ fontSize: 16 }} />
                           </Stack>

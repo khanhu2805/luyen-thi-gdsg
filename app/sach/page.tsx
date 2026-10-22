@@ -37,7 +37,7 @@ export default function SachPage() {
 
           <Grid container spacing={{ xs: 4, md: 5 }} sx={{ alignItems: 'center' }}>
             <Grid size={{ xs: 12, md: 7 }}>
-              <Stack direction="row" spacing={1.25} alignItems="center" sx={{ mb: 2.2 }}>
+              <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center', mb: 2.2 }}>
                 <Box sx={{ width: 28, height: 2.5, bgcolor: red }} />
                 <Typography sx={{ fontSize: 12, fontWeight: 800, letterSpacing: '.1em', color: red }}>
                   TỦ SÁCH GIÁO DỤC SÀI GÒN
@@ -58,11 +58,11 @@ export default function SachPage() {
                 </Button>
               </Stack>
               <Stack direction="row" spacing={{ xs: 2, sm: 4 }} sx={{ mt: 4, flexWrap: 'wrap', rowGap: 2 }}>
-                <Stack direction="row" spacing={1} alignItems="center">
+                <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                   <AutoStoriesOutlinedIcon sx={{ color: red, fontSize: 22 }} />
                   <Typography sx={{ fontWeight: 750, fontSize: 13.5 }}>4 cuốn · Lớp 6–9</Typography>
                 </Stack>
-                <Stack direction="row" spacing={1} alignItems="center">
+                <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                   <LocalShippingOutlinedIcon sx={{ color: red, fontSize: 22 }} />
                   <Typography sx={{ fontSize: 13.5, color: muted }}>Giao sách theo đơn hàng</Typography>
                 </Stack>

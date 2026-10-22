@@ -2,312 +2,103 @@
 
 import {
   Box,
+  Breadcrumbs,
   Button,
-  Card,
-  CardContent,
-  Chip,
   Container,
   Grid,
+  Link as MuiLink,
   Stack,
   Typography,
 } from '@mui/material';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
-import CardGiftcardRoundedIcon from '@mui/icons-material/CardGiftcardRounded';
-import LocalShippingRoundedIcon from '@mui/icons-material/LocalShippingRounded';
-import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
-import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
+import ArrowOutwardRoundedIcon from '@mui/icons-material/ArrowOutwardRounded';
 import Link from 'next/link';
+import { answerBooks } from '../data/answerBooks';
 
-const fontHeader = "'Montserrat', sans-serif";
-const fontBody = "'Nunito', sans-serif";
-
-const books = [
-  { grade: '6', title: '36 ĐỀ KIỂM TRA ĐỊNH KỲ TOÁN 6', accent: '#1565c0' },
-  { grade: '7', title: '36 ĐỀ KIỂM TRA ĐỊNH KỲ TOÁN 7', accent: '#2e7d32' },
-  { grade: '8', title: '36 ĐỀ KIỂM TRA ĐỊNH KỲ TOÁN 8', accent: '#7b1fa2' },
-  { grade: '9', title: '36 ĐỀ KIỂM TRA ĐỊNH KỲ TOÁN 9', accent: '#d84315' },
-];
+const navy = '#283878';
+const red = '#E82020';
+const ink = '#243049';
+const muted = '#647087';
+const border = '#e2e6ed';
+const heading = "'Montserrat', sans-serif";
 
 export default function SachPage() {
   return (
-    <Box sx={{ bgcolor: '#f4f7fe', minHeight: '100vh', pb: 12, fontFamily: fontBody }}>
-      <Box
-        sx={{
-          py: { xs: 8, md: 10 },
-          color: 'white',
-          textAlign: 'center',
-          position: 'relative',
-          overflow: 'hidden',
-          background: 'linear-gradient(135deg, #081f49 0%, #0d47a1 50%, #1976d2 100%)',
-        }}
-      >
-        <Box
-          sx={{
-            position: 'absolute',
-            width: 360,
-            height: 360,
-            borderRadius: '50%',
-            right: -120,
-            top: -150,
-            bgcolor: 'rgba(255,255,255,.07)',
-          }}
-        />
-        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-          <Chip
-            icon={<MenuBookRoundedIcon />}
-            label="SÁCH LUYỆN TẬP"
-            sx={{
-              mb: 2,
-              bgcolor: 'rgba(255,255,255,.14)',
-              color: 'white',
-              border: '1px solid rgba(255,255,255,.18)',
-              fontWeight: 900,
-            }}
-          />
-          <Typography
-            variant="h2"
-            sx={{
-              fontFamily: fontHeader,
-              fontWeight: 900,
-              fontSize: { xs: '2.15rem', md: '3.55rem' },
-            }}
-          >
-            36 Đề kiểm tra định kỳ Toán 6 · 7 · 8 · 9
+    <Box sx={{ minHeight: '100vh', bgcolor: '#fbfbf9', color: ink, pb: { xs: 9, md: 12 } }}>
+      <Box sx={{ bgcolor: '#fff', borderBottom: `1px solid ${border}` }}>
+        <Container maxWidth="lg" sx={{ pt: { xs: 4, md: 5 }, pb: { xs: 5, md: 7 } }}>
+          <Breadcrumbs aria-label="Đường dẫn" sx={{ mb: { xs: 4, md: 5 }, fontSize: 13 }}>
+            <MuiLink component={Link} href="/" underline="hover" sx={{ color: muted }}>Trang chủ</MuiLink>
+            <Typography sx={{ color: ink, fontSize: 13 }}>Sách luyện tập</Typography>
+          </Breadcrumbs>
+          <Typography sx={{ color: red, fontWeight: 800, fontSize: 12, letterSpacing: '.09em', mb: 1.5 }}>
+            SÁCH DÀNH CHO HỌC SINH THCS
           </Typography>
-          <Typography sx={{ mt: 2, maxWidth: 760, mx: 'auto', opacity: 0.93, lineHeight: 1.75 }}>
-            Bộ sách luyện tập dành cho học sinh THCS, hỗ trợ ôn tập định kỳ và củng cố kỹ năng làm bài.
+          <Typography component="h1" sx={{ maxWidth: 830, color: navy, fontFamily: heading, fontSize: { xs: 34, md: 52 }, fontWeight: 800, letterSpacing: '-.045em', lineHeight: 1.18 }}>
+            36 đề kiểm tra định kỳ Toán 6, 7, 8, 9
           </Typography>
+          <Typography sx={{ color: muted, maxWidth: 730, fontSize: { xs: 15, md: 17 }, lineHeight: 1.9, mt: 2.2 }}>
+            Bộ sách luyện tập giúp học sinh làm quen với cấu trúc đề và tự kiểm tra mức độ nắm bài. Chọn cuốn phù hợp với lớp đang học.
+          </Typography>
+          <Stack direction="row" spacing={3} sx={{ flexWrap: 'wrap', mt: 3, rowGap: 1 }}>
+            <Typography sx={{ fontSize: 14, color: ink }}><Box component="span" sx={{ fontWeight: 800 }}>90.000đ</Box> / cuốn</Typography>
+            <Typography sx={{ fontSize: 14, color: muted }}>Phí vận chuyển tính theo đơn hàng</Typography>
+          </Stack>
         </Container>
       </Box>
 
-      <Container maxWidth="xl" sx={{ mt: { xs: -3, md: -4 }, position: 'relative', zIndex: 2 }}>
-        <Box
-          sx={{
-            p: { xs: 3, md: 4 },
-            borderRadius: 5,
-            color: 'white',
-            overflow: 'hidden',
-            position: 'relative',
-            background: 'linear-gradient(135deg, #ff8f00, #ef6c00)',
-            boxShadow: '0 18px 45px rgba(239,108,0,.2)',
-          }}
-        >
-          <Box
-            sx={{
-              position: 'absolute',
-              width: 220,
-              height: 220,
-              borderRadius: '50%',
-              right: -70,
-              top: -90,
-              bgcolor: 'rgba(255,255,255,.12)',
-            }}
-          />
-          <Grid container spacing={3} sx={{ alignItems: 'center', position: 'relative' }}>
-            <Grid size={{ xs: 12, md: 8 }}>
-              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
-                <Box
-                  sx={{
-                    width: 54,
-                    height: 54,
-                    borderRadius: 3,
-                    display: 'grid',
-                    placeItems: 'center',
-                    bgcolor: 'rgba(255,255,255,.16)',
-                  }}
-                >
-                  <CardGiftcardRoundedIcon sx={{ fontSize: 30 }} />
-                </Box>
-                <Box>
-                  <Typography variant="overline" sx={{ fontWeight: 900 }}>
-                    QUÀ TẶNG HỌC VIÊN
-                  </Typography>
-                  <Typography variant="h4" sx={{ fontFamily: fontHeader, fontWeight: 900 }}>
-                    Đăng ký khóa ôn thi lớp 10 – tặng sách Toán 9
-                  </Typography>
-                </Box>
-              </Stack>
-              <Typography sx={{ mt: 2, lineHeight: 1.75, maxWidth: 850 }}>
-                Học viên đăng ký và hoàn tất học phí một khóa ôn thi tuyển sinh lớp 10
-                được tặng <b>01 cuốn “36 Đề kiểm tra định kỳ Toán 9”</b>.
-                Trung tâm hỗ trợ phí vận chuyển đối với sách tặng.
-              </Typography>
-            </Grid>
-            <Grid size={{ xs: 12, md: 4 }} sx={{ textAlign: { xs: 'left', md: 'right' } }}>
-              <Button
-                component={Link}
-                href="/#form-dang-ky"
-                variant="contained"
-                endIcon={<ArrowForwardRoundedIcon />}
-                sx={{
-                  borderRadius: 999,
-                  px: 3.2,
-                  py: 1.3,
-                  bgcolor: 'white',
-                  color: '#e65100',
-                  fontWeight: 900,
-                  boxShadow: 'none',
-                  '&:hover': { bgcolor: '#fff8e1', boxShadow: 'none' },
-                }}
-              >
-                Đăng ký tư vấn
-              </Button>
-            </Grid>
-          </Grid>
-        </Box>
+      <Container maxWidth="lg" sx={{ mt: { xs: 6, md: 8 } }}>
+        <Typography component="h2" sx={{ fontFamily: heading, fontSize: { xs: 25, md: 31 }, fontWeight: 800, letterSpacing: '-.025em', mb: 1 }}>Chọn sách theo khối lớp</Typography>
+        <Typography sx={{ color: muted, lineHeight: 1.7, mb: 3.5 }}>Thông tin từng cuốn và đường dẫn xem đáp án được đặt ngay bên dưới.</Typography>
 
-        <Box sx={{ textAlign: 'center', mt: { xs: 7, md: 8 }, mb: 4 }}>
-          <Typography
-            variant="h3"
-            sx={{
-              fontFamily: fontHeader,
-              fontWeight: 900,
-              color: '#1a237e',
-              fontSize: { xs: '1.9rem', md: '2.7rem' },
-            }}
-          >
-            Chọn sách theo khối lớp
-          </Typography>
-          <Typography color="text.secondary" sx={{ mt: 1.2 }}>
-            Giá bán lẻ: <b>90.000đ/cuốn</b>.
-          </Typography>
-        </Box>
-
-        <Grid container spacing={3}>
-          {books.map((book) => (
+        <Grid container spacing={2.5}>
+          {answerBooks.map((book) => (
             <Grid key={book.grade} size={{ xs: 12, sm: 6, lg: 3 }}>
-              <Card
-                sx={{
-                  height: '100%',
-                  borderRadius: 5,
-                  border: '1px solid #e5eaf0',
-                  boxShadow: '0 14px 36px rgba(31,42,74,.08)',
-                  overflow: 'hidden',
-                  transition: 'transform .25s ease, box-shadow .25s ease',
-                  '&:hover': {
-                    transform: 'translateY(-6px)',
-                    boxShadow: '0 22px 48px rgba(31,42,74,.13)',
-                  },
-                }}
-              >
-                <Box
-                  sx={{
-                    m: 2.5,
-                    aspectRatio: '3 / 4',
-                    borderRadius: 3,
-                    p: 3,
-                    color: 'white',
-                    bgcolor: book.accent,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    boxShadow: '0 16px 30px rgba(31,42,74,.18)',
-                    position: 'relative',
-                    overflow: 'hidden',
-                  }}
-                >
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      width: 150,
-                      height: 150,
-                      borderRadius: '50%',
-                      right: -55,
-                      top: -55,
-                      bgcolor: 'rgba(255,255,255,.12)',
-                    }}
-                  />
-                  <Box sx={{ position: 'relative' }}>
-                    <Typography variant="overline" sx={{ fontWeight: 900, letterSpacing: 1 }}>
-                      GIÁO DỤC SÀI GÒN
-                    </Typography>
-                    <Typography sx={{ mt: 2, fontFamily: fontHeader, fontWeight: 900, fontSize: '1.25rem', lineHeight: 1.35 }}>
-                      36 ĐỀ KIỂM TRA ĐỊNH KỲ
-                    </Typography>
-                  </Box>
-                  <Box sx={{ position: 'relative' }}>
-                    <Typography sx={{ fontFamily: fontHeader, fontWeight: 900, fontSize: '2rem' }}>
-                      TOÁN
-                    </Typography>
-                    <Typography sx={{ fontFamily: fontHeader, fontWeight: 900, fontSize: '5rem', lineHeight: 1 }}>
-                      {book.grade}
-                    </Typography>
+              <Box sx={{ bgcolor: 'white', border: `1px solid ${border}`, borderRadius: 2.3, overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%', transition: 'border-color .2s ease', '&:hover': { borderColor: '#a7b2cd' } }}>
+                <Box sx={{ bgcolor: '#f3f4f6', p: 3, borderBottom: `1px solid ${border}`, display: 'grid', placeItems: 'center', minHeight: 266 }}>
+                  <Box sx={{ width: 148, height: 204, background: navy, boxShadow: '7px 8px 0 #d7dbe4', color: '#fff', display: 'flex', flexDirection: 'column', p: 2.2, justifyContent: 'space-between', position: 'relative', overflow: 'hidden' }}>
+                    <Box sx={{ position: 'absolute', right: 0, top: 0, width: 9, height: '100%', bgcolor: red }} />
+                    <Typography sx={{ fontSize: 9, fontWeight: 800, letterSpacing: '.08em', pr: 1 }}>GIÁO DỤC SÀI GÒN</Typography>
+                    <Box>
+                      <Typography sx={{ fontSize: 11, fontWeight: 800, lineHeight: 1.3 }}>36 ĐỀ KIỂM TRA ĐỊNH KỲ</Typography>
+                      <Typography sx={{ fontSize: 28, fontWeight: 900, mt: 0.8, fontFamily: heading }}>TOÁN {book.grade}</Typography>
+                      <Box sx={{ bgcolor: red, width: 40, height: 4, mt: 1.5 }} />
+                    </Box>
+                    <Typography sx={{ fontSize: 10, opacity: .8 }}>BỘ SÁCH THCS</Typography>
                   </Box>
                 </Box>
-
-                <CardContent sx={{ p: 3, pt: 1 }}>
-                  <Typography sx={{ fontFamily: fontHeader, fontWeight: 900, minHeight: 54 }}>
-                    {book.title}
-                  </Typography>
-                  <Typography variant="h5" sx={{ mt: 2, color: '#d84315', fontWeight: 900 }}>
-                    90.000đ
-                  </Typography>
-                  <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mt: 1.2 }}>
-                    <LocalShippingRoundedIcon sx={{ color: 'text.secondary', fontSize: 20 }} />
-                    <Typography color="text.secondary" variant="body2">
-                      Phí vận chuyển được tính theo đơn hàng.
+                <Box sx={{ p: 2.7, display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                  <Typography component="h3" sx={{ fontWeight: 800, fontSize: 17, minHeight: 54, lineHeight: 1.5 }}>{book.title}</Typography>
+                  <Typography sx={{ fontSize: 22, fontWeight: 900, color: red, mt: 1.5 }}>90.000đ</Typography>
+                  <Typography sx={{ color: muted, fontSize: 13, mt: 0.5 }}>Chưa bao gồm phí vận chuyển</Typography>
+                  {book.grade === 9 && (
+                    <Typography sx={{ color: '#6c4c19', fontSize: 12.5, mt: 1.6, bgcolor: '#fff8e9', p: 1.2, borderLeft: '2px solid #d69a2e' }}>
+                      Có trong chương trình tặng sách cho học viên đủ điều kiện.
                     </Typography>
-                  </Stack>
-
-                  {book.grade === '9' && (
-                    <Chip
-                      label="Quà tặng khóa ôn thi lớp 10"
-                      size="small"
-                      sx={{
-                        mt: 2,
-                        bgcolor: '#fff3e0',
-                        color: '#e65100',
-                        fontWeight: 900,
-                      }}
-                    />
                   )}
-
-                  <Button
-                    component="a"
-                    href="https://zalo.me/1357593207866827845"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    fullWidth
-                    variant="contained"
-                    startIcon={<ShoppingCartRoundedIcon />}
-                    sx={{ mt: 3, borderRadius: 999, py: 1.25, fontWeight: 900 }}
-                  >
-                    Liên hệ đặt sách
-                  </Button>
-                </CardContent>
-              </Card>
+                  <Stack spacing={1.4} sx={{ mt: 'auto', pt: 3 }}>
+                    <Button component="a" href="https://zalo.me/1357593207866827845" target="_blank" rel="noopener noreferrer" fullWidth variant="contained" endIcon={<ArrowOutwardRoundedIcon fontSize="small" />} sx={{ bgcolor: navy, boxShadow: 'none', textTransform: 'none', fontWeight: 800, borderRadius: 1.25, py: 1.25, '&:hover': { bgcolor: '#1e2c63', boxShadow: 'none' } }}>
+                      Liên hệ đặt sách
+                    </Button>
+                    <Button component={Link} href={`/tai-lieu-on-luyen/${book.slug}`} endIcon={<ArrowForwardRoundedIcon fontSize="small" />} fullWidth variant="text" sx={{ fontWeight: 800, textTransform: 'none', color: navy, py: 1 }}>
+                      {book.fileUrl ? 'Xem đáp án sách' : 'Thông tin đáp án'}
+                    </Button>
+                  </Stack>
+                </Box>
+              </Box>
             </Grid>
           ))}
         </Grid>
 
-        <Box
-          sx={{
-            mt: 5,
-            p: { xs: 3, md: 4 },
-            borderRadius: 5,
-            bgcolor: 'white',
-            border: '1px solid #e5eaf0',
-            display: { md: 'flex' },
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 3,
-          }}
-        >
-          <Box>
-            <Typography variant="h5" sx={{ fontFamily: fontHeader, fontWeight: 900, color: '#1a237e' }}>
-              Xem thêm quyền lợi dành cho học viên
-            </Typography>
-            <Typography color="text.secondary" sx={{ mt: 0.7, lineHeight: 1.7 }}>
-              Tìm hiểu chương trình “Mời bạn cùng học”, quà tặng sách và các hỗ trợ trong quá trình học.
+        <Box sx={{ mt: { xs: 6, md: 8 }, bgcolor: '#fff', border: `1px solid ${border}`, borderLeft: `4px solid ${red}`, borderRadius: 1.5, p: { xs: 3, md: 4 }, display: 'flex', gap: 3, flexDirection: { xs: 'column', md: 'row' }, alignItems: { md: 'center' }, justifyContent: 'space-between' }}>
+          <Box sx={{ maxWidth: 770 }}>
+            <Typography component="h2" sx={{ fontFamily: heading, fontWeight: 800, fontSize: { xs: 20, md: 24 } }}>Chính sách tặng sách Toán 9</Typography>
+            <Typography sx={{ color: muted, fontSize: 14, lineHeight: 1.8, mt: 1 }}>
+              Theo thông tin chương trình hiện có, học viên đăng ký và hoàn tất học phí một khóa ôn thi tuyển sinh lớp 10 được tặng 01 cuốn “36 đề kiểm tra định kỳ Toán 9”. Trung tâm hỗ trợ phí vận chuyển đối với sách tặng.
             </Typography>
           </Box>
-          <Button
-            component={Link}
-            href="/chinh-sach"
-            variant="outlined"
-            sx={{ mt: { xs: 2, md: 0 }, borderRadius: 999, px: 3, fontWeight: 900, whiteSpace: 'nowrap' }}
-          >
-            Xem quyền lợi học viên
+          <Button component={Link} href="/chinh-sach" variant="outlined" endIcon={<ArrowForwardRoundedIcon />} sx={{ color: navy, borderColor: navy, textTransform: 'none', fontWeight: 800, borderRadius: 1.25, px: 2.5, py: 1.2, alignSelf: { xs: 'start', md: 'center' }, flexShrink: 0 }}>
+            Xem chính sách
           </Button>
         </Box>
       </Container>

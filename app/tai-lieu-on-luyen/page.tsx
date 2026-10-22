@@ -2,417 +2,182 @@
 
 import {
   Box,
+  Breadcrumbs,
   Button,
-  Card,
-  Chip,
   Container,
+  Divider,
   Grid,
+  Link as MuiLink,
   Stack,
   Typography,
 } from '@mui/material';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
-import AutoStoriesRoundedIcon from '@mui/icons-material/AutoStoriesRounded';
-import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
-import LibraryBooksRoundedIcon from '@mui/icons-material/LibraryBooksRounded';
-import LockRoundedIcon from '@mui/icons-material/LockRounded';
-import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
+import ArrowOutwardRoundedIcon from '@mui/icons-material/ArrowOutwardRounded';
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import Link from 'next/link';
-import FadeInScroll from '../components/FadeInScroll';
+import { answerBooks } from '../data/answerBooks';
 
-const fontHeader = "'Montserrat', sans-serif";
-const fontBody = "'Nunito', sans-serif";
+const navy = '#283878';
+const red = '#E82020';
+const ink = '#243049';
+const muted = '#647087';
+const border = '#e2e6ed';
+const heading = "'Montserrat', sans-serif";
 
-const coreBooks = [
+const studyMaterials = [
   {
     id: 'toan',
-    subject: 'TOÁN',
-    title: 'Tài liệu ôn luyện môn Toán',
-    description:
-      'Hệ thống kiến thức trọng tâm, dạng bài và nội dung luyện tập dành cho học sinh ôn thi tuyển sinh lớp 10.',
+    name: 'Toán',
+    title: 'Tài liệu ôn thi vào lớp 10 · Toán',
+    description: 'Kiến thức trọng tâm và bài luyện tập cho giai đoạn ôn thi tuyển sinh lớp 10.',
     fileUrl: '/book/sach_toan.pdf',
-    accent: '#2f6fed',
-    soft: '#eaf2ff',
-    symbol: '∑',
+    number: '01',
+    accent: navy,
   },
   {
     id: 'van',
-    subject: 'NGỮ VĂN',
-    title: 'Tài liệu ôn luyện môn Ngữ văn',
-    description:
-      'Tổng hợp kiến thức, phương pháp đọc hiểu, làm văn và nội dung ôn tập phục vụ quá trình luyện thi.',
+    name: 'Ngữ văn',
+    title: 'Tài liệu ôn thi vào lớp 10 · Ngữ văn',
+    description: 'Các nội dung ôn tập đọc hiểu, viết đoạn văn và bài văn.',
     fileUrl: '/book/sach_van.pdf',
-    accent: '#e14d4d',
-    soft: '#fff0f0',
-    symbol: 'V',
+    number: '02',
+    accent: red,
   },
   {
     id: 'anh',
-    subject: 'TIẾNG ANH',
-    title: 'Tài liệu ôn luyện môn Tiếng Anh',
-    description:
-      'Ôn tập từ vựng, ngữ pháp và các dạng bài trọng tâm để học sinh rèn kỹ năng làm bài có hệ thống.',
+    name: 'Tiếng Anh',
+    title: 'Tài liệu ôn thi vào lớp 10 · Tiếng Anh',
+    description: 'Tài liệu luyện từ vựng, ngữ pháp và các dạng bài thường gặp.',
     fileUrl: '/book/sach_anh.pdf',
-    accent: '#22a06b',
-    soft: '#e9f8f1',
-    symbol: 'A',
+    number: '03',
+    accent: '#316867',
   },
 ];
 
-const answerBooks = [6, 7, 8, 9].map((grade) => ({
-  grade,
-  slug: 'dap-an-toan-' + grade,
-  title: 'Đáp án sách Toán ' + grade,
-  description:
-    'Đáp án và hướng dẫn giải dành cho bộ sách Toán lớp ' + grade + '.',
-  available: false,
-}));
-
 export default function TaiLieuOnLuyenPage() {
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#f6f9ff', fontFamily: fontBody, pb: 12 }}>
-      <Box
-        className="animated-mesh noise-overlay"
-        sx={{
-          py: { xs: 8, md: 10 },
-          color: 'white',
-          textAlign: 'center',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        <Box
-          className="floating-orb"
-          sx={{
-            position: 'absolute',
-            width: 380,
-            height: 380,
-            borderRadius: '50%',
-            right: -140,
-            top: -160,
-            bgcolor: 'rgba(255,255,255,.07)',
-          }}
-        />
-        <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1 }}>
-          <FadeInScroll>
-            <Chip
-              icon={<LibraryBooksRoundedIcon />}
-              label="KHO TÀI LIỆU HỌC TẬP"
-              sx={{
-                mb: 2,
-                bgcolor: 'rgba(255,255,255,.13)',
-                color: 'white',
-                border: '1px solid rgba(255,255,255,.18)',
-                fontFamily: fontHeader,
-                fontWeight: 900,
-                '& .MuiChip-icon': { color: '#ffd166' },
-              }}
-            />
-            <Typography
-              variant="h2"
-              sx={{
-                fontFamily: fontHeader,
-                fontWeight: 900,
-                fontSize: { xs: '2.3rem', md: '3.7rem' },
-                lineHeight: 1.08,
-                letterSpacing: '-0.04em',
-              }}
-            >
-              Học xong trên lớp.
-              <Box component="span" sx={{ display: 'block', color: '#ffd166' }}>
-                Tiếp tục ôn tập chủ động.
+    <Box sx={{ bgcolor: '#fbfbf9', minHeight: '100vh', color: ink, pb: { xs: 8, md: 12 } }}>
+      <Box sx={{ borderBottom: `1px solid ${border}`, bgcolor: '#fff' }}>
+        <Container maxWidth="lg" sx={{ pt: { xs: 4, md: 5 }, pb: { xs: 5, md: 7 } }}>
+          <Breadcrumbs aria-label="Đường dẫn" sx={{ mb: { xs: 4, md: 5 }, fontSize: 13 }}>
+            <MuiLink component={Link} href="/" underline="hover" sx={{ color: muted }}>Trang chủ</MuiLink>
+            <Typography sx={{ fontSize: 13, color: ink }}>Tài liệu học tập</Typography>
+          </Breadcrumbs>
+
+          <Grid container spacing={{ xs: 4, md: 7 }} sx={{ alignItems: 'end' }}>
+            <Grid size={{ xs: 12, md: 8 }}>
+              <Typography sx={{ color: red, fontWeight: 800, letterSpacing: '.09em', fontSize: 12, mb: 1.5 }}>
+                THƯ VIỆN HỌC TẬP
+              </Typography>
+              <Typography component="h1" sx={{ fontFamily: heading, fontWeight: 800, fontSize: { xs: 35, sm: 45, md: 54 }, letterSpacing: '-.045em', lineHeight: 1.15, color: navy }}>
+                Tài liệu để học và tự ôn tập
+              </Typography>
+              <Typography sx={{ color: muted, maxWidth: 660, lineHeight: 1.9, fontSize: { xs: 15, md: 17 }, mt: 2.3 }}>
+                Tổng hợp tài liệu ôn thi lớp 10 và đáp án của bộ sách Toán 6–9. Chọn đúng tài liệu mình đang học để mở bản PDF.
+              </Typography>
+            </Grid>
+            <Grid size={{ xs: 12, md: 4 }}>
+              <Box sx={{ borderLeft: `3px solid ${red}`, pl: 2.4, py: 0.2 }}>
+                <Typography sx={{ fontWeight: 800, fontSize: 14, mb: 0.8 }}>Gợi ý sử dụng</Typography>
+                <Typography sx={{ color: muted, fontSize: 14, lineHeight: 1.75 }}>
+                  Hãy thử làm bài trước, sau đó mở đáp án để đối chiếu và ghi lại những câu cần ôn thêm.
+                </Typography>
               </Box>
-            </Typography>
-            <Typography
-              variant="h6"
-              sx={{ mt: 2.2, opacity: 0.9, lineHeight: 1.75, fontWeight: 500 }}
-            >
-              Kho tài liệu hỗ trợ học sinh hệ thống kiến thức, tự luyện
-              và xem lại nội dung theo từng môn Toán · Ngữ văn · Tiếng Anh.
-            </Typography>
-          </FadeInScroll>
+            </Grid>
+          </Grid>
         </Container>
       </Box>
 
-      <Container maxWidth="xl" sx={{ mt: { xs: 6, md: 8 } }}>
-        <FadeInScroll>
-          <Box sx={{ textAlign: 'center', mb: 4.5 }}>
-            <Typography
-              variant="overline"
-              sx={{ fontFamily: fontHeader, fontWeight: 900, color: '#2f6fed', letterSpacing: 1.4 }}
-            >
-              TÀI LIỆU THEO MÔN
-            </Typography>
-            <Typography
-              variant="h3"
-              sx={{
-                mt: 0.5,
-                fontFamily: fontHeader,
-                fontWeight: 900,
-                color: '#102044',
-                fontSize: { xs: '2rem', md: '2.9rem' },
-                letterSpacing: '-0.03em',
-              }}
-            >
-              Chọn môn cần ôn,
-              <Box component="span" className="gradient-text" sx={{ display: 'inline', ml: 1 }}>
-                mở tài liệu và bắt đầu
-              </Box>
-            </Typography>
-          </Box>
-        </FadeInScroll>
-
-        <Grid container spacing={3}>
-          {coreBooks.map((book, index) => (
-            <Grid key={book.id} size={{ xs: 12, md: 4 }}>
-              <FadeInScroll delay={index * 0.08}>
-                <Card
-                  className="card-lift"
-                  sx={{
-                    height: '100%',
-                    borderRadius: 5,
-                    overflow: 'hidden',
-                    bgcolor: 'white',
-                    border: '1px solid #e4ecf7',
-                    boxShadow: '0 16px 42px rgba(15,48,105,.07)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <Box
-                    sx={{
-                      p: 3.2,
-                      minHeight: 215,
-                      position: 'relative',
-                      overflow: 'hidden',
-                      bgcolor: book.accent,
-                      color: 'white',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <Box
-                      className="floating-orb"
-                      sx={{
-                        position: 'absolute',
-                        width: 170,
-                        height: 170,
-                        borderRadius: '50%',
-                        right: -65,
-                        top: -70,
-                        bgcolor: 'rgba(255,255,255,.13)',
-                      }}
-                    />
-                    <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'flex-start', position: 'relative' }}>
-                      <Chip
-                        label={book.subject}
-                        sx={{
-                          bgcolor: 'rgba(255,255,255,.16)',
-                          color: 'white',
-                          border: '1px solid rgba(255,255,255,.15)',
-                          fontWeight: 900,
-                        }}
-                      />
-                      <Typography
-                        sx={{
-                          fontFamily: fontHeader,
-                          fontWeight: 900,
-                          fontSize: '4rem',
-                          lineHeight: 1,
-                          opacity: 0.88,
-                        }}
-                      >
-                        {book.symbol}
-                      </Typography>
-                    </Stack>
-                    <Typography
-                      variant="h5"
-                      sx={{ fontFamily: fontHeader, fontWeight: 900, position: 'relative', maxWidth: 310 }}
-                    >
-                      {book.title}
-                    </Typography>
-                  </Box>
-
-                  <Box sx={{ p: 3.2, display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-                    <Typography color="text.secondary" sx={{ lineHeight: 1.75, flexGrow: 1 }}>
-                      {book.description}
-                    </Typography>
-
-                    <Stack spacing={1} sx={{ mt: 2.4, mb: 2.8 }}>
-                      {['Tài liệu PDF', 'Có thể mở trực tiếp trên trình duyệt', 'Phù hợp để tự ôn tập'].map((item) => (
-                        <Stack key={item} direction="row" spacing={0.8} sx={{ alignItems: 'center' }}>
-                          <CheckCircleRoundedIcon sx={{ color: book.accent, fontSize: 18 }} />
-                          <Typography variant="body2" sx={{ color: '#60708e', fontWeight: 700 }}>
-                            {item}
-                          </Typography>
-                        </Stack>
-                      ))}
-                    </Stack>
-
-                    <Button
-                      component="a"
-                      href={book.fileUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      variant="contained"
-                      fullWidth
-                      endIcon={<ArrowForwardRoundedIcon />}
-                      sx={{
-                        py: 1.2,
-                        borderRadius: 999,
-                        textTransform: 'none',
-                        fontFamily: fontHeader,
-                        fontWeight: 900,
-                        bgcolor: book.accent,
-                        '&:hover': { bgcolor: book.accent, filter: 'brightness(.92)' },
-                      }}
-                    >
-                      Đọc tài liệu
-                    </Button>
-                  </Box>
-                </Card>
-              </FadeInScroll>
-            </Grid>
-          ))}
-        </Grid>
-
-        <Box sx={{ mt: { xs: 8, md: 10 } }}>
-          <FadeInScroll>
-            <Box sx={{ textAlign: 'center', mb: 4.5 }}>
-              <Chip
-                icon={<MenuBookRoundedIcon />}
-                label="ĐÁP ÁN & HƯỚNG DẪN GIẢI"
-                sx={{
-                  mb: 1.5,
-                  bgcolor: '#f2efff',
-                  color: '#6a50c8',
-                  fontFamily: fontHeader,
-                  fontWeight: 900,
-                  '& .MuiChip-icon': { color: '#6a50c8' },
-                }}
-              />
-              <Typography
-                variant="h3"
-                sx={{
-                  fontFamily: fontHeader,
-                  fontWeight: 900,
-                  color: '#102044',
-                  fontSize: { xs: '2rem', md: '2.8rem' },
-                }}
-              >
-                Đáp án sách Toán 6 · 7 · 8 · 9
-              </Typography>
-              <Typography color="text.secondary" sx={{ mt: 1.2, maxWidth: 700, mx: 'auto', lineHeight: 1.7 }}>
-                Khu vực tra cứu đáp án được chuẩn bị để học sinh sử dụng cùng bộ sách luyện tập.
+      <Container maxWidth="lg" sx={{ mt: { xs: 6, md: 8 } }}>
+        <Box component="section" aria-labelledby="tai-lieu-lop-10">
+          <Stack direction={{ xs: 'column', sm: 'row' }} sx={{ alignItems: { sm: 'end' }, justifyContent: 'space-between', gap: 1.5, mb: 3 }}>
+            <Box>
+              <Typography sx={{ color: red, fontSize: 12, fontWeight: 800, letterSpacing: '.1em', mb: 1 }}>01 / THEO MÔN HỌC</Typography>
+              <Typography component="h2" id="tai-lieu-lop-10" sx={{ fontFamily: heading, fontSize: { xs: 24, md: 30 }, fontWeight: 800, letterSpacing: '-.025em' }}>
+                Tài liệu ôn thi vào lớp 10
               </Typography>
             </Box>
-          </FadeInScroll>
+            <Typography sx={{ color: muted, fontSize: 14 }}>Mở trực tiếp trên trình duyệt · Định dạng PDF</Typography>
+          </Stack>
 
-          <Grid container spacing={2.5}>
-            {answerBooks.map((book, index) => (
-              <Grid key={book.grade} size={{ xs: 12, sm: 6, lg: 3 }}>
-                <FadeInScroll delay={index * 0.06}>
-                  <Card
-                    className="card-lift"
-                    sx={{
-                      height: '100%',
-                      p: 3,
-                      borderRadius: 4.5,
-                      bgcolor: 'white',
-                      border: '1px solid #e4ecf7',
-                      boxShadow: '0 12px 32px rgba(15,48,105,.055)',
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        width: 56,
-                        height: 56,
-                        borderRadius: 3,
-                        display: 'grid',
-                        placeItems: 'center',
-                        bgcolor: '#f2efff',
-                        color: '#6a50c8',
-                      }}
-                    >
-                      <AutoStoriesRoundedIcon />
+          <Grid container spacing={2.4}>
+            {studyMaterials.map((book) => (
+              <Grid key={book.id} size={{ xs: 12, md: 4 }}>
+                <Box sx={{ height: '100%', bgcolor: '#fff', border: `1px solid ${border}`, borderRadius: 2.3, overflow: 'hidden', display: 'flex', flexDirection: 'column', transition: 'border-color .2s ease', '&:hover': { borderColor: '#a7b2cd' } }}>
+                  <Box sx={{ bgcolor: '#f5f5f2', px: 2.8, py: 2.6, borderBottom: `1px solid ${border}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <Box sx={{ width: 112, height: 145, px: 1.7, py: 2, bgcolor: book.accent, color: 'white', boxShadow: '5px 6px 0 #d9dce4', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                      <Typography sx={{ fontSize: 9, fontWeight: 800, letterSpacing: '.07em', lineHeight: 1.4 }}>GIÁO DỤC SÀI GÒN</Typography>
+                      <Box>
+                        <Typography sx={{ fontSize: 11, fontWeight: 800, opacity: .88 }}>ÔN THI LỚP 10</Typography>
+                        <Typography sx={{ fontFamily: heading, fontSize: book.id === 'anh' ? 15 : 19, fontWeight: 900, lineHeight: 1.25 }}>{book.name}</Typography>
+                      </Box>
                     </Box>
-                    <Typography variant="h6" sx={{ mt: 2, fontFamily: fontHeader, fontWeight: 900, color: '#102044' }}>
-                      {book.title}
-                    </Typography>
-                    <Typography color="text.secondary" variant="body2" sx={{ mt: 1, lineHeight: 1.7 }}>
-                      {book.description}
-                    </Typography>
-
-                    {book.available ? (
-                      <Button
-                        component={Link}
-                        href={'/tai-lieu-on-luyen/' + book.slug}
-                        fullWidth
-                        variant="outlined"
-                        sx={{ mt: 2.5, borderRadius: 999, textTransform: 'none', fontWeight: 900 }}
-                      >
-                        Xem đáp án
-                      </Button>
-                    ) : (
-                      <Button
-                        disabled
-                        fullWidth
-                        startIcon={<LockRoundedIcon />}
-                        sx={{ mt: 2.5, borderRadius: 999, textTransform: 'none', fontWeight: 900 }}
-                      >
-                        Đang cập nhật
-                      </Button>
-                    )}
-                  </Card>
-                </FadeInScroll>
+                    <Typography sx={{ alignSelf: 'start', color: '#8c94a2', fontWeight: 700, fontSize: 13 }}>{book.number} / 03</Typography>
+                  </Box>
+                  <Box sx={{ p: 3, display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                    <Typography sx={{ fontSize: 12, color: book.accent, fontWeight: 800, mb: 1 }}>TÀI LIỆU ÔN TẬP</Typography>
+                    <Typography component="h3" sx={{ fontWeight: 800, fontSize: 19, lineHeight: 1.45, mb: 1.3 }}>{book.title}</Typography>
+                    <Typography sx={{ fontSize: 14, color: muted, lineHeight: 1.75, flexGrow: 1 }}>{book.description}</Typography>
+                    <Divider sx={{ my: 2.5 }} />
+                    <Button component="a" href={book.fileUrl} target="_blank" rel="noopener noreferrer" endIcon={<ArrowOutwardRoundedIcon fontSize="small" />} sx={{ p: 0, alignSelf: 'start', textTransform: 'none', fontWeight: 800, color: navy, '&:hover': { bgcolor: 'transparent', color: red } }}>
+                      Đọc tài liệu PDF
+                    </Button>
+                  </Box>
+                </Box>
               </Grid>
             ))}
           </Grid>
         </Box>
 
-        <FadeInScroll>
-          <Box
-            sx={{
-              mt: 7,
-              p: { xs: 3, md: 4 },
-              borderRadius: 5,
-              bgcolor: '#102a66',
-              color: 'white',
-              display: { md: 'flex' },
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: 3,
-            }}
-          >
+        <Box component="section" aria-labelledby="dap-an-theo-lop" sx={{ mt: { xs: 7, md: 10 } }}>
+          <Stack direction={{ xs: 'column', md: 'row' }} sx={{ justifyContent: 'space-between', alignItems: { md: 'end' }, gap: 2, mb: 3 }}>
             <Box>
-              <Typography variant="h5" sx={{ fontFamily: fontHeader, fontWeight: 900 }}>
-                Muốn được hướng dẫn ôn tập theo lộ trình?
+              <Typography sx={{ color: red, fontSize: 12, fontWeight: 800, letterSpacing: '.1em', mb: 1 }}>02 / TRA CỨU ĐÁP ÁN</Typography>
+              <Typography component="h2" id="dap-an-theo-lop" sx={{ fontFamily: heading, fontSize: { xs: 24, md: 30 }, fontWeight: 800, letterSpacing: '-.025em' }}>
+                Đáp án bộ sách 36 đề kiểm tra định kỳ
               </Typography>
-              <Typography sx={{ mt: 0.7, opacity: 0.8, lineHeight: 1.7 }}>
-                Chọn môn quan tâm để đội ngũ tư vấn hỗ trợ gia đình tìm lớp phù hợp.
+              <Typography sx={{ color: muted, lineHeight: 1.75, mt: 1, maxWidth: 680 }}>
+                Dành cho học sinh đang sử dụng sách Toán lớp 6, 7, 8 và 9. Chọn lớp để xem tình trạng tệp và mở đáp án khi đã được đăng tải.
               </Typography>
             </Box>
-            <Button
-              component={Link}
-              href="/#form-dang-ky"
-              variant="contained"
-              sx={{
-                mt: { xs: 2, md: 0 },
-                borderRadius: 999,
-                px: 3,
-                py: 1.2,
-                textTransform: 'none',
-                fontFamily: fontHeader,
-                fontWeight: 900,
-                whiteSpace: 'nowrap',
-                bgcolor: '#ff8a1f',
-                '&:hover': { bgcolor: '#f57c00' },
-              }}
-            >
-              Đăng ký tư vấn
-            </Button>
+            <MuiLink component={Link} href="/sach" underline="hover" sx={{ flexShrink: 0, fontSize: 14, fontWeight: 800, color: navy }}>
+              Xem bộ sách <ArrowForwardRoundedIcon sx={{ verticalAlign: 'middle', fontSize: 16 }} />
+            </MuiLink>
+          </Stack>
+
+          <Grid container spacing={2}>
+            {answerBooks.map((book) => (
+              <Grid key={book.grade} size={{ xs: 12, sm: 6, lg: 3 }}>
+                <Box component={Link} href={`/tai-lieu-on-luyen/${book.slug}`} sx={{ bgcolor: '#fff', textDecoration: 'none', color: ink, height: '100%', display: 'flex', flexDirection: 'column', border: `1px solid ${border}`, borderRadius: 2, overflow: 'hidden', transition: 'border-color .2s ease, transform .2s ease', '&:hover': { borderColor: navy, transform: 'translateY(-2px)' }, '&:focus-visible': { outline: `3px solid ${red}`, outlineOffset: 2 } }}>
+                  <Box sx={{ px: 2.5, py: 2.6, bgcolor: '#f3f4f8', borderBottom: `1px solid ${border}` }}>
+                    <Typography sx={{ fontSize: 12, color: muted, fontWeight: 800 }}>TOÁN THCS</Typography>
+                    <Typography sx={{ mt: 0.4, fontFamily: heading, fontWeight: 800, color: navy, fontSize: 50, lineHeight: 1.15 }}>Lớp {book.grade}</Typography>
+                  </Box>
+                  <Box sx={{ p: 2.5, display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                    <Typography component="h3" sx={{ fontSize: 16, fontWeight: 800, lineHeight: 1.5, minHeight: 48 }}>{book.title}</Typography>
+                    <Typography sx={{ mt: 1, mb: 3, fontSize: 13, color: book.fileUrl ? '#346752' : muted }}>
+                      {book.fileUrl ? 'Có file đáp án PDF' : 'Chưa liên kết tệp đáp án'}
+                    </Typography>
+                    <Stack direction="row" spacing={1} sx={{ color: navy, fontWeight: 800, alignItems: 'center', mt: 'auto' }}>
+                      <Typography sx={{ fontSize: 14, fontWeight: 800 }}>{book.fileUrl ? 'Xem đáp án' : 'Thông tin đáp án'}</Typography>
+                      <ArrowForwardRoundedIcon sx={{ fontSize: 17 }} />
+                    </Stack>
+                  </Box>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+
+        <Box sx={{ mt: { xs: 7, md: 9 }, borderTop: `1px solid ${border}`, pt: 3.5, display: 'flex', gap: 2, alignItems: 'flex-start' }}>
+          <DescriptionOutlinedIcon sx={{ color: red, mt: 0.25 }} />
+          <Box>
+            <Typography sx={{ fontWeight: 800, mb: 0.5 }}>Một lưu ý nhỏ khi đối chiếu đáp án</Typography>
+            <Typography sx={{ lineHeight: 1.8, color: muted, fontSize: 14, maxWidth: 800 }}>
+              Nếu kết quả khác đáp án, hãy kiểm tra lại từng bước làm. Với bài tự luận, có thể có nhiều cách giải đúng; đáp án nên được dùng để tham khảo và tự sửa bài.
+            </Typography>
           </Box>
-        </FadeInScroll>
+        </Box>
       </Container>
     </Box>
   );

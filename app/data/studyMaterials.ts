@@ -13,7 +13,7 @@ export type StudyMaterial = {
 export const studyMaterials: StudyMaterial[] = [
   { id: 'toan', name: 'Toán', title: 'Tài liệu ôn thi vào lớp 10 · Toán',
     description: 'Kiến thức trọng tâm và bài luyện tập cho giai đoạn ôn thi tuyển sinh lớp 10.',
-    fileUrl: '/book/sach_toan.pdf', coverUrl: null, number: '01', accent: '#283878' },
+    fileUrl: '/book/sach_toan.pdf', coverUrl: '/covers/toan-9.jpg', number: '01', accent: '#283878' },
   { id: 'van', name: 'Ngữ văn', title: 'Tài liệu ôn thi vào lớp 10 · Ngữ văn',
     description: 'Các nội dung ôn tập đọc hiểu, viết đoạn văn và bài văn.',
     fileUrl: '/book/sach_van.pdf', coverUrl: null, number: '02', accent: '#E82020' },

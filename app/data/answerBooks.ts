@@ -21,7 +21,7 @@ export const answerBooks: AnswerBook[] = [
     title: '36 đề kiểm tra định kỳ Toán 6',
     desc: 'Đáp án dùng kèm sách 36 đề kiểm tra định kỳ Toán 6.',
     fileUrl: '/answers/36 DE TOAN_Lop6_Dap-An_QR.pdf',
-    coverUrl: null,
+    coverUrl: '/covers/toan-6.jpg',
   },
   {
     id: 7,
@@ -30,7 +30,7 @@ export const answerBooks: AnswerBook[] = [
     title: '36 đề kiểm tra định kỳ Toán 7',
     desc: 'Đáp án dùng kèm sách 36 đề kiểm tra định kỳ Toán 7.',
     fileUrl: '/answers/36 DE TOAN_Lop7_Dan-An_QR.pdf',
-    coverUrl: null,
+    coverUrl: '/covers/toan-7.jpg',
   },
   {
     id: 8,
@@ -39,7 +39,7 @@ export const answerBooks: AnswerBook[] = [
     title: '36 đề kiểm tra định kỳ Toán 8',
     desc: 'Đáp án dùng kèm sách 36 đề kiểm tra định kỳ Toán 8.',
     fileUrl: '/answers/36 DE TOAN_Lop8_Dap-An_QR.pdf',
-    coverUrl: null,
+    coverUrl: '/covers/toan-8.jpg',
   },
   {
     id: 9,
@@ -48,7 +48,7 @@ export const answerBooks: AnswerBook[] = [
     title: '36 đề kiểm tra định kỳ Toán 9',
     desc: 'Đáp án dùng kèm sách 36 đề kiểm tra định kỳ Toán 9.',
     fileUrl: '/answers/36 DE TOAN_Lop9_Dap-An_QR.pdf',
-    coverUrl: null,
+    coverUrl: '/covers/toan-9.jpg',
   },
 ];
 

@@ -16,6 +16,8 @@ import ArrowOutwardRoundedIcon from '@mui/icons-material/ArrowOutwardRounded';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import Link from 'next/link';
 import { answerBooks } from '../data/answerBooks';
+import { studyMaterials } from '../data/studyMaterials';
+import BookCover from '../components/BookCover';
 
 const navy = '#283878';
 const red = '#E82020';
@@ -24,35 +26,6 @@ const muted = '#647087';
 const border = '#e2e6ed';
 const heading = "'Montserrat', sans-serif";
 
-const studyMaterials = [
-  {
-    id: 'toan',
-    name: 'Toán',
-    title: 'Tài liệu ôn thi vào lớp 10 · Toán',
-    description: 'Kiến thức trọng tâm và bài luyện tập cho giai đoạn ôn thi tuyển sinh lớp 10.',
-    fileUrl: '/book/sach_toan.pdf',
-    number: '01',
-    accent: navy,
-  },
-  {
-    id: 'van',
-    name: 'Ngữ văn',
-    title: 'Tài liệu ôn thi vào lớp 10 · Ngữ văn',
-    description: 'Các nội dung ôn tập đọc hiểu, viết đoạn văn và bài văn.',
-    fileUrl: '/book/sach_van.pdf',
-    number: '02',
-    accent: red,
-  },
-  {
-    id: 'anh',
-    name: 'Tiếng Anh',
-    title: 'Tài liệu ôn thi vào lớp 10 · Tiếng Anh',
-    description: 'Tài liệu luyện từ vựng, ngữ pháp và các dạng bài thường gặp.',
-    fileUrl: '/book/sach_anh.pdf',
-    number: '03',
-    accent: '#316867',
-  },
-];
 
 export default function TaiLieuOnLuyenPage() {
   return (
@@ -105,12 +78,9 @@ export default function TaiLieuOnLuyenPage() {
               <Grid key={book.id} size={{ xs: 12, md: 4 }}>
                 <Box sx={{ height: '100%', bgcolor: '#fff', border: `1px solid ${border}`, borderRadius: 2.3, overflow: 'hidden', display: 'flex', flexDirection: 'column', transition: 'border-color .2s ease', '&:hover': { borderColor: '#a7b2cd' } }}>
                   <Box sx={{ bgcolor: '#f5f5f2', px: 2.8, py: 2.6, borderBottom: `1px solid ${border}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Box sx={{ width: 112, height: 145, px: 1.7, py: 2, bgcolor: book.accent, color: 'white', boxShadow: '5px 6px 0 #d9dce4', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                      <Typography sx={{ fontSize: 9, fontWeight: 800, letterSpacing: '.07em', lineHeight: 1.4 }}>GIÁO DỤC SÀI GÒN</Typography>
-                      <Box>
-                        <Typography sx={{ fontSize: 11, fontWeight: 800, opacity: .88 }}>ÔN THI LỚP 10</Typography>
-                        <Typography sx={{ fontFamily: heading, fontSize: book.id === 'anh' ? 15 : 19, fontWeight: 900, lineHeight: 1.25 }}>{book.name}</Typography>
-                      </Box>
+                    <Box sx={{ width: 134, flexShrink: 0 }}>
+                      <BookCover src={book.coverUrl} title={book.title}
+                        subject={book.name} maxWidth={130} />
                     </Box>
                     <Typography sx={{ alignSelf: 'start', color: '#8c94a2', fontWeight: 700, fontSize: 13 }}>{book.number} / 03</Typography>
                   </Box>
@@ -149,9 +119,16 @@ export default function TaiLieuOnLuyenPage() {
             {answerBooks.map((book) => (
               <Grid key={book.grade} size={{ xs: 12, sm: 6, lg: 3 }}>
                 <Box component={Link} href={`/tai-lieu-on-luyen/${book.slug}`} sx={{ bgcolor: '#fff', textDecoration: 'none', color: ink, height: '100%', display: 'flex', flexDirection: 'column', border: `1px solid ${border}`, borderRadius: 2, overflow: 'hidden', transition: 'border-color .2s ease, transform .2s ease', '&:hover': { borderColor: navy, transform: 'translateY(-2px)' }, '&:focus-visible': { outline: `3px solid ${red}`, outlineOffset: 2 } }}>
-                  <Box sx={{ px: 2.5, py: 2.6, bgcolor: '#f3f4f8', borderBottom: `1px solid ${border}` }}>
-                    <Typography sx={{ fontSize: 12, color: muted, fontWeight: 800 }}>TOÁN THCS</Typography>
-                    <Typography sx={{ mt: 0.4, fontFamily: heading, fontWeight: 800, color: navy, fontSize: 50, lineHeight: 1.15 }}>Lớp {book.grade}</Typography>
+                  <Box sx={{ px: 2.3, py: 2.1, bgcolor: '#f3f4f8', borderBottom: `1px solid ${border}` }}>
+                    <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
+                      <Box sx={{ width: 82, flexShrink: 0 }}>
+                        <BookCover src={book.coverUrl} title={book.title} subject={`Toán ${book.grade}`} maxWidth={80} />
+                      </Box>
+                      <Box>
+                        <Typography sx={{ fontSize: 11, color: muted, fontWeight: 800 }}>TOÁN THCS</Typography>
+                        <Typography sx={{ mt: 0.5, fontFamily: heading, fontWeight: 800, color: navy, fontSize: 27, lineHeight: 1.25 }}>Lớp {book.grade}</Typography>
+                      </Box>
+                    </Stack>
                   </Box>
                   <Box sx={{ p: 2.5, display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                     <Typography component="h3" sx={{ fontSize: 16, fontWeight: 800, lineHeight: 1.5, minHeight: 48 }}>{book.title}</Typography>

@@ -9,6 +9,8 @@ export type AnswerBook = {
   title: string;
   desc: string;
   fileUrl: string | null;
+  /** Đường dẫn ảnh bìa nằm trong public/covers/; null khi chưa có ảnh. */
+  coverUrl: string | null;
 };
 
 export const answerBooks: AnswerBook[] = [
@@ -19,6 +21,7 @@ export const answerBooks: AnswerBook[] = [
     title: '36 đề kiểm tra định kỳ Toán 6',
     desc: 'Đáp án dùng kèm sách 36 đề kiểm tra định kỳ Toán 6.',
     fileUrl: null,
+    coverUrl: null,
   },
   {
     id: 7,
@@ -27,6 +30,7 @@ export const answerBooks: AnswerBook[] = [
     title: '36 đề kiểm tra định kỳ Toán 7',
     desc: 'Đáp án dùng kèm sách 36 đề kiểm tra định kỳ Toán 7.',
     fileUrl: null,
+    coverUrl: null,
   },
   {
     id: 8,
@@ -35,6 +39,7 @@ export const answerBooks: AnswerBook[] = [
     title: '36 đề kiểm tra định kỳ Toán 8',
     desc: 'Đáp án dùng kèm sách 36 đề kiểm tra định kỳ Toán 8.',
     fileUrl: null,
+    coverUrl: null,
   },
   {
     id: 9,
@@ -43,6 +48,7 @@ export const answerBooks: AnswerBook[] = [
     title: '36 đề kiểm tra định kỳ Toán 9',
     desc: 'Đáp án dùng kèm sách 36 đề kiểm tra định kỳ Toán 9.',
     fileUrl: null,
+    coverUrl: null,
   },
 ];
 

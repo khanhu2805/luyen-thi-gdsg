@@ -14,6 +14,7 @@ import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import ArrowOutwardRoundedIcon from '@mui/icons-material/ArrowOutwardRounded';
 import Link from 'next/link';
 import { answerBooks } from '../data/answerBooks';
+import BookCover from '../components/BookCover';
 
 const navy = '#283878';
 const red = '#E82020';
@@ -55,17 +56,11 @@ export default function SachPage() {
           {answerBooks.map((book) => (
             <Grid key={book.grade} size={{ xs: 12, sm: 6, lg: 3 }}>
               <Box sx={{ bgcolor: 'white', border: `1px solid ${border}`, borderRadius: 2.3, overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%', transition: 'border-color .2s ease', '&:hover': { borderColor: '#a7b2cd' } }}>
-                <Box sx={{ bgcolor: '#f3f4f6', p: 3, borderBottom: `1px solid ${border}`, display: 'grid', placeItems: 'center', minHeight: 266 }}>
-                  <Box sx={{ width: 148, height: 204, background: navy, boxShadow: '7px 8px 0 #d7dbe4', color: '#fff', display: 'flex', flexDirection: 'column', p: 2.2, justifyContent: 'space-between', position: 'relative', overflow: 'hidden' }}>
-                    <Box sx={{ position: 'absolute', right: 0, top: 0, width: 9, height: '100%', bgcolor: red }} />
-                    <Typography sx={{ fontSize: 9, fontWeight: 800, letterSpacing: '.08em', pr: 1 }}>GIÁO DỤC SÀI GÒN</Typography>
-                    <Box>
-                      <Typography sx={{ fontSize: 11, fontWeight: 800, lineHeight: 1.3 }}>36 ĐỀ KIỂM TRA ĐỊNH KỲ</Typography>
-                      <Typography sx={{ fontSize: 28, fontWeight: 900, mt: 0.8, fontFamily: heading }}>TOÁN {book.grade}</Typography>
-                      <Box sx={{ bgcolor: red, width: 40, height: 4, mt: 1.5 }} />
-                    </Box>
-                    <Typography sx={{ fontSize: 10, opacity: .8 }}>BỘ SÁCH THCS</Typography>
-                  </Box>
+                <Box sx={{ bgcolor: '#f3f4f6', px: 3, py: 3.5,
+                  borderBottom: `1px solid ${border}`, display: 'grid',
+                  placeItems: 'center', minHeight: 290 }}>
+                  <BookCover src={book.coverUrl} title={book.title}
+                    subject={`Toán ${book.grade}`} maxWidth={172} />
                 </Box>
                 <Box sx={{ p: 2.7, display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                   <Typography component="h3" sx={{ fontWeight: 800, fontSize: 17, minHeight: 54, lineHeight: 1.5 }}>{book.title}</Typography>
